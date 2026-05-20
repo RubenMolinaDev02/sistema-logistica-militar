@@ -1,0 +1,21 @@
+package com.example.weapon_microservice.model.weapon.enums;
+
+public enum WeaponType {
+    PISTOL,
+    REVOLVER,
+    ASSAULT_RIFLE,
+    BATTLE_RIFLE,
+    BOLT_ACTION_RIFLE,
+    CARBINE,
+    SHOTGUN,
+    SMG,
+    PDW,
+    SNIPER_RIFLE,
+    DESIGNATED_MARKSMAN_RIFLE,
+    LIGHT_MACHINE_GUN,
+    MULTIPURPOSE_MACHINE_GUN,
+    HEAVY_MACHINE_GUN,
+    DISPOSABLE_ROCKET_LAUNCHER,
+    ROCKET_LAUNCHER,
+    GRENADE_LAUNCHER
+}
