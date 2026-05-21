@@ -1,0 +1,35 @@
+<div class="font-['Barlow'] text-[#c8d4e0] bg-[#0d1117] flex flex-col h-screen ">
+
+  <div class="shrink-0 px-8 pt-8">
+
+    <app-item-header />
+
+    <app-item-tabs
+      [tabs]="tabs"
+      [activeTab]="activeTab"
+      (change)="loadTab($event)"
+    />
+
+    <app-item-search
+      (search)="applyFilters($event)"
+    ></app-item-search>
+
+  </div>
+
+  <div class="flex-1 overflow-y-auto px-8 pb-4">
+    @if (!loading) {
+      <app-item-grid
+      [items]="items"
+      [category]="activeTab"
+    />
+    }
+  </div>
+
+  <app-item-pagination
+    [page]="page"
+    [totalPages]="totalPages"
+    (previous)="loadTab(activeTab, page - 1)"
+    (next)="loadTab(activeTab, page + 1)"
+  />
+
+</div>

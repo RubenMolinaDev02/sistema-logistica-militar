@@ -1,0 +1,32 @@
+<div class="shrink-0 h-[64px] bg-[#0a0d11] flex items-center justify-center">
+
+  <div class="flex items-center gap-3 font-['Share_Tech_Mono'] text-[11px]">
+    @if (page > 0) {
+        <button
+            (click)="previous.emit()"
+            class="appearance-none bg-transparent border-0 outline-none px-4 py-2 bg-[#111418] text-[#4a5568]
+            tracking-[1px] transition-all duration-150 font-['Share_Tech_Mono']
+            hover:text-[#00e5a0]"
+        >
+            ← PREV
+        </button>
+    }
+    
+
+    <div class="px-4 py-2 border border-[#1e2530] bg-[#111418] text-[#7b8794]" style="margin: 20px;">
+      {{ page + 1 }} / {{ totalPages }}
+    </div>
+
+    @if (page < totalPages - 1) {
+        <button
+            (click)="next.emit()"
+            class="appearance-none bg-transparent border-0 outline-none px-4 py-2 bg-[#111418] text-[#4a5568]
+            tracking-[1px] transition-all duration-150 font-['Share_Tech_Mono']
+            hover:text-[#00e5a0]"
+        >
+            NEXT →
+        </button>
+    }
+  </div>
+
+</div>

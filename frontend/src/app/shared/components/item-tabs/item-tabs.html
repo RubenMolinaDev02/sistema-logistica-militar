@@ -1,0 +1,28 @@
+<div class="flex flex-wrap gap-2 mb-6">
+
+  <button
+    *ngFor="let t of tabs"
+    (click)="selectTab(t.key)"
+    class="
+      px-[14px]
+      py-[6px]
+      bg-transparent
+      border
+      text-[10px]
+      tracking-[1.5px]
+      uppercase
+      cursor-pointer
+      transition-all
+      duration-150
+      font-['Share_Tech_Mono']
+    "
+    [ngClass]="
+      activeTab === t.key
+        ? 'border-[#00e5a0] text-[#00e5a0]'
+        : 'border-[#1e2530] text-[#4a5568] hover:border-[#00e5a0] hover:text-[#00e5a0]'
+    "
+  >
+    {{ t.label }}
+  </button>
+
+</div>

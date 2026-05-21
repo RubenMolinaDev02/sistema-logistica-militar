@@ -1,0 +1,110 @@
+<div class="min-h-screen flex bg-[#0a0c0f] text-[#c8d4e0] font-['Share_Tech_Mono'] tracking-wide">
+
+  <!-- SIDEBAR -->
+  <nav class="w-[240px] min-w-[240px] bg-[#111418] border-r border-[#1e2530] flex flex-col">
+
+    <!-- LOGO -->
+    <div class="flex items-center gap-4 px-6 py-7 border-b border-[#1e2530]">
+      <span class="text-[#00e5a0] text-3xl">⬡</span>
+
+      <span class="text-[#00e5a0] text-[1.5em] tracking-[0.45em] uppercase" style="padding: 10px;">
+        LOGISTICS
+      </span>
+    </div>
+
+    <!-- NAV -->
+    <ul class="flex-1 py-6 space-y-1">
+
+      <li>
+        <a routerLink="/dashboard"
+           routerLinkActive="!text-[#00e5a0] !border-[#00e5a0] bg-[#00e5a0]/5"
+           class="flex items-center gap-3 px-6 py-3 border-l-2 border-transparent text-[#4a5568] hover:text-[#c8d4e0] hover:bg-[#181c22] transition-all uppercase tracking-[0.25em] text-[0.9em] no-underline" style="padding: 10px;">
+          <span>▣</span>
+          <span>Dashboard</span>
+        </a>
+      </li>
+
+      <li>
+        <a routerLink="/items"
+           routerLinkActive="!text-[#00e5a0] !border-[#00e5a0] bg-[#00e5a0]/5"
+           class="flex items-center gap-3 px-6 py-3 border-l-2 border-transparent text-[#4a5568] hover:text-[#c8d4e0] hover:bg-[#181c22] transition-all uppercase tracking-[0.25em] text-[0.9em] no-underline" style="padding: 10px;">
+          <span>◈</span>
+          <span>Catálogo</span>
+        </a>
+      </li>
+
+      <li>
+        <a routerLink="/inventory"
+           routerLinkActive="!text-[#00e5a0] !border-[#00e5a0] bg-[#00e5a0]/5"
+           class="flex items-center gap-3 px-6 py-3 border-l-2 border-transparent text-[#4a5568] hover:text-[#c8d4e0] hover:bg-[#181c22] transition-all uppercase tracking-[0.25em] text-[0.9em] no-underline" style="padding: 10px;">
+          <span>◫</span>
+          <span>Inventario</span>
+        </a>
+      </li>
+
+      <li>
+        <a routerLink="/shipments"
+           routerLinkActive="!text-[#00e5a0] !border-[#00e5a0] bg-[#00e5a0]/5"
+           class="flex items-center gap-3 px-6 py-3 border-l-2 border-transparent text-[#4a5568] hover:text-[#c8d4e0] hover:bg-[#181c22] transition-all uppercase tracking-[0.25em] text-[0.9em] no-underline" style="padding: 10px;">
+          <span>◭</span>
+          <span>Envíos</span>
+        </a>
+      </li>
+
+      <li>
+        <a routerLink="/locations"
+           routerLinkActive="!text-[#00e5a0] !border-[#00e5a0] bg-[#00e5a0]/5"
+           class="flex items-center gap-3 px-6 py-3 border-l-2 border-transparent text-[#4a5568] hover:text-[#c8d4e0] hover:bg-[#181c22] transition-all uppercase tracking-[0.25em] text-[0.9em] no-underline" style="padding: 10px;">
+          <span>◉</span>
+          <span>Localizaciones</span>
+        </a>
+      </li>
+
+    </ul>
+
+    <!-- USER -->
+<div class="border-t border-[#1e2530] p-5">
+
+  <div class="flex flex-col gap-2 mb-5">
+    <span class="text-sm text-[#c8d4e0] tracking-wide">
+      {{ username }}
+    </span>
+
+    <span class="text-[10px] text-[#4a5568] uppercase tracking-[0.35em]">
+      {{ roles }}
+    </span>
+  </div>
+
+  <button
+    (click)="logout()"
+    class="
+      w-full
+      flex items-center justify-center gap-2
+      px-4 py-2.5
+      border border-[#1e2530]
+      text-[#00e5a0]
+      uppercase tracking-[0.35em]
+      text-[21px]
+      transition-all duration-200
+      hover:border-[#ff3b3b]
+      hover:text-[#ff3b3b]
+      hover:bg-[#1a0f10]
+      active:scale-[0.98]
+      bg-[#0a0c0f]
+    "
+    style="padding: 30px;"
+  >
+    <span>⎋</span>
+    <span>Salir</span>
+  </button>
+
+</div>
+
+  </nav>
+
+  <!-- MAIN -->
+  <main class="flex-1 overflow-y-auto bg-[#0a0c0f] p-6">
+    <router-outlet />
+  </main>
+
+</div>

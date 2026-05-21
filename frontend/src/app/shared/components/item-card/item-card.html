@@ -1,0 +1,57 @@
+<div
+  (click)="goToDetail()"
+  class="
+    w-full
+    max-w-[200px]
+    h-[260px]
+
+    bg-[#111418]
+    border
+    border-[#1e2530]
+
+    p-4
+    flex
+    flex-col
+
+    cursor-pointer
+    transition-all
+    duration-150
+
+    hover:bg-[#151b22]
+    hover:border-[#00e5a0]
+  "
+  style="margin: 40px;"
+>
+
+  @if (item.image) {
+
+    <div
+      class="w-full h-[180px] bg-[#181c22] mb-3 overflow-hidden flex items-center justify-center"
+    >
+      <img
+        [src]="item.image"
+        [alt]="item.name"
+        class="w-full h-full object-contain"
+        (error)="item.image = null"
+      />
+    </div>
+
+  } @else {
+
+    <div
+      class="w-full h-[180px] bg-[#181c22] mb-3 flex items-center justify-center text-[28px] text-[#2a3340]"
+    >
+      ◈
+    </div>
+
+  }
+
+  <div class="font-['Share_Tech_Mono'] text-[11px] text-[#4a5568] mb-1 tracking-[0.5px]" style="padding: 10px;">
+    {{ item.reference }}
+  </div>
+
+  <div class="text-[13px] font-semibold text-[#c8d4e0] leading-snug font-['Share_Tech_Mono']" style="padding: 10px;">
+    {{ item.name }}
+  </div>
+
+</div>

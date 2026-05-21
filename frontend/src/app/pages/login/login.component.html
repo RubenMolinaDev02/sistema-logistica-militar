@@ -1,0 +1,185 @@
+<div class="min-h-screen bg-[#0a0c0f] flex items-center justify-center relative overflow-hidden font-['Share_Tech_Mono']">
+
+  <!-- Background -->
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(0,229,160,0.08),transparent_40%)]"></div>
+
+  <!-- Card -->
+  <div
+    class="
+      relative
+      w-[32vw]
+      min-w-[340px]
+      h-[62vh]
+      min-h-[520px]
+      border border-[#1e2530]
+      bg-[#111418]/95
+      backdrop-blur-xl
+      px-[8%]
+      py-[7%]
+      shadow-2xl
+      flex
+      flex-col
+      justify-center
+    "
+  >
+
+    <!-- HEADER -->
+    <div class="flex flex-col items-center mb-[10%]">
+
+      <div class="text-[#00e5a0] text-[4vw] leading-none mb-[3%]">
+        ⬡
+      </div>
+
+      <h1
+        class="
+          text-[#00e5a0]
+          text-[2vw]
+          tracking-[0.6em]
+          font-mono
+          font-light
+          uppercase
+        "
+      >
+        Logistics
+      </h1>
+
+      <span
+        class="
+          mt-[2%]
+          text-[#4a5568]
+          text-[0.65vw]
+          tracking-[0.35em]
+          font-mono
+          uppercase
+        "
+      >
+        Tactical Operations System
+      </span>
+
+    </div>
+
+    <!-- FORM -->
+    <form
+      (ngSubmit)="login()"
+      class="flex flex-col gap-[3vh]"
+    >
+
+      <!-- USER -->
+      <div class="flex flex-col gap-[1vh]">
+
+        <label
+          class="
+            text-[#4a5568]
+            text-[0.65vw]
+            tracking-[0.25em]
+            font-mono
+            uppercase
+          "
+        >
+          Usuario
+        </label>
+
+        <input
+          type="text"
+          [(ngModel)]="username"
+          name="username"
+          autocomplete="off"
+          required
+          class="
+            h-[6vh]
+            min-h-[48px]
+            bg-[#181c22]
+            border border-[#1e2530]
+            px-[4%]
+            text-[#c8d4e0]
+            text-[0.85vw]
+            outline-none
+            focus:border-[#00e5a0]
+            transition-all
+          "
+        >
+
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="flex flex-col gap-[1vh]">
+
+        <label
+          class="
+            text-[#4a5568]
+            text-[0.65vw]
+            tracking-[0.25em]
+            font-mono
+            uppercase
+          "
+        >
+          Contraseña
+        </label>
+
+        <input
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+          class="
+            h-[6vh]
+            min-h-[48px]
+            bg-[#181c22]
+            border border-[#1e2530]
+            px-[4%]
+            text-[#c8d4e0]
+            text-[0.85vw]
+            outline-none
+            focus:border-[#00e5a0]
+            transition-all
+          "
+        >
+
+      </div>
+
+      <!-- ERROR -->
+       @if (error) {
+        <div
+        class="
+          text-[#ff3b3b]
+          text-[0.7vw]
+          font-mono
+          tracking-wider
+        "
+      >
+      {{ error }}
+      </div>
+       }
+      
+        
+
+      <!-- BUTTON -->
+      <button
+        type="submit"
+        class="
+          mt-[2%]
+          h-[6vh]
+          min-h-[50px]
+          bg-[#00e5a0]
+          border border-[#00e5a0]
+          text-[#0a0c0f]
+          font-mono
+          tracking-[0.35em]
+          uppercase
+          text-[0.7vw]
+          font-semibold
+          hover:bg-[#00c98c]
+          hover:border-[#00c98c]
+          hover:shadow-[0_0_25px_rgba(0,229,160,0.35)]
+          active:scale-[0.98]
+          transition-all
+        "
+      >
+        INICIAR SESIÓN
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
