@@ -1,9 +1,15 @@
 package com.example.weapon_microservice.controller;
 
+import com.example.weapon_microservice.model.PageResponse;
+import com.example.weapon_microservice.model.grenade.GrenadeModel;
 import com.example.weapon_microservice.model.grenade.dto.GrenadeRequest;
 import com.example.weapon_microservice.model.grenade.dto.GrenadeResponse;
 import com.example.weapon_microservice.model.grenade.dto.GrenadeUpdateRequest;
 import com.example.weapon_microservice.model.grenade.mapper.GrenadeMapper;
+import com.example.weapon_microservice.model.holster.HolsterModel;
+import com.example.weapon_microservice.model.holster.dto.HolsterResponse;
+import com.example.weapon_microservice.model.holster.mapper.HolsterMapper;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.grenade.GrenadeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +54,29 @@ public class GrenadeController {
     @DeleteMapping("/{id}")
     public void deleteGrenade(@PathVariable String id){
         service.deleteGrenade(id);
+    }
+
+    @PostMapping("/search")
+    public PageResponse<GrenadeResponse> search(
+            @RequestBody SearchRequest request,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageResponse<GrenadeModel> result = service.search(request, page, size);
+        return pageToResponse(result);
+    }
+
+    public PageResponse<GrenadeResponse> pageToResponse(PageResponse<GrenadeModel> page){
+        return PageResponse.<GrenadeResponse>builder()
+                .content(
+                        page.getContent().stream()
+                                .map(GrenadeMapper::responseFromModel)
+                                .toList()
+                )
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .page(page.getPage())
+                .size(page.getSize())
+                .build();
     }
 }

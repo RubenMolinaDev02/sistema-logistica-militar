@@ -1,11 +1,14 @@
 package com.example.weapon_microservice.service.grenade;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.grenade.GrenadeModel;
 import com.example.weapon_microservice.model.grenade.dto.GrenadeRequest;
 import com.example.weapon_microservice.model.grenade.dto.GrenadeUpdateRequest;
 import com.example.weapon_microservice.model.grenade.mapper.GrenadeMapper;
+import com.example.weapon_microservice.model.helmet.HelmetModel;
 import com.example.weapon_microservice.repository.GrenadeRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,8 @@ public class GrenadeService {
     private GrenadeRepository repository;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private GrenadeQueryBuilder queryBuilder;
 
     public GrenadeModel getGrenadeById(String id){
         return repository.findById(id)
@@ -63,5 +68,9 @@ public class GrenadeService {
     public void deleteGrenade(String id){
         GrenadeModel exists = getGrenadeById(id);
         repository.delete(exists);
+    }
+
+    public PageResponse<GrenadeModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }

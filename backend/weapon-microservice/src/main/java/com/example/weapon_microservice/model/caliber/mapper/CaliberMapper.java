@@ -1,5 +1,6 @@
 package com.example.weapon_microservice.model.caliber.mapper;
 
+import com.example.weapon_microservice.model.ammo.dto.AmmoResponse;
 import com.example.weapon_microservice.model.caliber.CaliberModel;
 import com.example.weapon_microservice.model.caliber.dto.CaliberRequest;
 import com.example.weapon_microservice.model.caliber.dto.CaliberResponse;
@@ -19,19 +20,30 @@ public class CaliberMapper {
                 .build();
     }
 
-    public static CaliberResponse responseFromModel(CaliberModel caliber) {
+    public static CaliberResponse responseFromModelSimple(CaliberModel caliber) {
         return CaliberResponse.builder()
                 .id(caliber.getId())
                 .reference(caliber.getReference())
                 .name(caliber.getName())
-                .type(String.valueOf(caliber.getType()))
-                .standard(String.valueOf(caliber.getStandard()))
+                .type(caliber.getType())
+                .standard(caliber.getStandard())
+                .build();
+    }
+
+    public static CaliberResponse responseFromModel(CaliberModel caliberModel, List<AmmoResponse> ammo){
+        return CaliberResponse.builder()
+                .id(caliberModel.getId())
+                .reference(caliberModel.getReference())
+                .name(caliberModel.getName())
+                .type(caliberModel.getType())
+                .standard(caliberModel.getStandard())
+                .ammo(ammo)
                 .build();
     }
 
     public static List<CaliberResponse> responseFromModelList(List<CaliberModel> allCalibers) {
         return allCalibers.stream()
-                .map(CaliberMapper::responseFromModel)
+                .map(CaliberMapper::responseFromModelSimple)
                 .collect(Collectors.toList());
     }
 }

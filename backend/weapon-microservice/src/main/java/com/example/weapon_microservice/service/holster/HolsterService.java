@@ -1,12 +1,15 @@
 package com.example.weapon_microservice.service.holster;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.holster.HolsterModel;
 import com.example.weapon_microservice.model.holster.dto.HolsterRequest;
 import com.example.weapon_microservice.model.holster.dto.HolsterUpdateRequest;
 import com.example.weapon_microservice.model.holster.mapper.HolsterMapper;
+import com.example.weapon_microservice.model.magazine.MagazineModel;
 import com.example.weapon_microservice.model.weapon.WeaponModel;
 import com.example.weapon_microservice.repository.HolsterRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.weapon.WeaponService;
 import com.example.weapon_microservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,8 @@ public class HolsterService {
     private WeaponService weaponService;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private HolsterQueryBuilder queryBuilder;
 
     public HolsterModel getHolsterById(String id){
         return repository.findById(id).orElseThrow(
@@ -85,5 +90,9 @@ public class HolsterService {
         return weapons.stream()
                 .map(WeaponModel::getId)
                 .toList();
+    }
+
+    public PageResponse<HolsterModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }

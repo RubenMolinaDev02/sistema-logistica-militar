@@ -1,13 +1,16 @@
 package com.example.weapon_microservice.service.magazine;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.magazine.dto.MagazineRequest;
 import com.example.weapon_microservice.model.caliber.CaliberModel;
 import com.example.weapon_microservice.model.magazine.MagazineModel;
 import com.example.weapon_microservice.model.magazine.dto.MagazineUpdateRequest;
 import com.example.weapon_microservice.model.magazine.mapper.MagazineMapper;
+import com.example.weapon_microservice.model.nvg.NvgModel;
 import com.example.weapon_microservice.model.platform.PlatformModel;
 import com.example.weapon_microservice.repository.MagazineRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.caliber.CaliberService;
 import com.example.weapon_microservice.service.platform.PlatformService;
 import com.example.weapon_microservice.utils.Utils;
@@ -28,6 +31,8 @@ public class MagazineService {
     private PlatformService platformService;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private MagazineQueryBuilder queryBuilder;
 
     public MagazineModel getMagazineById(String id){
         return repository.findById(id)
@@ -98,6 +103,10 @@ public class MagazineService {
         return platforms.stream()
                 .map(PlatformModel::getId)
                 .toList();
+    }
+
+    public PageResponse<MagazineModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 
 }

@@ -1,8 +1,14 @@
 package com.example.weapon_microservice.controller;
+import com.example.weapon_microservice.model.PageResponse;
+import com.example.weapon_microservice.model.attachment.AttachmentModel;
 import com.example.weapon_microservice.model.attachment.dto.AttachmentRequest;
 import com.example.weapon_microservice.model.attachment.dto.AttachmentResponse;
 import com.example.weapon_microservice.model.attachment.dto.AttachmentUpdateRequest;
 import com.example.weapon_microservice.model.attachment.mapper.AttachmentMapper;
+import com.example.weapon_microservice.model.bayonet.BayonetModel;
+import com.example.weapon_microservice.model.bayonet.dto.BayonetResponse;
+import com.example.weapon_microservice.model.bayonet.mapper.BayonetMapper;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.attachment.AttachmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +54,29 @@ public class AttachmentController {
     @DeleteMapping("/{id}")
     public void deleteAttachment(@PathVariable String id){
         service.deleteAttachment(id);
+    }
+
+    @PostMapping("/search")
+    public PageResponse<AttachmentResponse> search(
+            @RequestBody SearchRequest request,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageResponse<AttachmentModel> result = service.search(request, page, size);
+        return pageToResponse(result);
+    }
+
+    public PageResponse<AttachmentResponse> pageToResponse(PageResponse<AttachmentModel> page){
+        return PageResponse.<AttachmentResponse>builder()
+                .content(
+                        page.getContent().stream()
+                                .map(AttachmentMapper::responseFromModel)
+                                .toList()
+                )
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .page(page.getPage())
+                .size(page.getSize())
+                .build();
     }
 }

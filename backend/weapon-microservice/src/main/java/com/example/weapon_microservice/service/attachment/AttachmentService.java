@@ -1,11 +1,14 @@
 package com.example.weapon_microservice.service.attachment;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.attachment.AttachmentModel;
 import com.example.weapon_microservice.model.attachment.dto.AttachmentRequest;
 import com.example.weapon_microservice.model.attachment.dto.AttachmentUpdateRequest;
 import com.example.weapon_microservice.model.attachment.mapper.AttachmentMapper;
+import com.example.weapon_microservice.model.barrelAtachment.BarrelAtachmentModel;
 import com.example.weapon_microservice.repository.AttachmentRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,8 @@ public class AttachmentService {
     private AttachmentRepository repository;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private AttachmentQueryBuilder queryBuilder;
 
     public AttachmentModel getAttachmentById(String id){
         return repository.findById(id).orElseThrow(
@@ -62,5 +67,9 @@ public class AttachmentService {
     public void deleteAttachment(String id) {
         AttachmentModel attachmentModel = getAttachmentById(id);
         repository.delete(attachmentModel);
+    }
+
+    public PageResponse<AttachmentModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }

@@ -1,11 +1,14 @@
 package com.example.weapon_microservice.service.armorVest;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.armorVest.ArmorVestModel;
 import com.example.weapon_microservice.model.armorVest.dto.ArmorVestRequest;
 import com.example.weapon_microservice.model.armorVest.dto.ArmorVestUpdateRequest;
 import com.example.weapon_microservice.model.armorVest.mapper.ArmorVestMapper;
+import com.example.weapon_microservice.model.attachment.AttachmentModel;
 import com.example.weapon_microservice.repository.ArmorVestRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,8 @@ public class ArmorVestService {
     private ArmorVestRepository repository;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private ArmorVestQueryBuilder queryBuilder;
 
     public ArmorVestModel getArmorVestById(String id){
         return repository.findById(id).orElseThrow(
@@ -63,5 +68,9 @@ public class ArmorVestService {
     public void deleteArmorVest(String id) {
         ArmorVestModel armorVestModel = getArmorVestById(id);
         repository.delete(armorVestModel);
+    }
+
+    public PageResponse<ArmorVestModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }

@@ -1,11 +1,14 @@
 package com.example.weapon_microservice.service.optic;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.optic.OpticModel;
 import com.example.weapon_microservice.model.optic.dto.OpticRequest;
 import com.example.weapon_microservice.model.optic.dto.OpticUpdateRequest;
 import com.example.weapon_microservice.model.optic.mapper.OpticMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.repository.OpticRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,8 @@ public class OpticService {
     private OpticRepository repository;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private OpticQueryBuilder queryBuilder;
 
     public OpticModel getOpticById(String id){
         return repository.findById(id).orElseThrow(
@@ -68,5 +73,9 @@ public class OpticService {
         OpticModel exists = getOpticById(id);
 
         repository.delete(exists);
+    }
+
+    public PageResponse<OpticModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }

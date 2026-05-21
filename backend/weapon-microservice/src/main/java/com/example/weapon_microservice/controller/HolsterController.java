@@ -1,12 +1,17 @@
 package com.example.weapon_microservice.controller;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.holster.HolsterModel;
 import com.example.weapon_microservice.model.holster.dto.HolsterRequest;
 import com.example.weapon_microservice.model.holster.dto.HolsterResponse;
 import com.example.weapon_microservice.model.holster.dto.HolsterUpdateRequest;
 import com.example.weapon_microservice.model.holster.mapper.HolsterMapper;
+import com.example.weapon_microservice.model.magazine.MagazineModel;
+import com.example.weapon_microservice.model.magazine.dto.MagazineResponse;
+import com.example.weapon_microservice.model.magazine.mapper.MagazineMapper;
 import com.example.weapon_microservice.model.weapon.dto.WeaponResponse;
 import com.example.weapon_microservice.model.weapon.mapper.WeaponMapper;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.holster.HolsterService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +73,29 @@ public class HolsterController {
     @DeleteMapping("/{id}")
     public void deleteHolster(@PathVariable String id){
         service.deleteHolster(id);
+    }
+
+    @PostMapping("/search")
+    public PageResponse<HolsterResponse> search(
+            @RequestBody SearchRequest request,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageResponse<HolsterModel> result = service.search(request, page, size);
+        return pageToResponse(result);
+    }
+
+    public PageResponse<HolsterResponse> pageToResponse(PageResponse<HolsterModel> page){
+        return PageResponse.<HolsterResponse>builder()
+                .content(
+                        page.getContent().stream()
+                                .map(HolsterMapper::responseFromModelSimple)
+                                .toList()
+                )
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .page(page.getPage())
+                .size(page.getSize())
+                .build();
     }
 }

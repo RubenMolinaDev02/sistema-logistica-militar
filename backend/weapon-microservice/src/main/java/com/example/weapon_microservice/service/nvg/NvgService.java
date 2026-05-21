@@ -1,11 +1,14 @@
 package com.example.weapon_microservice.service.nvg;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.nvg.NvgModel;
 import com.example.weapon_microservice.model.nvg.dto.NvgRequest;
 import com.example.weapon_microservice.model.nvg.dto.NvgUpdateRequest;
 import com.example.weapon_microservice.model.nvg.mapper.NvgMapper;
+import com.example.weapon_microservice.model.optic.OpticModel;
 import com.example.weapon_microservice.repository.NvgRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,8 @@ public class NvgService {
     private NvgRepository repository;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private NvgQueryBuilder queryBuilder;
 
     public NvgModel getNvgById(String id){
         return repository.findById(id).orElseThrow(
@@ -61,5 +66,9 @@ public class NvgService {
     public void deleteNvg(String id) {
         NvgModel nvgModel = getNvgById(id);
         repository.delete(nvgModel);
+    }
+
+    public PageResponse<NvgModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }

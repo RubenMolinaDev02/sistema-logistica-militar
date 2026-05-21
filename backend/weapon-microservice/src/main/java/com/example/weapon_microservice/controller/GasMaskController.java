@@ -1,9 +1,15 @@
 package com.example.weapon_microservice.controller;
 
+import com.example.weapon_microservice.model.PageResponse;
+import com.example.weapon_microservice.model.gasMask.GasMaskModel;
 import com.example.weapon_microservice.model.gasMask.dto.GasMaskRequest;
 import com.example.weapon_microservice.model.gasMask.dto.GasMaskResponse;
 import com.example.weapon_microservice.model.gasMask.dto.GasMaskUpdateRequest;
 import com.example.weapon_microservice.model.gasMask.mapper.GasMaskMapper;
+import com.example.weapon_microservice.model.gasMaskFilter.GasMaskFilterModel;
+import com.example.weapon_microservice.model.gasMaskFilter.dto.GasMaskFilterResponse;
+import com.example.weapon_microservice.model.gasMaskFilter.mapper.GasMaskFilterMapper;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.gasMask.GasMaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +54,29 @@ public class GasMaskController {
     @DeleteMapping("/{id}")
     public void deleteGasMask(@PathVariable String id){
         service.deleteGasMask(id);
+    }
+
+    @PostMapping("/search")
+    public PageResponse<GasMaskResponse> search(
+            @RequestBody SearchRequest request,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageResponse<GasMaskModel> result = service.search(request, page, size);
+        return pageToResponse(result);
+    }
+
+    public PageResponse<GasMaskResponse> pageToResponse(PageResponse<GasMaskModel> page){
+        return PageResponse.<GasMaskResponse>builder()
+                .content(
+                        page.getContent().stream()
+                                .map(GasMaskMapper::responseFromModel)
+                                .toList()
+                )
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .page(page.getPage())
+                .size(page.getSize())
+                .build();
     }
 }

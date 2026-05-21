@@ -1,8 +1,14 @@
 package com.example.weapon_microservice.controller;
+import com.example.weapon_microservice.model.PageResponse;
+import com.example.weapon_microservice.model.optic.OpticModel;
 import com.example.weapon_microservice.model.optic.dto.OpticRequest;
 import com.example.weapon_microservice.model.optic.dto.OpticResponse;
 import com.example.weapon_microservice.model.optic.dto.OpticUpdateRequest;
 import com.example.weapon_microservice.model.optic.mapper.OpticMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
+import com.example.weapon_microservice.model.textile.dto.TextileResponse;
+import com.example.weapon_microservice.model.textile.mapper.TextileMapper;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.optic.OpticService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +54,29 @@ public class OpticController {
     @DeleteMapping("/{id}")
     public void deleteOptic(@PathVariable String id){
         service.deleteOptic(id);
+    }
+
+    @PostMapping("/search")
+    public PageResponse<OpticResponse> search(
+            @RequestBody SearchRequest request,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageResponse<OpticModel> result = service.search(request, page, size);
+        return pageToResponse(result);
+    }
+
+    public PageResponse<OpticResponse> pageToResponse(PageResponse<OpticModel> page){
+        return PageResponse.<OpticResponse>builder()
+                .content(
+                        page.getContent().stream()
+                                .map(OpticMapper::responseFromModel)
+                                .toList()
+                )
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .page(page.getPage())
+                .size(page.getSize())
+                .build();
     }
 }

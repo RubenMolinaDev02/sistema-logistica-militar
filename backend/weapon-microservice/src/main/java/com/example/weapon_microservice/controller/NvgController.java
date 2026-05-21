@@ -1,10 +1,15 @@
 package com.example.weapon_microservice.controller;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.nvg.NvgModel;
 import com.example.weapon_microservice.model.nvg.dto.NvgRequest;
 import com.example.weapon_microservice.model.nvg.dto.NvgResponse;
 import com.example.weapon_microservice.model.nvg.dto.NvgUpdateRequest;
 import com.example.weapon_microservice.model.nvg.mapper.NvgMapper;
+import com.example.weapon_microservice.model.optic.OpticModel;
+import com.example.weapon_microservice.model.optic.dto.OpticResponse;
+import com.example.weapon_microservice.model.optic.mapper.OpticMapper;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.nvg.NvgService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +58,29 @@ public class NvgController {
     @DeleteMapping("/{id}")
     public void deleteNvg(@PathVariable String id){
         service.deleteNvg(id);
+    }
+
+    @PostMapping("/search")
+    public PageResponse<NvgResponse> search(
+            @RequestBody SearchRequest request,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageResponse<NvgModel> result = service.search(request, page, size);
+        return pageToResponse(result);
+    }
+
+    public PageResponse<NvgResponse> pageToResponse(PageResponse<NvgModel> page){
+        return PageResponse.<NvgResponse>builder()
+                .content(
+                        page.getContent().stream()
+                                .map(NvgMapper::responseFromModel)
+                                .toList()
+                )
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .page(page.getPage())
+                .size(page.getSize())
+                .build();
     }
 }

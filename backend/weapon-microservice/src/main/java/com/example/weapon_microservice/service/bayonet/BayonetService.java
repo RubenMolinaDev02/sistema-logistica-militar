@@ -1,12 +1,15 @@
 package com.example.weapon_microservice.service.bayonet;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.bayonet.BayonetModel;
 import com.example.weapon_microservice.model.bayonet.dto.BayonetRequest;
 import com.example.weapon_microservice.model.bayonet.dto.BayonetUpdateRequest;
 import com.example.weapon_microservice.model.bayonet.mapper.BayonetMapper;
+import com.example.weapon_microservice.model.caliber.CaliberModel;
 import com.example.weapon_microservice.model.weapon.WeaponModel;
 import com.example.weapon_microservice.repository.BayonetRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.weapon.WeaponService;
 import com.example.weapon_microservice.utils.Utils;
 import jakarta.validation.constraints.NotNull;
@@ -25,6 +28,8 @@ public class BayonetService {
     private WeaponService weaponService;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private BayonetQueryBuilder queryBuilder;
 
     public BayonetModel getBayonetById(String id){
         return repository.findById(id).orElseThrow(
@@ -83,5 +88,9 @@ public class BayonetService {
         return weaponModels.stream()
                 .map(WeaponModel::getId)
                 .toList();
+    }
+
+    public PageResponse<BayonetModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }

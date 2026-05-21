@@ -1,10 +1,15 @@
 package com.example.weapon_microservice.controller;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.armorVest.ArmorVestModel;
 import com.example.weapon_microservice.model.armorVest.dto.ArmorVestRequest;
 import com.example.weapon_microservice.model.armorVest.dto.ArmorVestResponse;
 import com.example.weapon_microservice.model.armorVest.dto.ArmorVestUpdateRequest;
 import com.example.weapon_microservice.model.armorVest.mapper.ArmorVestMapper;
+import com.example.weapon_microservice.model.attachment.AttachmentModel;
+import com.example.weapon_microservice.model.attachment.dto.AttachmentResponse;
+import com.example.weapon_microservice.model.attachment.mapper.AttachmentMapper;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.armorVest.ArmorVestService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +58,29 @@ public class ArmorVestController {
     @DeleteMapping("/{id}")
     public void deleteArmorVest(@PathVariable String id){
         service.deleteArmorVest(id);
+    }
+
+    @PostMapping("/search")
+    public PageResponse<ArmorVestResponse> search(
+            @RequestBody SearchRequest request,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageResponse<ArmorVestModel> result = service.search(request, page, size);
+        return pageToResponse(result);
+    }
+
+    public PageResponse<ArmorVestResponse> pageToResponse(PageResponse<ArmorVestModel> page){
+        return PageResponse.<ArmorVestResponse>builder()
+                .content(
+                        page.getContent().stream()
+                                .map(ArmorVestMapper::responseFromModel)
+                                .toList()
+                )
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .page(page.getPage())
+                .size(page.getSize())
+                .build();
     }
 }

@@ -1,10 +1,15 @@
 package com.example.weapon_microservice.controller;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.armorPlate.ArmorPlateModel;
 import com.example.weapon_microservice.model.armorPlate.dto.ArmorPlateRequest;
 import com.example.weapon_microservice.model.armorPlate.dto.ArmorPlateResponse;
 import com.example.weapon_microservice.model.armorPlate.dto.ArmorPlateUpdateRequest;
 import com.example.weapon_microservice.model.armorPlate.mapper.ArmorPlateMapper;
+import com.example.weapon_microservice.model.armorVest.ArmorVestModel;
+import com.example.weapon_microservice.model.armorVest.dto.ArmorVestResponse;
+import com.example.weapon_microservice.model.armorVest.mapper.ArmorVestMapper;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.armorPlate.ArmorPlateService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +59,29 @@ public class ArmorPlateController {
     @DeleteMapping("/{id}")
     public void deleteArmorPlate(@PathVariable String id){
         service.deleteArmorPlate(id);
+    }
+
+    @PostMapping("/search")
+    public PageResponse<ArmorPlateResponse> search(
+            @RequestBody SearchRequest request,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageResponse<ArmorPlateModel> result = service.search(request, page, size);
+        return pageToResponse(result);
+    }
+
+    public PageResponse<ArmorPlateResponse> pageToResponse(PageResponse<ArmorPlateModel> page){
+        return PageResponse.<ArmorPlateResponse>builder()
+                .content(
+                        page.getContent().stream()
+                                .map(ArmorPlateMapper::responseFromModel)
+                                .toList()
+                )
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .page(page.getPage())
+                .size(page.getSize())
+                .build();
     }
 }

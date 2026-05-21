@@ -1,13 +1,16 @@
 package com.example.weapon_microservice.service.barrelAtachment;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.barrelAtachment.BarrelAtachmentModel;
 import com.example.weapon_microservice.model.barrelAtachment.dto.BarrelAtachmentRequest;
 import com.example.weapon_microservice.model.barrelAtachment.dto.BarrelAtachmentUpdateRequest;
 import com.example.weapon_microservice.model.barrelAtachment.mapper.BarrelAtachmentMapper;
+import com.example.weapon_microservice.model.bayonet.BayonetModel;
 import com.example.weapon_microservice.model.caliber.CaliberModel;
 import com.example.weapon_microservice.model.platform.PlatformModel;
 import com.example.weapon_microservice.repository.BarrelAtachmentRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.caliber.CaliberService;
 import com.example.weapon_microservice.service.platform.PlatformService;
 import com.example.weapon_microservice.utils.Utils;
@@ -28,6 +31,8 @@ public class BarrelAtachmentService {
     private PlatformService platformService;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private BarrelAtachmentQueryBuilder queryBuilder;
 
     public BarrelAtachmentModel getBarrelAtachmentById(String id){
         return repository.findById(id).orElseThrow(
@@ -95,5 +100,9 @@ public class BarrelAtachmentService {
 
     public List<PlatformModel> getPlatformsByIds(List<String> ids){
         return platformService.getAllPlatformsById(ids);
+    }
+
+    public PageResponse<BarrelAtachmentModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }

@@ -1,11 +1,14 @@
 package com.example.weapon_microservice.service.gasMaskFilter;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.gasMaskFilter.GasMaskFilterModel;
 import com.example.weapon_microservice.model.gasMaskFilter.dto.GasMaskFilterRequest;
 import com.example.weapon_microservice.model.gasMaskFilter.dto.GasMaskFilterUpdateRequest;
 import com.example.weapon_microservice.model.gasMaskFilter.mapper.GasMaskFilterMapper;
+import com.example.weapon_microservice.model.grenade.GrenadeModel;
 import com.example.weapon_microservice.repository.GasMaskFilterRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,8 @@ public class GasMaskFilterService {
     private GasMaskFilterRepository repository;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private GasMaskFilterQueryBuilder queryBuilder;
 
     public GasMaskFilterModel getGasMaskFilterById(String id){
         return repository.findById(id)
@@ -59,5 +64,9 @@ public class GasMaskFilterService {
     public void deleteGasMaskFilter(String id){
         GasMaskFilterModel exists = getGasMaskFilterById(id);
         repository.delete(exists);
+    }
+
+    public PageResponse<GasMaskFilterModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }

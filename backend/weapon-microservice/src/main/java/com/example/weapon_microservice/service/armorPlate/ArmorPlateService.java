@@ -1,11 +1,14 @@
 package com.example.weapon_microservice.service.armorPlate;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.armorPlate.ArmorPlateModel;
 import com.example.weapon_microservice.model.armorPlate.dto.ArmorPlateRequest;
 import com.example.weapon_microservice.model.armorPlate.dto.ArmorPlateUpdateRequest;
 import com.example.weapon_microservice.model.armorPlate.mapper.ArmorPlateMapper;
+import com.example.weapon_microservice.model.armorVest.ArmorVestModel;
 import com.example.weapon_microservice.repository.ArmorPlateRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,8 @@ public class ArmorPlateService {
     private ArmorPlateRepository repository;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private ArmorPlateQueryBuilder queryBuilder;
 
     public ArmorPlateModel getArmorPlateById(String id){
         return repository.findById(id).orElseThrow(
@@ -63,5 +68,9 @@ public class ArmorPlateService {
     public void deleteArmorPlate(String id) {
         ArmorPlateModel armorPlateModel = getArmorPlateById(id);
         repository.delete(armorPlateModel);
+    }
+
+    public PageResponse<ArmorPlateModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }

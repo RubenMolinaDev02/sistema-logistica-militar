@@ -1,10 +1,13 @@
-package com.example.weapon_microservice.service.weapon;
+package com.example.weapon_microservice.service.barrelAtachment;
 
 import com.example.weapon_microservice.model.PageResponse;
+import com.example.weapon_microservice.model.barrelAtachment.BarrelAtachmentModel;
+import com.example.weapon_microservice.model.barrelAtachment.enums.BarrelAttachmentType;
 import com.example.weapon_microservice.model.common.enums.ServiceStatus;
 import com.example.weapon_microservice.model.weapon.WeaponModel;
-import com.example.weapon_microservice.model.weapon.enums.WeaponType;
-import com.example.weapon_microservice.service.*;
+import com.example.weapon_microservice.service.BaseQueryBuilder;
+import com.example.weapon_microservice.service.QuerySecurityValidator;
+import com.example.weapon_microservice.service.SearchRequest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -15,12 +18,12 @@ import java.util.Map;
 import java.util.Set;
 
 @Component
-public class WeaponQueryBuilder extends BaseQueryBuilder<WeaponModel> {
+public class BarrelAtachmentQueryBuilder extends BaseQueryBuilder<BarrelAtachmentModel> {
 
     private final MongoTemplate mongoTemplate;
     private final QuerySecurityValidator validator;
 
-    public WeaponQueryBuilder(MongoTemplate mongoTemplate) {
+    public BarrelAtachmentQueryBuilder(MongoTemplate mongoTemplate) {
 
         this.mongoTemplate = mongoTemplate;
 
@@ -35,36 +38,24 @@ public class WeaponQueryBuilder extends BaseQueryBuilder<WeaponModel> {
             "name",
             "reference",
             "type",
-            "platformId",
-            "caliberId",
-            "manufacturerId",
-            "barrelLength",
-            "effectiveDistance",
-            "status"
+            "compatiblePlatformsIds",
+            "compatibleCaliber"
     );
 
     public static final Map<String, Set<String>> FIELD_OPERATORS = Map.of(
             "name", Set.of("EQ", "REGEX"),
             "reference", Set.of("EQ"),
-            "platformId", Set.of("EQ"),
-            "manufacturerId", Set.of("EQ"),
-            "caliberId", Set.of("EQ"),
-            "barrelLength", Set.of("GTE", "LTE", "EQ"),
-            "effectiveDistance", Set.of("GTE", "LTE", "EQ"),
-            "type", Set.of("EQ", "IN"),
-            "status", Set.of("EQ", "IN")
+            "type", Set.of("EQ"),
+            "compatiblePlatformsIds", Set.of("EQ", "IN"),
+            "compatibleCaliber", Set.of("EQ")
     );
 
     public static final Map<String, Class<?>> FIELD_TYPES = Map.of(
             "name", String.class,
             "reference", String.class,
-            "platformId", String.class,
-            "manufacturerId", String.class,
-            "caliberId", String.class,
-            "barrelLength", Number.class,
-            "effectiveDistance", Number.class,
-            "type", WeaponType.class,
-            "status", ServiceStatus.class
+            "type", BarrelAttachmentType.class,
+            "compatiblePlatformsIds", String.class,
+            "compatibleCaliber", String.class
     );
 
     @Override
@@ -72,7 +63,7 @@ public class WeaponQueryBuilder extends BaseQueryBuilder<WeaponModel> {
         return ALLOWED_FIELDS;
     }
 
-    public PageResponse<WeaponModel> search(SearchRequest request, int page, int size) {
+    public PageResponse<BarrelAtachmentModel> search(SearchRequest request, int page, int size) {
 
         Query query = new Query();
 
@@ -94,13 +85,13 @@ public class WeaponQueryBuilder extends BaseQueryBuilder<WeaponModel> {
 
         applySorting(query, request.getSortBy(), request.getDirection());
 
-        List<WeaponModel> content =
-                mongoTemplate.find(query, WeaponModel.class);
+        List<BarrelAtachmentModel> content =
+                mongoTemplate.find(query, BarrelAtachmentModel.class);
 
         long total =
-                mongoTemplate.count(new Query(), WeaponModel.class);
+                mongoTemplate.count(new Query(), BarrelAtachmentModel.class);
 
-        return PageResponse.<WeaponModel>builder()
+        return PageResponse.<BarrelAtachmentModel>builder()
                 .content(content)
                 .totalElements(total)
                 .totalPages((int) Math.ceil((double) total / size))

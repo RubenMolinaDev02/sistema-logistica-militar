@@ -53,6 +53,10 @@ public class AmmoService {
         return repository.save(AmmoMapper.modelFromRequest(ammoModel, Utils.generateId("AMMO"), Utils.referenceGenerator("AMMO")));
     }
 
+    public List<AmmoModel> getAmmoByCaliberId(String caliberId){
+        return repository.findAllByCaliberId(caliberId);
+    }
+
     public AmmoModel updateAmmo(AmmoUpdateRequest ammo, String id) {
         AmmoModel exists = getAmmoById(id);
 

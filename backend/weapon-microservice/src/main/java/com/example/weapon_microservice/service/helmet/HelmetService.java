@@ -1,11 +1,14 @@
 package com.example.weapon_microservice.service.helmet;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.helmet.HelmetModel;
 import com.example.weapon_microservice.model.helmet.dto.HelmetRequest;
 import com.example.weapon_microservice.model.helmet.dto.HelmetUpdateRequest;
 import com.example.weapon_microservice.model.helmet.mapper.HelmetMapper;
+import com.example.weapon_microservice.model.holster.HolsterModel;
 import com.example.weapon_microservice.repository.HelmetRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,8 @@ public class HelmetService {
     private HelmetRepository repository;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private HelmetQueryBuilder queryBuilder;
 
     public HelmetModel getHelmetById(String id){
         return repository.findById(id).orElseThrow(
@@ -61,5 +66,9 @@ public class HelmetService {
     public void deleteHelmet(String id) {
         HelmetModel helmetModel = getHelmetById(id);
         repository.delete(helmetModel);
+    }
+
+    public PageResponse<HelmetModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }

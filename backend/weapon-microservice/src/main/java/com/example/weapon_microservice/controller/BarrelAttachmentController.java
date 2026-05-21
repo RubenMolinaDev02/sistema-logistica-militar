@@ -1,13 +1,18 @@
 package com.example.weapon_microservice.controller;
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.barrelAtachment.BarrelAtachmentModel;
 import com.example.weapon_microservice.model.barrelAtachment.dto.BarrelAtachmentRequest;
 import com.example.weapon_microservice.model.barrelAtachment.dto.BarrelAtachmentResponse;
 import com.example.weapon_microservice.model.barrelAtachment.dto.BarrelAtachmentUpdateRequest;
 import com.example.weapon_microservice.model.barrelAtachment.mapper.BarrelAtachmentMapper;
+import com.example.weapon_microservice.model.bayonet.BayonetModel;
+import com.example.weapon_microservice.model.bayonet.dto.BayonetResponse;
+import com.example.weapon_microservice.model.bayonet.mapper.BayonetMapper;
 import com.example.weapon_microservice.model.caliber.CaliberModel;
 import com.example.weapon_microservice.model.caliber.mapper.CaliberMapper;
 import com.example.weapon_microservice.model.platform.PlatformModel;
 import com.example.weapon_microservice.model.platform.mapper.PlatformMapper;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.barrelAtachment.BarrelAtachmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,5 +90,29 @@ public class BarrelAttachmentController {
     @DeleteMapping("/{id}")
     public void deleteBarrelAtachment(@PathVariable String id){
         service.deleteBarrelAtachment(id);
+    }
+
+    @PostMapping("/search")
+    public PageResponse<BarrelAtachmentResponse> search(
+            @RequestBody SearchRequest request,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageResponse<BarrelAtachmentModel> result = service.search(request, page, size);
+        return pageToResponse(result);
+    }
+
+    public PageResponse<BarrelAtachmentResponse> pageToResponse(PageResponse<BarrelAtachmentModel> page){
+        return PageResponse.<BarrelAtachmentResponse>builder()
+                .content(
+                        page.getContent().stream()
+                                .map(BarrelAtachmentMapper::responseFromModelSimple)
+                                .toList()
+                )
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .page(page.getPage())
+                .size(page.getSize())
+                .build();
     }
 }

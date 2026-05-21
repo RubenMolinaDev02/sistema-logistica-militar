@@ -1,11 +1,14 @@
 package com.example.weapon_microservice.service.caliber;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.caliber.dto.CaliberRequest;
 import com.example.weapon_microservice.model.caliber.CaliberModel;
 import com.example.weapon_microservice.model.caliber.dto.CaliberUpdateRequest;
 import com.example.weapon_microservice.model.caliber.mapper.CaliberMapper;
+import com.example.weapon_microservice.model.gasMask.GasMaskModel;
 import com.example.weapon_microservice.repository.CaliberRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,8 @@ public class CaliberService {
     private CaliberRepository repository;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private CaliberQueryBuilder queryBuilder;
 
     public CaliberModel getCaliberById(String id){
         return repository.findById(id)
@@ -55,5 +60,9 @@ public class CaliberService {
     public void deleteCaliber(String id){
         CaliberModel exists = getCaliberById(id);
         repository.delete(exists);
+    }
+
+    public PageResponse<CaliberModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }

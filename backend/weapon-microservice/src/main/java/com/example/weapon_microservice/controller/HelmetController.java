@@ -1,10 +1,15 @@
 package com.example.weapon_microservice.controller;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.helmet.HelmetModel;
 import com.example.weapon_microservice.model.helmet.dto.HelmetRequest;
 import com.example.weapon_microservice.model.helmet.dto.HelmetResponse;
 import com.example.weapon_microservice.model.helmet.dto.HelmetUpdateRequest;
 import com.example.weapon_microservice.model.helmet.mapper.HelmetMapper;
+import com.example.weapon_microservice.model.holster.HolsterModel;
+import com.example.weapon_microservice.model.holster.dto.HolsterResponse;
+import com.example.weapon_microservice.model.holster.mapper.HolsterMapper;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.helmet.HelmetService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +59,29 @@ public class HelmetController {
     @DeleteMapping("/{id}")
     public void deleteHelmet(@PathVariable String id){
         service.deleteHelmet(id);
+    }
+
+    @PostMapping("/search")
+    public PageResponse<HelmetResponse> search(
+            @RequestBody SearchRequest request,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageResponse<HelmetModel> result = service.search(request, page, size);
+        return pageToResponse(result);
+    }
+
+    public PageResponse<HelmetResponse> pageToResponse(PageResponse<HelmetModel> page){
+        return PageResponse.<HelmetResponse>builder()
+                .content(
+                        page.getContent().stream()
+                                .map(HelmetMapper::responseFromModel)
+                                .toList()
+                )
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .page(page.getPage())
+                .size(page.getSize())
+                .build();
     }
 }

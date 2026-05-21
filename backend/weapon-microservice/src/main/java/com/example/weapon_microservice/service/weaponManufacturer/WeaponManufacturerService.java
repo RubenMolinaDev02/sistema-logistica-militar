@@ -1,11 +1,14 @@
 package com.example.weapon_microservice.service.weaponManufacturer;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.manufacturer.dto.ManufacturerRequest;
 import com.example.weapon_microservice.model.manufacturer.WeaponManufacturerModel;
 import com.example.weapon_microservice.model.manufacturer.dto.ManufacturerUpdateRequest;
 import com.example.weapon_microservice.model.manufacturer.mapper.ManufacturerMapper;
+import com.example.weapon_microservice.model.miscItems.MiscItemModel;
 import com.example.weapon_microservice.repository.WeaponManufacturerRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,8 @@ public class WeaponManufacturerService {
     private WeaponManufacturerRepository repository;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private ManufacturerQueryBuilder queryBuilder;
 
     public WeaponManufacturerModel getWeaponManufacturerById(String id){
         return repository.findById(id)
@@ -61,5 +66,9 @@ public class WeaponManufacturerService {
     public void deleteWeaponManufacturer(String id){
         WeaponManufacturerModel model = getWeaponManufacturerById(id);
         repository.delete(model);
+    }
+
+    public PageResponse<WeaponManufacturerModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }
