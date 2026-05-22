@@ -1,0 +1,25 @@
+<div class="min-h-screen bg-[#0d1117] text-[#c8d4e0] p-8">
+
+  <div class="max-w-3xl mx-auto">
+
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-[#00e5a0] text-xl">Create Item</h1>
+
+      <button
+        class="text-sm text-[#c8d4e0] hover:text-white"
+        (click)="cancel()"
+      >
+        ← Back
+      </button>
+    </div>
+
+    <div class="bg-[#111418] border border-[#1e2530] rounded-xl p-6">
+      <app-dynamic-form
+        [model]="model"
+        (submit)="handleCreate($event)"
+      />
+    </div>
+
+  </div>
+
+</div>

@@ -27,7 +27,7 @@ import { ItemDetailModel } from '../../shared/models/detail/detailModel';
 })
 
 export class ApiInfoService{
-
+    
     private base = environment.apis.information;
     
       constructor(
@@ -103,6 +103,28 @@ export class ApiInfoService{
       return this.requestWithAuth(() =>
         this.http.get<ItemDetailModel>(
           `${this.base}/armory/${category}/id/` + id,
+          { 
+            headers: this.authHeaders()
+           }
+        )
+      );
+    }
+
+    createItem(request: any, category: string): Observable<ItemDetailModel> {
+      return this.requestWithAuth(() =>
+        this.http.post<ItemDetailModel>(
+          `${this.base}/armory/${category}`,
+          request, { 
+            headers: this.authHeaders()
+           }
+        )
+      );
+    }
+
+    get(endpoint: string | undefined): Observable<BaseModel[]>{
+        return this.requestWithAuth(() =>
+        this.http.get<BaseModel[]>(
+          `${this.base}/armory/${endpoint}`,
           { 
             headers: this.authHeaders()
            }

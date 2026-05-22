@@ -1,0 +1,66 @@
+<div class="flex flex-col gap-1">
+
+  <label class="text-[#4a5568] text-[11px] uppercase">
+    {{ field.label }}
+  </label>
+
+  @switch (field.type) {
+
+    @case ('TEXT') {
+      <input
+        class="input"
+        [value]="value ?? ''"
+        (input)="onChange(getInputValue($event))"
+      />
+    }
+
+    @case ('NUMBER') {
+      <input
+        type="number"
+        class="input"
+        [value]="value ?? ''"
+        (input)="onChange(getNumberValue($event))"
+      />
+    }
+
+    @case ('BOOLEAN') {
+      <input
+        type="checkbox"
+        [checked]="value ?? false"
+        (change)="onChange(getCheckedValue($event))"
+      />
+    }
+
+    @case ('SELECT') {
+      <select
+        [value]="value ?? ''"
+        (change)="onChange(getSelectValue($event))"
+      >
+        @for (opt of field.options; track opt) {
+          <option [value]="opt">{{ opt }}</option>
+        }
+      </select>
+    }
+    @case ('MULTISELECT') {
+        <select multiple (change)="onMultiSelect($event)">
+        @for (opt of field.options; track opt) {
+            <option [value]="opt">{{ opt }}</option>
+        }
+        </select>
+    }
+    @case ('SELECT_REMOTE') {
+  <select
+    class="input"
+    [value]="value ?? ''"
+    (change)="onChange(getCheckedValue($event))"
+  >
+    @for (opt of options; track opt.id) {
+      <option [value]="opt.id">
+        {{ opt.name }}
+      </option>
+    }
+  </select>
+}
+  }
+
+</div>

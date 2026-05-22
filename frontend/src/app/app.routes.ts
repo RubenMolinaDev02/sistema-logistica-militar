@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { ItemDetailComponent } from './pages/item-detail/item-detail.component';
+import { ItemCreateComponent } from './pages/create-item/item-create.component';
 
 export const routes: Routes = [
 
@@ -61,6 +62,10 @@ export const routes: Routes = [
       {
         path: 'items/:category/:id',
         component: ItemDetailComponent
+      },
+      {
+        path: 'create/:category',
+        component: ItemCreateComponent
       },
 
       /*

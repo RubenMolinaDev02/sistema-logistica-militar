@@ -4,17 +4,14 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ApiInfoService } from '../../core/services/api.info.service';
-import { WeaponResponse } from '../../shared/models/weapon/weaponResponse';
 
-import { ItemCard } from '../../shared/components/item-card/item-card';
 import { ItemGrid } from '../../shared/components/item-grid/item-grid';
 import { ItemTabs } from "../../shared/components/item-tabs/item-tabs";
 import { ItemHeader } from "../../shared/components/item-header/item-header";
 import { ItemPagination } from "../../shared/components/item-pagination/item-pagination";
-import { BaseResponse } from '../../shared/models/base/baseResponse';
-import { BaseModel } from '../../shared/models/base/baseModel';
 import { ItemSearch } from "../../shared/components/item-search/item-search";
-
+import { DynamicFormComponent } from "../../shared/components/dynamic-form-component/dynamic-form.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-items',
@@ -30,6 +27,11 @@ import { ItemSearch } from "../../shared/components/item-search/item-search";
   templateUrl: './items.component.html'
 })
 export class ItemsComponent implements OnInit {
+
+
+openCreate(category: string) {
+  this.router.navigate(['/create/' + category])
+}
 
   page = 0;
   size = 24;
@@ -65,7 +67,8 @@ export class ItemsComponent implements OnInit {
 
   constructor(
     private info: ApiInfoService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -152,4 +155,6 @@ loadData(): void {
     }
   });
 }
+
+
 }
