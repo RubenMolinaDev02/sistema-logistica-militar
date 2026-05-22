@@ -5,13 +5,13 @@
     <div class="flex items-end justify-between px-8 pt-8 pb-6 border-b border-[#1e2530]">
 
       <div>
-        <div class="text-[#00e5a0] uppercase tracking-[4px] text-[10px] mb-2">
+        <div class="text-[#00e5a0] uppercase tracking-[4px] text-[15px] mb-2">
           ITEM DETAILS
         </div>
         <h1 class="text-[28px] font-bold text-[#f4f7fb] tracking-wide leading-none">
           {{ item.name }}
         </h1>
-        <div class="text-[#4a5568] text-[11px] tracking-[2px] mt-2">
+        <div class="text-[#c8d4e0] text-[13px] tracking-[2px] mt-2">
           {{ item.reference }}
         </div>
       </div>
@@ -86,7 +86,7 @@
 
             <div class="flex items-center gap-2 px-4 py-3 border-b border-[#1e2530]">
               <div class="w-[6px] h-[6px] bg-[#00e5a0] shrink-0"></div>
-              <span class="text-[10px] text-[#00e5a0] uppercase tracking-[3px]">
+              <span class="text-[20px] text-[#00e5a0] uppercase tracking-[3px]">
                 {{ section.title }}
               </span>
             </div>
@@ -96,11 +96,11 @@
                 <div class="flex justify-between items-baseline py-[10px]"
                   [style.border-bottom]="last ? 'none' : '1px solid #1e253060'">
 
-                  <span class="text-[10px] text-[#4a5568] uppercase tracking-[1.5px] shrink-0 mr-4">
+                  <span class="text-[15px] text-[#4a5568] uppercase tracking-[1.5px] shrink-0 mr-4">
                     {{ field.label }}
                   </span>
 
-                  <span class="text-[12px] text-[#c8d4e0] text-right" style="min-width: 0; word-break: break-word">
+                  <span class="text-[15px] text-[#c8d4e0] text-right" style="min-width: 0; word-break: break-word">
                     @switch (field.type) {
                       @case ('TEXT')    { {{ field.value }} }
                       @case ('NUMBER')  { {{ field.value }} {{ field.unit || '' }} }

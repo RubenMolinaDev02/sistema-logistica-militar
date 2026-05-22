@@ -1,8 +1,24 @@
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InformationService } from '../../core/services/api.info.service';
+import { ApiInfoService } from '../../core/services/api.info.service';
 import { ActivatedRoute } from '@angular/router';
-import { ItemDetailModel } from '../../shared/models/detail/detailModel';
+import { mapToWeaponDetail } from './detail-mappers/weapon-detail.mapper';
+import { mapToMiscDetail } from './detail-mappers/misc-item-detail.mapper';
+import { mapToCaliberDetail } from './detail-mappers/ammo-detail.mapper';
+import { mapToMagazineDetail } from './detail-mappers/magazine-detail.mapper';
+import { mapToHelmetDetail } from './detail-mappers/helmet-detail.mapper';
+import { mapToVestDetail } from './detail-mappers/armor-vest-detail.mapper';
+import { mapToNvgDetail } from './detail-mappers/nvg-detail.mapper';
+import { mapToPlateDetail } from './detail-mappers/plate-detail.mapper';
+import { mapToTextileDetail } from './detail-mappers/textile-detail.mapper';
+import { mapToOpticDetail } from './detail-mappers/optic-detail.mapper';
+import { mapToHolsterDetail } from './detail-mappers/holster-detail.mapper';
+import { mapToGrenadeDetail } from './detail-mappers/grenade-detail.mapper';
+import { mapToGasMaskFilterDetail } from './detail-mappers/gas-mask-filter.mapper';
+import { mapToGasMaskDetail } from './detail-mappers/gas-mask-detail.mapper';
+import { mapToBayonetDetail } from './detail-mappers/bayonet-detail.mapper';
+import { mapToBarrelAttachmentDetail } from './detail-mappers/barrel-attachment-detail.mapper';
+import { mapToAttachmentDetail } from './detail-mappers/attachment-detail.mapper';
 
 @Component({
   selector: 'app-item-detail',
@@ -13,7 +29,7 @@ import { ItemDetailModel } from '../../shared/models/detail/detailModel';
 export class ItemDetailComponent {
 
     constructor(
-        private info: InformationService,
+        private apiInfoService: ApiInfoService,
         private route: ActivatedRoute,
         private cdr: ChangeDetectorRef
     ) {}
@@ -64,13 +80,23 @@ export class ItemDetailComponent {
   this.loading = true;
 
   const map: Record<string, any> = {
-    weapons: () => this.info.getWeaponById(this.id),
-    /*ammo: () => this.info.getAmmo(),
-    magazines: () => this.info.getMagazines(),
-    helmets: () => this.info.getHelmets(),
-    armorVests: () => this.info.getArmorVests(),
-    nvgs: () => this.info.getNvgs(),*/
-    misc: () => this.info.getMiscItemsById(this.id)
+    weapons: () => this.apiInfoService.getItemsById(this.id, "weapons"),
+    ammo: () => this.apiInfoService.getItemsById(this.id, "calibers"),
+    magazines: () => this.apiInfoService.getItemsById(this.id, "magazines"),
+    armorVests: () => this.apiInfoService.getItemsById(this.id, "vests"),
+    nvgs: () => this.apiInfoService.getItemsById(this.id, "nvg"),
+    helmets: () => this.apiInfoService.getItemsById(this.id, 'helmet'),
+    plates: () => this.apiInfoService.getItemsById(this.id, "plates"),
+    textile: () => this.apiInfoService.getItemsById(this.id, "textile"),
+    optics: () => this.apiInfoService.getItemsById(this.id, "optics"),
+    holsters: () => this.apiInfoService.getItemsById(this.id, "holsters"),
+    grenades: () => this.apiInfoService.getItemsById(this.id, "grenades"),
+    gasmaskfilter: () => this.apiInfoService.getItemsById(this.id, "gas-mask-filter"),
+    gasmask: () => this.apiInfoService.getItemsById(this.id, "gas-mask"),
+    bayonets: () => this.apiInfoService.getItemsById(this.id, "bayonets"),
+    barrelattachments: () => this.apiInfoService.getItemsById(this.id, "barrel-attachments"),
+    attachments: () => this.apiInfoService.getItemsById(this.id, "attachments"),
+    misc: () => this.apiInfoService.getItemsById(this.id, 'misc')
   };
 
   const req = map[this.category];
@@ -85,11 +111,21 @@ export class ItemDetailComponent {
 
         const selectMapper: Record<string, any> = {
         weapons: () => mapToWeaponDetail(res),
-        /*ammo: () => this.info.getAmmo(),
-        magazines: () => this.info.getMagazines(),
-        helmets: () => this.info.getHelmets(),
-        armorVests: () => this.info.getArmorVests(),
-        nvgs: () => this.info.getNvgs(),*/
+        ammo: () => mapToCaliberDetail(res),
+        magazines: () => mapToMagazineDetail(res),
+        helmets: () => mapToHelmetDetail(res),
+        armorVests: () => mapToVestDetail(res),
+        nvgs: () => mapToNvgDetail(res),
+        plates: () => mapToPlateDetail(res),
+        textile: () => mapToTextileDetail(res),
+        optics: () => mapToOpticDetail(res),
+        holsters: () => mapToHolsterDetail(res),
+        grenades: () => mapToGrenadeDetail(res),
+        gasmaskfilter: () => mapToGasMaskFilterDetail(res),
+        gasmask: () => mapToGasMaskDetail(res),
+        bayonets: () => mapToBayonetDetail(res),
+        barrelattachments: () => mapToBarrelAttachmentDetail(res),
+        attachments: () => mapToAttachmentDetail(res),
         misc: () => mapToMiscDetail(res)
     };
 
@@ -109,140 +145,6 @@ export class ItemDetailComponent {
 
 }
 
-export function mapToWeaponDetail(item: any): ItemDetailModel {
 
-    
 
-  return {
-    id: item.id,
-    reference: item.reference,
-    name: item.name,
-    image: item.image,
 
-    sections: [
-      {
-        title: 'General',
-        fields: [
-          {
-            key: 'type',
-            label: 'Type',
-            value: item.type,
-            type: 'ARRAY'
-          },
-          {
-            key: 'status',
-            label: 'Status',
-            value: item.status,
-            type: 'TEXT'
-          },
-          {
-            key: 'manufacturer',
-            label: 'Manufacturer',
-            value: item.manufacturer?.name,
-            type: 'TEXT'
-          }
-        ]
-      },
-
-      {
-        title: 'Specifications',
-        fields: [
-          {
-            key: 'effectiveDistance',
-            label: 'Effective Distance',
-            value: item.effectiveDistance,
-            type: 'NUMBER',
-            unit: 'm'
-          },
-          {
-            key: 'fireRate',
-            label: 'Fire Rate',
-            value: item.fireRate,
-            type: 'NUMBER',
-            unit: 'rpm'
-          },
-          {
-            key: 'compatibleWithSupressor',
-            label: 'Suppressor Compatible',
-            value: item.compatibleWithSupressor,
-            type: 'BOOLEAN'
-          },
-          {
-            key: 'hasBayonetMount',
-            label: 'Bayonet Mount',
-            value: item.hasBayonetMount,
-            type: 'BOOLEAN'
-          }
-        ]
-      },
-
-      {
-        title: 'Components',
-        fields: [
-          {
-            key: 'platform',
-            label: 'Platform',
-            value: item.platform?.name,
-            type: 'OBJECT'
-          },
-          {
-            key: 'caliber',
-            label: 'Caliber',
-            value: item.caliber?.name,
-            type: 'TEXT'
-          },
-          {
-            key: 'stock',
-            label: 'Stock',
-            value: item.stock?.name,
-            type: 'OBJECT'
-          }
-        ]
-      }
-    ]
-  };
-}
-
-export function mapToMiscDetail(item: any): ItemDetailModel {
-
-  return {
-    id: item.id,
-    reference: item.reference,
-    name: item.name,
-    image: item.image,
-
-    sections: [
-
-      {
-        title: 'General',
-        fields: [
-          {
-            key: 'type',
-            label: 'Type',
-            value: item.type,
-            type: 'TEXT'
-          }
-        ]
-      },
-
-      {
-        title: 'Identification',
-        fields: [
-          {
-            key: 'reference',
-            label: 'Reference',
-            value: item.reference,
-            type: 'TEXT'
-          },
-          {
-            key: 'id',
-            label: 'ID',
-            value: item.id,
-            type: 'TEXT'
-          }
-        ]
-      }
-
-    ]
-  };
-}

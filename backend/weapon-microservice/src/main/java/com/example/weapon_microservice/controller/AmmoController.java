@@ -28,7 +28,7 @@ public class AmmoController {
     @GetMapping("/reference/{reference}")
     public AmmoResponse getAmmoByReference(@PathVariable String reference){
         AmmoModel ammo = service.getByReference(reference);
-        CaliberResponse caliber = CaliberMapper.responseFromModel(
+        CaliberResponse caliber = CaliberMapper.responseFromModelSimple(
                 service.getCaliberById(ammo.getCaliberId())
         );
         return AmmoMapper.responseFromModel(ammo, caliber);
@@ -38,7 +38,7 @@ public class AmmoController {
     @PostMapping
     public AmmoResponse createAmmo(@Valid @RequestBody AmmoRequest ammo){
         AmmoModel model = service.saveAmmo(ammo);
-        CaliberResponse caliber = CaliberMapper.responseFromModel(
+        CaliberResponse caliber = CaliberMapper.responseFromModelSimple(
                 service.getCaliberById(ammo.getCaliberId())
         );
         return AmmoMapper.responseFromModel(model, caliber);
@@ -47,7 +47,7 @@ public class AmmoController {
     @GetMapping("/id/{id}")
     public AmmoResponse getAmmoById(@PathVariable String id){
         AmmoModel ammo = service.getAmmoById(id);
-        CaliberResponse caliber = CaliberMapper.responseFromModel(
+        CaliberResponse caliber = CaliberMapper.responseFromModelSimple(
                 service.getCaliberById(ammo.getCaliberId())
         );
         return AmmoMapper.responseFromModel(ammo, caliber);
@@ -57,7 +57,7 @@ public class AmmoController {
     @PatchMapping("/{id}")
     public AmmoResponse updateAmmo(@PathVariable String id, @RequestBody AmmoUpdateRequest ammoUpdateRequest){
         AmmoModel ammo = service.updateAmmo(ammoUpdateRequest, id);
-        CaliberResponse caliber = CaliberMapper.responseFromModel(
+        CaliberResponse caliber = CaliberMapper.responseFromModelSimple(
                 service.getCaliberById(ammo.getCaliberId())
         );
 

@@ -41,7 +41,7 @@ public class BarrelAttachmentController {
 
         return BarrelAtachmentMapper.responseFromModel(
                 barrelAtachmentModel,
-                CaliberMapper.responseFromModel(caliberModel),
+                CaliberMapper.responseFromModelSimple(caliberModel),
                 PlatformMapper.responseFromModelList(platformModels)
         );
     }
@@ -54,7 +54,7 @@ public class BarrelAttachmentController {
 
         return BarrelAtachmentMapper.responseFromModel(
                 model,
-                CaliberMapper.responseFromModel(caliberModel),
+                CaliberMapper.responseFromModelSimple(caliberModel),
                 PlatformMapper.responseFromModelList(platformModels)
         );
     }
@@ -67,7 +67,7 @@ public class BarrelAttachmentController {
 
         return BarrelAtachmentMapper.responseFromModel(
                 model,
-                CaliberMapper.responseFromModel(caliberModel),
+                CaliberMapper.responseFromModelSimple(caliberModel),
                 PlatformMapper.responseFromModelList(platformModels)
         );
     }
@@ -81,7 +81,7 @@ public class BarrelAttachmentController {
 
         return BarrelAtachmentMapper.responseFromModel(
                 model,
-                CaliberMapper.responseFromModel(caliberModel),
+                CaliberMapper.responseFromModelSimple(caliberModel),
                 PlatformMapper.responseFromModelList(platformModels)
         );
     }

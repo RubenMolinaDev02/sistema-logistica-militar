@@ -28,7 +28,7 @@ public class MagazineMapper {
     }
     public static MagazineResponse responseFromModel(MagazineModel magazineModel, List<PlatformModel> platformModels, CaliberModel caliber){
         List<PlatformResponse> platformResponses = PlatformMapper.responseFromModelList(platformModels);
-        CaliberResponse caliberResponse = CaliberMapper.responseFromModel(caliber);
+        CaliberResponse caliberResponse = CaliberMapper.responseFromModelSimple(caliber);
 
         return MagazineResponse.builder()
                 .id(magazineModel.getId())

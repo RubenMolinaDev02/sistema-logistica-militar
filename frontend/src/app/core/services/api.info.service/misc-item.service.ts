@@ -15,18 +15,18 @@ import {
 
 import { Router } from '@angular/router';
 
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
-import { AuthService } from './auth.service';
-import { BaseResponse } from '../../shared/models/base/baseResponse';
-import { BaseModel } from '../../shared/models/base/baseModel';
-import { ItemDetailModel } from '../../shared/models/detail/detailModel';
+import { AuthService } from '../auth.service';
+import { BaseResponse } from '../../../shared/models/base/baseResponse';
+import { BaseModel } from '../../../shared/models/base/baseModel';
+import { ItemDetailModel } from '../../../shared/models/detail/detailModel';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class ApiInfoService{
+export class MiscItemService{
 
     private base = environment.apis.information;
     
@@ -85,28 +85,28 @@ export class ApiInfoService{
   }
 
 
-    getItems(size: number, page: number, request: any, category: string): Observable<BaseResponse<BaseModel>> {
-      return this.requestWithAuth(() =>
-        this.http.post<BaseResponse<BaseModel>>(
-          `${this.base}/armory/${category}/search`,
-          request, { 
-            headers: this.authHeaders(),
-            params: new HttpParams()
-              .set('size', size)
-              .set('page', page)
-           }
-        )
-      );
-    }
-    
-    getItemsById(id: string, category: string): Observable<ItemDetailModel> {
-      return this.requestWithAuth(() =>
-        this.http.get<ItemDetailModel>(
-          `${this.base}/armory/${category}/id/` + id,
-          { 
-            headers: this.authHeaders()
-           }
-        )
-      );
-    }
+  getMiscItems(size: number, page: number, request: any): Observable<BaseResponse<BaseModel>> {
+  return this.requestWithAuth(() =>
+    this.http.post<BaseResponse<BaseModel>>(
+      `${this.base}/armory/misc/search`,
+      request, { 
+        headers: this.authHeaders(),
+        params: new HttpParams()
+          .set('size', size)
+          .set('page', page)
+       }
+    )
+  );
+}
+
+getMiscItemsById(id: string): Observable<ItemDetailModel> {
+  return this.requestWithAuth(() =>
+    this.http.get<ItemDetailModel>(
+      `${this.base}/armory/misc/id/` + id,
+      { 
+        headers: this.authHeaders()
+       }
+    )
+  );
+}
 }

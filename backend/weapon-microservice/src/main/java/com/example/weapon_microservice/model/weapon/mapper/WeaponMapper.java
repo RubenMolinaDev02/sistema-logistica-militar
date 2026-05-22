@@ -56,7 +56,7 @@ public class WeaponMapper {
                                        HandguardModel handguard){
 
         PlatformResponse platformResponse = PlatformMapper.responseFromModel(platform);
-        CaliberResponse caliberResponse = CaliberMapper.responseFromModel(caliber);
+        CaliberResponse caliberResponse = CaliberMapper.responseFromModelSimple(caliber);
         WeaponManufacturerResponse manufacturerResponse = ManufacturerMapper.responseFromModel(manufacturer);
 
         WeaponStockResponse weaponStockResponse = null;
