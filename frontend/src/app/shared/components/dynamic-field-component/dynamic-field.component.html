@@ -1,6 +1,6 @@
-<div class="flex flex-col gap-1">
+<div class="flex flex-col gap-[6px]" style="margin: 30px;">
 
-  <label class="text-[#4a5568] text-[11px] uppercase">
+  <label class="font-['Share_Tech_Mono'] text-[10px] text-[#4a5568] uppercase tracking-[2px]">
     {{ field.label }}
   </label>
 
@@ -8,59 +8,131 @@
 
     @case ('TEXT') {
       <input
-        class="input"
+        type="text"
         [value]="value ?? ''"
         (input)="onChange(getInputValue($event))"
+        class="w-full bg-[#0d1117] border border-[#1e2530] text-[#617089] font-['Share_Tech_Mono'] text-[13px] px-3 py-[9px] outline-none transition-colors duration-150 focus:border-[#00e5a0] placeholder:text-[#2a3340]"
       />
     }
 
     @case ('NUMBER') {
       <input
         type="number"
-        class="input"
         [value]="value ?? ''"
         (input)="onChange(getNumberValue($event))"
+        class="w-full bg-[#0d1117] border border-[#1e2530] text-[#617089] font-['Share_Tech_Mono'] text-[13px] px-3 py-[9px] outline-none transition-colors duration-150 focus:border-[#00e5a0] placeholder:text-[#2a3340]"
       />
     }
 
     @case ('BOOLEAN') {
-      <input
-        type="checkbox"
-        [checked]="value ?? false"
-        (change)="onChange(getCheckedValue($event))"
-      />
+      <div class="flex items-center gap-3 py-2">
+        <label class="relative cursor-pointer flex items-center gap-3">
+          <input
+            type="checkbox"
+            [checked]="value ?? false"
+            (change)="onChange(getCheckedValue($event))"
+            class="sr-only peer"
+          />
+          <div class="w-9 h-5 bg-[#0d1117] border border-[#1e2530] transition-colors duration-150
+                      peer-checked:border-[#00e5a0] peer-checked:bg-[#00e5a010]">
+          </div>
+          <div class="absolute top-[4px] left-[4px] w-[11px] h-[11px] bg-[#2a3340] transition-all duration-150
+                      peer-checked:translate-x-4 peer-checked:bg-[#00e5a0]">
+          </div>
+          <span class="font-['Share_Tech_Mono'] text-[12px] uppercase tracking-[1px]"
+                [class]="value ? 'text-[#00e5a0]' : 'text-[#4a5568]'">
+            {{ value ? 'YES' : 'NO' }}
+          </span>
+        </label>
+      </div>
     }
 
     @case ('SELECT') {
+      <div class="relative">
+        <select
+          (change)="onChange(getSelectValue($event))"
+          class="w-full bg-[#0d1117] border border-[#1e2530] text-[#617089] font-['Share_Tech_Mono'] text-[13px] px-3 py-[9px] outline-none transition-colors duration-150 focus:border-[#00e5a0] cursor-pointer appearance-none"
+        >
+          @for (opt of field.options; track opt) {
+            <option [value]="opt" [selected]="opt === value" class="bg-[#111418]">{{ opt }}</option>
+          }
+        </select>
+        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[#4a5568] text-[10px] pointer-events-none">▾</span>
+      </div>
+    }
+
+    @case ('MULTISELECT') {
       <select
-        [value]="value ?? ''"
-        (change)="onChange(getSelectValue($event))"
+        multiple
+        (change)="onMultiSelect($event)"
+        class="w-full bg-[#0d1117] border border-[#1e2530] text-[#617089] font-['Share_Tech_Mono'] text-[13px] px-3 py-2 outline-none transition-colors duration-150 focus:border-[#00e5a0] cursor-pointer"
+        style="min-height: 110px"
       >
         @for (opt of field.options; track opt) {
-          <option [value]="opt">{{ opt }}</option>
+          <option [value]="opt" class="bg-[#111418] py-1">{{ opt }}</option>
         }
       </select>
+      <span class="font-['Share_Tech_Mono'] text-[9px] text-[#617089] tracking-[1px]">
+        CTRL + CLICK PARA SELECCIÓN MÚLTIPLE
+      </span>
     }
-    @case ('MULTISELECT') {
-        <select multiple (change)="onMultiSelect($event)">
-        @for (opt of field.options; track opt) {
-            <option [value]="opt">{{ opt }}</option>
-        }
-        </select>
-    }
+
     @case ('SELECT_REMOTE') {
-  <select
-    class="input"
-    [value]="value ?? ''"
-    (change)="onChange(getCheckedValue($event))"
-  >
-    @for (opt of options; track opt.id) {
-      <option [value]="opt.id">
-        {{ opt.name }}
-      </option>
+      <div class="relative">
+        <select
+          (change)="onChange(getSelectValue($event))"
+          class="w-full bg-[#0d1117] border border-[#1e2530] text-[#617089] font-['Share_Tech_Mono'] text-[13px] px-3 py-[9px] outline-none transition-colors duration-150 focus:border-[#00e5a0] cursor-pointer appearance-none"
+        >
+          @if (field.nullable) {
+            <option value="" [selected]="!value" class="bg-[#111418] text-[#4a5568]">— None —</option>
+          }
+          @for (opt of options; track opt.id) {
+            <option [value]="opt.id" [selected]="opt.id == value" class="bg-[#111418]">{{ opt.name }}</option>
+          }
+        </select>
+        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[#4a5568] text-[10px] pointer-events-none">▾</span>
+      </div>
     }
-  </select>
-}
+
+    @case ('SELECT_REMOTE_DEPENDENT') {
+      <div class="relative">
+        <select
+          (change)="onChange(getSelectValue($event))"
+          [disabled]="!options.length"
+          class="w-full bg-[#0d1117] border border-[#1e2530] text-[#617089] font-['Share_Tech_Mono'] text-[13px] px-3 py-[9px] outline-none transition-colors duration-150 focus:border-[#00e5a0] cursor-pointer appearance-none disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          @if (field.nullable) {
+            <option value="" [selected]="!value" class="bg-[#111418] text-[#4a5568]">— None —</option>
+          }
+          @if (!options.length) {
+            <option value="" disabled class="bg-[#111418] text-[#2a3340]">Selecciona dependencia primero</option>
+          }
+          @for (opt of options; track opt.id) {
+            <option [value]="opt.id" [selected]="opt.id == value" class="bg-[#111418]">{{ opt.name }}</option>
+          }
+        </select>
+        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[#4a5568] text-[10px] pointer-events-none">▾</span>
+      </div>
+    }
+
+    @case ('IMAGE_UPLOAD') {
+      <div class="flex flex-col gap-3">
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" class="hidden" #fileInput />
+        <button
+          type="button"
+          (click)="fileInput.click()"
+          class="w-full py-[9px] px-4 border border-[#1e2530] bg-transparent text-[#4a5568] font-['Share_Tech_Mono'] text-[11px] uppercase tracking-[2px] transition-all duration-150 hover:border-[#00e5a0] hover:text-[#00e5a0] hover:bg-[#00e5a008] cursor-pointer"
+        >
+          ↑ Subir imagen
+        </button>
+        @if (value) {
+          <div class="border border-[#1e2530] bg-[#0d1117] p-2">
+            <img [src]="value" class="w-full max-h-[200px] object-contain" />
+          </div>
+        }
+      </div>
+    }
+
   }
 
 </div>

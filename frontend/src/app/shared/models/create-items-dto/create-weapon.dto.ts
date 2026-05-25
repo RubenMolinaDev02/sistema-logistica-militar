@@ -6,8 +6,19 @@ export const CREATE_WEAPON_MODEL: ItemFormModel = {
       title: 'Basic',
       fields: [
         { key: 'name', label: 'Name', type: 'TEXT', value: '' },
-        { key: 'image', label: 'Image URL', type: 'TEXT', value: '' },
-        { key: 'manufacturerId', label: 'Manufacturer ID', type: 'TEXT', value: '' }
+        {
+          key: 'image',
+          label: 'Weapon Image',
+          type: 'IMAGE_UPLOAD',
+          value: ''
+        },
+        {
+            key: 'manufacturerId',
+            label: 'Manufacturer',
+            type: 'SELECT_REMOTE',
+            value: '',
+            endpoint: 'manufacturers',
+        },
       ]
     },
 
@@ -116,7 +127,7 @@ export const CREATE_WEAPON_MODEL: ItemFormModel = {
       title: 'Stock & Compatibility',
       fields: [
         {
-          key: 'stockAttachmentSystem',
+          key: 'stockAtachmentSystem',
           label: 'Stock System',
           type: 'SELECT',
           value: '',
@@ -156,12 +167,21 @@ export const CREATE_WEAPON_MODEL: ItemFormModel = {
         {
             key: 'stockId',
             label: 'Stock',
-            type: 'SELECT_REMOTE',
+            type: 'SELECT_REMOTE_DEPENDENT',
             value: '',
-            endpoint: 'stocks',
+            endpoint: '/armory/stocks/compatible',
+            nullable: true,
+            dependsOn: ['platformId', 'stockAtachmentSystem']
         },
-        /*{ key: 'caliberId', label: 'Caliber ID', type: 'TEXT', value: '' },
-        { key: 'stockId', label: 'Stock ID', type: 'TEXT', value: '' }*/
+        {
+            key: 'handguardId',
+            label: 'Handguard',
+            type: 'SELECT_REMOTE_DEPENDENT',
+            value: '',
+            endpoint: '/armory/handguards/compatible',
+            nullable: true,
+            dependsOn: ['platformId']
+        },
       ]
     }
   ]

@@ -11,6 +11,9 @@ export interface FormFieldDto {
   options?: any[]; // selects
   unit?: string;
   endpoint?: string;
+  nullable?: boolean;
+
+  dependsOn?: string[];
 }
 
 export type FieldType =
@@ -21,4 +24,6 @@ export type FieldType =
   | 'ARRAY'
   | 'OBJECT'
   | 'MULTISELECT'
+  | 'IMAGE_UPLOAD'
+  | 'SELECT_REMOTE_DEPENDENT'
   | 'SELECT_REMOTE';

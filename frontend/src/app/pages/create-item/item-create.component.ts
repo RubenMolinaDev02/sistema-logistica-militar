@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicFormComponent } from '../../shared/components/dynamic-form-component/dynamic-form.component';
@@ -22,6 +22,20 @@ export class ItemCreateComponent {
     private route: ActivatedRoute,
     private info: ApiInfoService
     ) { }
+
+    @Output() submit = new EventEmitter<Record<string, any>>();
+
+    submitForm() {
+      const values: Record<string, any> = {};
+
+      for (const section of this.model.sections) {
+        for (const field of section.fields) {
+          values[field.key] = field.value;
+        }
+      }
+
+      this.submit.emit(values);
+    }
 
 ngOnInit(): void {
 

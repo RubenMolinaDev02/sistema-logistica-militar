@@ -27,7 +27,7 @@ import { ItemDetailModel } from '../../shared/models/detail/detailModel';
 })
 
 export class ApiInfoService{
-    
+     
     private base = environment.apis.information;
     
       constructor(
@@ -131,4 +131,35 @@ export class ApiInfoService{
         )
       );
     }
+
+    uploadImage(formData: FormData) {
+      return this.requestWithAuth(() =>
+        this.http.post<ItemDetailModel>(
+          `${this.base}/images/upload`,
+          formData, { 
+            headers: this.authHeaders()
+           }
+        )
+      );
+    }
+
+  getWithParams(endpoint: string, params: Record<string, any>) {
+  let httpParams = new HttpParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== null && value !== undefined && value !== '') {
+      httpParams = httpParams.set(key, value);
+    }
+  });
+
+  return this.requestWithAuth(() =>
+    this.http.get<BaseModel[]>(
+      `${this.base}${endpoint}`,
+      {
+        headers: this.authHeaders(),
+        params: httpParams
+      }
+    )
+  );
+}
 }

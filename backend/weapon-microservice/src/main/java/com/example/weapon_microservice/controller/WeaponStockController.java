@@ -1,4 +1,5 @@
 package com.example.weapon_microservice.controller;
+import com.example.weapon_microservice.model.common.enums.StockAtachmentSystem;
 import com.example.weapon_microservice.model.platform.mapper.PlatformMapper;
 import com.example.weapon_microservice.model.stock.WeaponStockModel;
 import com.example.weapon_microservice.model.stock.dto.StockRequest;
@@ -23,6 +24,11 @@ public class WeaponStockController {
     @GetMapping
     public List<WeaponStockResponse> getAllWeaponStocks(){
         return StockMapper.responseFromModelList(service.getAllWeaponStocks());
+    }
+
+    @GetMapping("/compatible")
+    public List<WeaponStockResponse> getCompatibleWeaponStocks(@RequestParam String platformId, @RequestParam StockAtachmentSystem stockAtachmentSystem){
+        return StockMapper.responseFromModelList(service.getCompatibleWeaponStocks(platformId, stockAtachmentSystem));
     }
 
     @GetMapping("/reference/{reference}")

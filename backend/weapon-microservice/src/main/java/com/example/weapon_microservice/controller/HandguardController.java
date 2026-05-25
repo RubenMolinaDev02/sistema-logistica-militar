@@ -26,6 +26,11 @@ public class HandguardController {
         return HandguardMapper.resposeFromModelList(service.getAllHandguards());
     }
 
+    @GetMapping("/compatible")
+    public List<HandguardResponse> getCompatible(@RequestParam String platformId){
+        return HandguardMapper.resposeFromModelList(service.getCompatibleHandguards(platformId));
+    }
+
     @GetMapping("/reference/{reference}")
     public HandguardResponse getHandguardByReference(@PathVariable String reference){
         HandguardModel handguardModel = service.getByReference(reference);

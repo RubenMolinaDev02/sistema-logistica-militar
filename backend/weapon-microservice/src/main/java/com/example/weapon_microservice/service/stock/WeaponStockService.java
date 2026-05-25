@@ -1,5 +1,6 @@
 package com.example.weapon_microservice.service.stock;
 
+import com.example.weapon_microservice.model.common.enums.StockAtachmentSystem;
 import com.example.weapon_microservice.model.stock.dto.StockRequest;
 import com.example.weapon_microservice.model.platform.PlatformModel;
 import com.example.weapon_microservice.model.stock.WeaponStockModel;
@@ -44,6 +45,10 @@ public class WeaponStockService {
 
     public List<WeaponStockModel> getAllWeaponStocks() {
         return repository.findAll();
+    }
+
+    public List<WeaponStockModel> getCompatibleWeaponStocks(String platformId, StockAtachmentSystem stockAtachmentSystem) {
+        return repository.findByCompatiblePlatformsIdsContainsAndAtachmentMethod(platformId, stockAtachmentSystem);
     }
 
     public WeaponStockModel saveWeaponStock(StockRequest model){

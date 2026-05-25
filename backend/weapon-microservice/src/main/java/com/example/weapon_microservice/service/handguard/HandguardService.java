@@ -46,6 +46,10 @@ public class HandguardService {
         return repository.findAll();
     }
 
+    public List<HandguardModel> getCompatibleHandguards(String platformId) {
+        return repository.findByCompatiblePlatformsIdsContains(platformId);
+    }
+
     public HandguardModel saveHandguard(HandguardRequest model){
         model.setCompatiblePlatformsIds(model.getCompatiblePlatformsIds());
 
