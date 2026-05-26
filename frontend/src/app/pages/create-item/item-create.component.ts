@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicFormComponent } from '../../shared/components/dynamic-form-component/dynamic-form.component';
 import { CREATE_WEAPON_MODEL } from '../../shared/models/create-items-dto/create-weapon.dto'; 
 import { ApiInfoService } from '../../core/services/api.info.service';
+import { CREATE_PLATFORM_MODEL } from '../../shared/models/create-items-dto/create-platform.dto';
 
 @Component({
   selector: 'app-item-create',
@@ -41,6 +42,7 @@ ngOnInit(): void {
 
     const map: any = {
         weapons: () => CREATE_WEAPON_MODEL,
+        platforms: () => CREATE_PLATFORM_MODEL,
         /*ammo: (data: any) => this.info.createAmmo(data),
         magazines: (data: any) => this.info.createMagazine(data),
         misc: (data: any) => this.info.createMisc(data)*/
@@ -57,6 +59,7 @@ ngOnInit(): void {
 
   const map: Record<string, any> = {
     weapons: (data: any) => this.info.createItem(data, "weapons"),
+    platforms: (data: any) => this.info.createItem(data, "platforms"),
     /*ammo: (data: any) => this.info.createAmmo(data),
     magazines: (data: any) => this.info.createMagazine(data),
     misc: (data: any) => this.info.createMisc(data)*/

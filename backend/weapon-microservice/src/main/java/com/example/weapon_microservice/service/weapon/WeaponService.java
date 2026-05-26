@@ -96,6 +96,10 @@ public class WeaponService {
                 ));
     }
 
+    public List<WeaponModel> getByPlatformId(String platformId){
+        return repository.findAllByPlatformId(platformId);
+    }
+
     public List<WeaponModel> findAllByIds(List<String> ids){
         return repository.findAllById(ids);
     }

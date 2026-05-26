@@ -19,6 +19,8 @@ import { mapToGasMaskDetail } from './detail-mappers/gas-mask-detail.mapper';
 import { mapToBayonetDetail } from './detail-mappers/bayonet-detail.mapper';
 import { mapToBarrelAttachmentDetail } from './detail-mappers/barrel-attachment-detail.mapper';
 import { mapToAttachmentDetail } from './detail-mappers/attachment-detail.mapper';
+import { mapToPlatformDetail } from './detail-mappers/platform-detail.mapper';
+import { mapToAmmoDetail } from './detail-mappers/ammo-type.mapper';
 
 @Component({
   selector: 'app-item-detail',
@@ -82,6 +84,7 @@ export class ItemDetailComponent {
   const map: Record<string, any> = {
     weapons: () => this.apiInfoService.getItemsById(this.id, "weapons"),
     ammo: () => this.apiInfoService.getItemsById(this.id, "calibers"),
+    ammotype: () => this.apiInfoService.getItemsById(this.id, "ammo"),
     magazines: () => this.apiInfoService.getItemsById(this.id, "magazines"),
     armorVests: () => this.apiInfoService.getItemsById(this.id, "vests"),
     nvgs: () => this.apiInfoService.getItemsById(this.id, "nvg"),
@@ -96,6 +99,9 @@ export class ItemDetailComponent {
     bayonets: () => this.apiInfoService.getItemsById(this.id, "bayonets"),
     barrelattachments: () => this.apiInfoService.getItemsById(this.id, "barrel-attachments"),
     attachments: () => this.apiInfoService.getItemsById(this.id, "attachments"),
+    platforms: () => this.apiInfoService.getItemsById(this.id, "platforms"),
+    stocks: () => this.apiInfoService.getItemsById(this.id, "stocks"),
+    handguards: () => this.apiInfoService.getItemsById(this.id, "handguards"),
     misc: () => this.apiInfoService.getItemsById(this.id, 'misc')
   };
 
@@ -112,6 +118,7 @@ export class ItemDetailComponent {
         const selectMapper: Record<string, any> = {
         weapons: () => mapToWeaponDetail(res),
         ammo: () => mapToCaliberDetail(res),
+        ammotype: () => mapToAmmoDetail(res),
         magazines: () => mapToMagazineDetail(res),
         helmets: () => mapToHelmetDetail(res),
         armorVests: () => mapToVestDetail(res),
@@ -126,6 +133,9 @@ export class ItemDetailComponent {
         bayonets: () => mapToBayonetDetail(res),
         barrelattachments: () => mapToBarrelAttachmentDetail(res),
         attachments: () => mapToAttachmentDetail(res),
+        platforms: () => mapToPlatformDetail(res),
+        /*stocks: () => mapToSto,
+        handguards: () => mapToPlatformDetail(res),*/
         misc: () => mapToMiscDetail(res)
     };
 

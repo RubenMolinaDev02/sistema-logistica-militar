@@ -8,6 +8,7 @@
 
         <div class="flex items-center gap-3 px-5 py-[14px] border-b border-[#1e2530] bg-[#0f1318]">
           <div class="w-[6px] h-[6px] bg-[#00e5a0] shrink-0"></div>
+
           <span class="font-['Share_Tech_Mono'] text-[11px] text-[#00e5a0] uppercase tracking-[3px]">
             {{ section.title }}
           </span>
@@ -16,11 +17,13 @@
         <div class="p-6 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-5">
           @for (field of section.fields; track field.key) {
             <div [style.grid-column]="field.type === 'IMAGE_UPLOAD' || field.type === 'MULTISELECT' ? '1 / -1' : 'auto'">
+
               <app-dynamic-field
                 [(value)]="field.value"
                 [field]="field"
                 [formValues]="formValues"
               />
+
             </div>
           }
         </div>
@@ -30,5 +33,21 @@
 
   </div>
 
+  <!-- FOOTER DECORATIVO -->
+  <div class="shrink-0 h-[42px] border-t border-[#1e2530] bg-[#0a0d11] flex items-center justify-between px-6">
+
+    <div class="flex items-center gap-2">
+      <div class="w-[5px] h-[5px] bg-[#00e5a0]"></div>
+
+      <span class="font-['Share_Tech_Mono'] text-[10px] text-[#4a5568] uppercase tracking-[2px]">
+        ARMORY SYSTEM INTERFACE
+      </span>
+    </div>
+
+    <span class="font-['Share_Tech_Mono'] text-[9px] text-[#2a3340] tracking-[2px]">
+      BUILD v1.0.0
+    </span>
+
+  </div>
 
 </div>

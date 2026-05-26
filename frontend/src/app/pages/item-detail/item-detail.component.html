@@ -1,125 +1,212 @@
 <div class="min-h-screen bg-[#0a0c0f] text-[#c8d4e0] font-['Share_Tech_Mono'] p-8">
-  <div class=" bg-[#111418] border border-[#1e2530]">
 
-    <!-- TOPBAR -->
-    <div class="flex items-end justify-between px-8 pt-8 pb-6 border-b border-[#1e2530]">
+  @if (item) {
 
-      <div>
-        <div class="text-[#00e5a0] uppercase tracking-[4px] text-[15px] mb-2">
-          ITEM DETAILS
-        </div>
-        <h1 class="text-[28px] font-bold text-[#f4f7fb] tracking-wide leading-none">
-          {{ item.name }}
-        </h1>
-        <div class="text-[#c8d4e0] text-[13px] tracking-[2px] mt-2">
-          {{ item.reference }}
-        </div>
-      </div>
+    <div class="bg-[#111418] border border-[#1e2530]">
 
-      <div class="flex gap-2 flex-wrap justify-end">
-        <span *ngIf="item.status"
-          class="text-[9px] tracking-[1.5px] uppercase px-[10px] py-[4px] border border-[#00e5a030] text-[#00e5a0] bg-[#00e5a008]">
-          {{ item.status }}
-        </span>
-        <span *ngFor="let t of item.type"
-          class="text-[9px] tracking-[1.5px] uppercase px-[10px] py-[4px] border border-[#1e2530] text-[#c8d4e0]">
-          {{ t }}
-        </span>
-      </div>
+      <!-- TOPBAR -->
+      <div class="flex items-end justify-between px-8 pt-8 pb-6 border-b border-[#1e2530]">
 
-    </div>
-
-    <!-- BODY -->
-    <div class="flex max-w-[1400px] mx-auto h-full" style="min-height: 0;">
-
-      <!-- COLUMNA IZQUIERDA: solo si hay imagen o campos quick -->
-      <div *ngIf="item.image || item.manufacturer"
-        class="shrink-0 p-8 border-r border-[#1e2530] bg-[#0f1318]"
-        style="width: clamp(220px, 28%, 340px)">
-
-        <div *ngIf="item.image"
-          class="w-full aspect-square bg-[#181c22] flex items-center justify-center overflow-hidden mb-6">
-          <img
-            [src]="item.image"
-            [alt]="item.name"
-            class="w-full h-full object-contain"
-            (error)="item.image = null"
-          />
-        </div>
-
-        <!-- CAMPOS RÁPIDOS: los que siempre quieres visibles -->
-        <div class="flex flex-col">
-
-          <div *ngIf="item.status"
-            class="flex justify-between items-baseline py-[10px] border-b border-[#1e2530]">
-            <span class="text-[10px] text-[#4a5568] uppercase tracking-[2px]">Estado</span>
-            <span class="text-[12px] text-[#00e5a0]">{{ item.status }}</span>
+        <div>
+          <div class="text-[#00e5a0] uppercase tracking-[4px] text-[15px] mb-2">
+            ITEM DETAILS
           </div>
 
-          <div *ngIf="item.type?.length"
-            class="flex justify-between items-baseline py-[10px] border-b border-[#1e2530]">
-            <span class="text-[10px] text-[#4a5568] uppercase tracking-[2px]">Tipo</span>
-            <span class="text-[12px] text-right">{{ item.type.join(', ') }}</span>
-          </div>
+          <h1 class="text-[28px] font-bold text-[#f4f7fb] tracking-wide leading-none">
+            {{ item?.name }}
+          </h1>
 
-          <div *ngIf="item.manufacturer?.name"
-            class="flex justify-between items-baseline py-[10px]">
-            <span class="text-[10px] text-[#4a5568] uppercase tracking-[2px]">Fabricante</span>
-            <span class="text-[12px] text-right">{{ item.manufacturer.name }}</span>
+          <div class="text-[#c8d4e0] text-[13px] tracking-[2px] mt-2">
+            {{ item?.reference }}
           </div>
+        </div>
+
+        <div class="flex gap-2 flex-wrap justify-end">
+
+          <span *ngIf="item?.status"
+            class="text-[9px] tracking-[1.5px] uppercase px-[10px] py-[4px]
+            border border-[#00e5a030] text-[#00e5a0] bg-[#00e5a008]">
+            {{ item?.status }}
+          </span>
+
+          <span *ngFor="let t of (item?.type ?? [])"
+            class="text-[9px] tracking-[1.5px] uppercase px-[10px] py-[4px]
+            border border-[#1e2530] text-[#c8d4e0]">
+            {{ t }}
+          </span>
 
         </div>
 
       </div>
 
-      <!-- COLUMNA DERECHA: secciones dinámicas -->
-      <div class="flex-1 p-8 flex flex-col overflow-y-auto" style="gap: 1.5rem; min-width: 0">
+      <!-- BODY -->
+      <div class="flex max-w-[1400px] mx-auto h-full overflow-y-auto h-screen" style="min-height: 0;">
 
-        <!-- Sin secciones -->
-        <div *ngIf="!item.sections?.length"
-          class="text-[#4a5568] text-[12px] uppercase tracking-[2px] py-8 text-center">
-          Sin información adicional
-        </div>
+        <!-- LEFT -->
+        <div *ngIf="item?.image || item?.manufacturer"
+          class="shrink-0 p-8 border-r border-[#1e2530] bg-[#0f1318]"
+          style="width: clamp(220px, 28%, 340px)">
 
-        @for (section of item.sections; track section.title) {
-          <div class="border border-[#1e2530]">
+          <div *ngIf="item?.image"
+            class="w-full aspect-square bg-[#181c22] flex items-center justify-center overflow-hidden mb-6">
 
-            <div class="flex items-center gap-2 px-4 py-3 border-b border-[#1e2530]">
-              <div class="w-[6px] h-[6px] bg-[#00e5a0] shrink-0"></div>
-              <span class="text-[20px] text-[#00e5a0] uppercase tracking-[3px]">
-                {{ section.title }}
+            <img
+              [src]="item?.image"
+              [alt]="item?.name"
+              class="w-full h-full object-contain"
+            />
+
+          </div>
+
+          <div class="flex flex-col">
+
+            <div *ngIf="item?.status"
+              class="flex justify-between items-baseline py-[10px] border-b border-[#1e2530]">
+
+              <span class="text-[10px] text-[#4a5568] uppercase tracking-[2px]">
+                Estado
               </span>
+
+              <span class="text-[12px] text-[#00e5a0]">
+                {{ item?.status }}
+              </span>
+
             </div>
 
-            <div class="px-4">
-              @for (field of section.fields; track field.key; let last = $last) {
-                <div class="flex justify-between items-baseline py-[10px]"
-                  [style.border-bottom]="last ? 'none' : '1px solid #1e253060'">
+            <div *ngIf="item?.type?.length"
+              class="flex justify-between items-baseline py-[10px] border-b border-[#1e2530]">
 
-                  <span class="text-[15px] text-[#4a5568] uppercase tracking-[1.5px] shrink-0 mr-4">
-                    {{ field.label }}
-                  </span>
+              <span class="text-[10px] text-[#4a5568] uppercase tracking-[2px]">
+                Tipo
+              </span>
 
-                  <span class="text-[15px] text-[#c8d4e0] text-right" style="min-width: 0; word-break: break-word">
-                    @switch (field.type) {
-                      @case ('TEXT')    { {{ field.value }} }
-                      @case ('NUMBER')  { {{ field.value }} {{ field.unit || '' }} }
-                      @case ('BOOLEAN') { {{ field.value ? 'YES' : 'NO' }} }
-                      @case ('ARRAY')   { {{ field.value?.join(', ') }} }
-                      @default          { {{ field.value }} }
-                    }
-                  </span>
+              <span class="text-[12px] text-right">
+                {{ item?.type?.join(', ') }}
+              </span>
 
-                </div>
-              }
+            </div>
+
+            <div *ngIf="item?.manufacturer?.name"
+              class="flex justify-between items-baseline py-[10px]">
+
+              <span class="text-[10px] text-[#4a5568] uppercase tracking-[2px]">
+                Fabricante
+              </span>
+
+              <span class="text-[12px] text-right">
+                {{ item?.manufacturer?.name }}
+              </span>
+
             </div>
 
           </div>
-        }
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="flex-1 p-8 flex flex-col overflow-y-auto"
+          style="gap: 1.5rem; min-width: 0">
+
+          @if (!item?.sections?.length) {
+
+            <div class="text-[#4a5568] text-[12px] uppercase tracking-[2px] py-8 text-center">
+              Sin información adicional
+            </div>
+
+          }
+
+          @for (section of (item?.sections ?? []); track section.title) {
+
+            <div class="border border-[#1e2530]">
+
+              <!-- SECTION TITLE -->
+              <div class="flex items-center gap-2 px-4 py-3 border-b border-[#1e2530]">
+                <div class="w-[6px] h-[6px] bg-[#00e5a0] shrink-0"></div>
+
+                <span class="text-[20px] text-[#00e5a0] uppercase tracking-[3px]">
+                  {{ section?.title }}
+                </span>
+              </div>
+
+              <!-- FIELDS -->
+              <div class="px-4">
+
+                @for (field of (section?.fields ?? []); track field.key; let last = $last) {
+
+                  <div class="flex justify-between items-baseline py-[10px]"
+                    [style.border-bottom]="last ? 'none' : '1px solid #1e253060'">
+
+                    <span class="text-[15px] text-[#4a5568] uppercase tracking-[1.5px] shrink-0 mr-4">
+                      {{ field?.label }}
+                    </span>
+
+                    <!-- VALUE -->
+                    <div class="text-[15px] text-[#c8d4e0] text-right w-full"
+                      style="min-width: 0; word-break: break-word">
+
+                      @switch (field?.type) {
+
+                        @case ('TEXT') {
+                          {{ field?.value }}
+                        }
+
+                        @case ('NUMBER') {
+                          {{ field?.value }} {{ field?.unit || '' }}
+                        }
+
+                        @case ('BOOLEAN') {
+                          {{ field?.value ? 'YES' : 'NO' }}
+                        }
+
+                        @case ('ARRAY') {
+                          {{ field?.value?.join(', ') }}
+                        }
+
+                        @case ('LINK') {
+
+                          <a
+                            [href]="field.value.route"
+                            class="flex justify-between items-center w-full p-3 
+                            hover:border-[#00e5a0] hover:bg-[#131922] transition no-underline"
+                            style="padding: 10px;"
+                          >
+
+                            <span class="text-[#f4f7fb] uppercase text-[20px]">
+                              {{ field.value.name }}
+                            </span>
+
+                            <span class="text-[#57647b] text-[15px]">
+                              {{ field.value.reference }}
+                            </span>
+
+                          </a>
+
+                        }
+
+                        @default {
+                          {{ field?.value }}
+                        }
+
+                      }
+
+                    </div>
+
+                  </div>
+
+                }
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
 
       </div>
 
     </div>
 
-  </div>
+  }
+
 </div>

@@ -1,6 +1,8 @@
 package com.example.weapon_microservice.model.platform.dto;
 
 import com.example.weapon_microservice.model.platform.PlatformModel;
+import com.example.weapon_microservice.model.weapon.WeaponModel;
+import com.example.weapon_microservice.model.weapon.dto.WeaponResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +19,5 @@ public class PlatformResponse {
     private String name;
     private String image;
     private String description;
+    private List<WeaponResponse> weapons;
 }

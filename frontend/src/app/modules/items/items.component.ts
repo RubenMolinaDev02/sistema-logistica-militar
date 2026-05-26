@@ -47,7 +47,8 @@ openCreate(category: string) {
 
   tabs = [
     { key: 'weapons', label: 'Armas' },
-    { key: 'ammo', label: 'Munición' },
+    { key: 'ammo', label: 'Calibres' },
+    { key: 'ammotypes', label: 'Munición' },
     { key: 'magazines', label: 'Cargadores' },
     { key: 'helmets', label: 'Cascos' },
     { key: 'armorVests', label: 'Chalecos' },
@@ -62,6 +63,9 @@ openCreate(category: string) {
     { key: 'bayonets', label: 'Bayonetas' },
     { key: 'barrelattachments', label: 'Accesorios cañon' },
     { key: 'attachments', label: 'Accesorios' },
+    { key: 'platforms', label: 'Plataformas de armas' },
+    { key: 'stocks', label: 'Culatas' },
+    { key: 'handguards', label: 'Guardamanos' },
     { key: 'misc', label: 'Misc'}
   ];
 
@@ -112,6 +116,7 @@ loadData(): void {
   const map: Record<string, any> = {
     weapons: () => this.info.getItems(this.size, this.page, request, "weapons"),
     ammo: () => this.info.getItems(this.size, this.page, request, "calibers"),
+    ammotypes: () => this.info.getItems(this.size, this.page, request, "ammo"),
     magazines: () => this.info.getItems(this.size, this.page, request, "magazines"),
     helmets: () => this.info.getItems(this.size, this.page, request, "helmet"),
     armorVests: () => this.info.getItems(this.size, this.page, request, "vests"),
@@ -126,6 +131,9 @@ loadData(): void {
     bayonets: () => this.info.getItems(this.size, this.page, request, "bayonets"),
     barrelattachments: () => this.info.getItems(this.size, this.page, request, "barrel-attachments"),
     attachments: () => this.info.getItems(this.size, this.page, request, "attachments"),
+    platforms: () => this.info.getItems(this.size, this.page, request, "platforms"),
+    stocks: () => this.info.getItems(this.size, this.page, request, "stocks"),
+    handguards: () => this.info.getItems(this.size, this.page, request, "handguards"),
     misc: () => this.info.getItems(this.size, this.page, request, "misc")
   };
 

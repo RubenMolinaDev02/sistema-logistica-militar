@@ -15,4 +15,6 @@ public interface WeaponRepository extends MongoRepository<WeaponModel, String>{
     List<WeaponModel> findAllById(Iterable<String> strings);
 
     Optional<WeaponModel> readByReference(String reference);
+
+    List<WeaponModel> findAllByPlatformId(String platformId);
 }

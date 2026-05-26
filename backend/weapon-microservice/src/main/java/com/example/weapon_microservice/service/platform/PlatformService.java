@@ -1,11 +1,16 @@
 package com.example.weapon_microservice.service.platform;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.platform.dto.PlatformRequest;
 import com.example.weapon_microservice.model.platform.PlatformModel;
 import com.example.weapon_microservice.model.platform.dto.PlatformUpdateRequest;
 import com.example.weapon_microservice.model.platform.mapper.PlatformMapper;
+import com.example.weapon_microservice.model.stock.WeaponStockModel;
 import com.example.weapon_microservice.repository.PlatformRepository;
+import com.example.weapon_microservice.repository.WeaponRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
+import com.example.weapon_microservice.service.weapon.WeaponService;
 import com.example.weapon_microservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +25,10 @@ public class PlatformService {
     private PlatformRepository repository;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private PlatformQueryBuilder queryBuilder;
+    @Autowired
+    private WeaponRepository weaponRepository;
 
     public PlatformModel getPlatformById(String id){
         return repository.findById(id).orElseThrow(
@@ -59,7 +68,14 @@ public class PlatformService {
 
     public void deletePlatform(String id){
         PlatformModel exists = getPlatformById(id);
-
+        if (!weaponRepository.findAllByPlatformId(exists.getId()).isEmpty())
+            throw new ResponseStatusException(
+                HttpStatus.CONFLICT, "This platform contains weapons"
+        );
         repository.delete(exists);
+    }
+
+    public PageResponse<PlatformModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }

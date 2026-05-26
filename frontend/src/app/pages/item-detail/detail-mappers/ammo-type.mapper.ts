@@ -1,6 +1,6 @@
 import { ItemDetailModel } from "../../../shared/models/detail/detailModel";
 
-export function mapToCaliberDetail(item: any): ItemDetailModel {
+export function mapToAmmoDetail(item: any): ItemDetailModel {
 
   return {
 
@@ -9,8 +9,6 @@ export function mapToCaliberDetail(item: any): ItemDetailModel {
     reference: item.reference,
 
     name: item.name,
-
-    image: item.image,
 
     sections: [
 
@@ -30,16 +28,6 @@ export function mapToCaliberDetail(item: any): ItemDetailModel {
             value: item.type,
 
             type: 'BADGE'
-          },
-
-          {
-            key: 'standard',
-
-            label: 'Standard',
-
-            value: item.standard,
-
-            type: 'TEXT'
           }
 
         ]
@@ -77,46 +65,37 @@ export function mapToCaliberDetail(item: any): ItemDetailModel {
       },
 
       /*
-       * COMPATIBLE AMMO
+       * CALIBER
        */
       {
-        title: 'Compatible Ammo',
+        title: 'Caliber',
 
-        fields: (item?.ammo ?? []).map((a: any) => ({
-            key: a.id,
+        fields: [
+
+          {
+            key: 'caliber',
+
             label: '',
+
             type: 'LINK',
-            value: {
-            id: a.id,
-            name: a.name,
-            reference: a.reference,
-            route: `/items/ammotype/${a.id}`
-            }
-        }))
-        /*[
-            item.ammo?.map((ammo: any) => ({
-
-            key: ammo.id,
-
-            label: ammo.name,
 
             value: {
+
               route: `/items/ammo/${item.caliber.id}`,
 
-              name: ammo.name,
+              name: item.caliber.name,
 
-              reference: `${ammo.reference} • ${ammo.type}`
-            },
+              reference: item.caliber.reference
 
-            type: 'LINK'
+            }
 
-          })) || []
-        ]*/
+          }
 
+        ]
       }
-      
 
     ]
 
   };
+
 }

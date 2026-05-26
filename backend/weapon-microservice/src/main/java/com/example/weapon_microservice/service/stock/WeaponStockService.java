@@ -1,13 +1,16 @@
 package com.example.weapon_microservice.service.stock;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.common.enums.StockAtachmentSystem;
 import com.example.weapon_microservice.model.stock.dto.StockRequest;
 import com.example.weapon_microservice.model.platform.PlatformModel;
 import com.example.weapon_microservice.model.stock.WeaponStockModel;
 import com.example.weapon_microservice.model.stock.dto.StockUpdateRequest;
 import com.example.weapon_microservice.model.stock.mapper.StockMapper;
+import com.example.weapon_microservice.model.weapon.WeaponModel;
 import com.example.weapon_microservice.repository.WeaponStockRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.platform.PlatformService;
 import com.example.weapon_microservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,8 @@ public class WeaponStockService {
     private PlatformService platformService;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private WeaponStockQueryBuilder queryBuilder;
 
     public WeaponStockModel getWeaponStockById(String id){
         return repository.findById(id)
@@ -93,5 +98,9 @@ public class WeaponStockService {
         return platforms.stream()
                 .map(PlatformModel::getId)
                 .toList();
+    }
+
+    public PageResponse<WeaponStockModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }

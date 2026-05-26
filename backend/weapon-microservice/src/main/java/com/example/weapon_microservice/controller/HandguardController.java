@@ -1,12 +1,13 @@
 package com.example.weapon_microservice.controller;
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.handguard.HandguardModel;
 import com.example.weapon_microservice.model.handguard.dto.HandguardRequest;
 import com.example.weapon_microservice.model.handguard.dto.HandguardResponse;
 import com.example.weapon_microservice.model.handguard.dto.HandguardUpdateRequest;
 import com.example.weapon_microservice.model.handguard.mapper.HandguardMapper;
-import com.example.weapon_microservice.model.platform.PlatformModel;
 import com.example.weapon_microservice.model.platform.dto.PlatformResponse;
 import com.example.weapon_microservice.model.platform.mapper.PlatformMapper;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.handguard.HandguardService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +78,29 @@ public class HandguardController {
     @DeleteMapping("/{id}")
     public void deleteHandguard(@PathVariable String id){
         service.deleteHandguard(id);
+    }
+
+    @PostMapping("/search")
+    public PageResponse<HandguardResponse> search(
+            @RequestBody SearchRequest request,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageResponse<HandguardModel> result = service.search(request, page, size);
+        return pageToResponse(result);
+    }
+
+    public PageResponse<HandguardResponse> pageToResponse(PageResponse<HandguardModel> page){
+        return PageResponse.<HandguardResponse>builder()
+                .content(
+                        page.getContent().stream()
+                                .map(HandguardMapper::responseFromModelSimple)
+                                .toList()
+                )
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .page(page.getPage())
+                .size(page.getSize())
+                .build();
     }
 }

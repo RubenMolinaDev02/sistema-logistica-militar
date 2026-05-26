@@ -1,5 +1,6 @@
 package com.example.weapon_microservice.service.handguard;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.handguard.dto.HandguardRequest;
 import com.example.weapon_microservice.model.handguard.HandguardModel;
 import com.example.weapon_microservice.model.handguard.dto.HandguardUpdateRequest;
@@ -7,6 +8,7 @@ import com.example.weapon_microservice.model.handguard.mapper.HandguardMapper;
 import com.example.weapon_microservice.model.platform.PlatformModel;
 import com.example.weapon_microservice.repository.HandguardRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.platform.PlatformService;
 import com.example.weapon_microservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class HandguardService {
     private PlatformService platformService;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private HandguardQueryBuilder queryBuilder;
 
     public HandguardModel getHandguardById(String id){
         return repository.findById(id)
@@ -91,5 +95,9 @@ public class HandguardService {
         return platforms.stream()
                 .map(PlatformModel::getId)
                 .toList();
+    }
+
+    public PageResponse<HandguardModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }

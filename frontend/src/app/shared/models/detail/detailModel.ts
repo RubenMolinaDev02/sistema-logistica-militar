@@ -1,4 +1,5 @@
-export interface ItemDetailModel {id: string;
+export interface ItemDetailModel {
+  id: string;
   reference: string;
   name: string;
   image?: string;
@@ -23,6 +24,7 @@ export interface DetailFieldDto {
     | 'ARRAY'
     | 'OBJECT'
     | 'IMAGE'
+    | 'LINK'
     | 'BADGE';
 
   unit?: string;

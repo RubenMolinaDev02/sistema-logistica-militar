@@ -1,12 +1,15 @@
 package com.example.weapon_microservice.service.ammo;
 
+import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.ammo.AmmoModel;
 import com.example.weapon_microservice.model.ammo.dto.AmmoRequest;
 import com.example.weapon_microservice.model.ammo.dto.AmmoUpdateRequest;
 import com.example.weapon_microservice.model.ammo.mapper.AmmoMapper;
 import com.example.weapon_microservice.model.caliber.CaliberModel;
+import com.example.weapon_microservice.model.handguard.HandguardModel;
 import com.example.weapon_microservice.repository.AmmoRepository;
 import com.example.weapon_microservice.service.ItemSearchService;
+import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.caliber.CaliberService;
 import com.example.weapon_microservice.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,8 @@ public class AmmoService {
     private CaliberService caliberService;
     @Autowired
     private ItemSearchService itemSearchService;
+    @Autowired
+    private AmmoQueryBuilder queryBuilder;
 
     public AmmoModel getAmmoById(String id){
         return repository.findById(id).orElseThrow(
@@ -77,5 +82,9 @@ public class AmmoService {
     public void deleteAmmo(String id) {
         AmmoModel ammoModel = getAmmoById(id);
         repository.delete(ammoModel);
+    }
+
+    public PageResponse<AmmoModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 }
