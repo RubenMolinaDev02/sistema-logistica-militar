@@ -32,7 +32,7 @@ public class WeaponUpdateRequest {
 
     private Boolean hasBayonetMount;
 
-    private StockAtachmentSystem stockAttachmentSystem;
+    private StockAtachmentSystem stockAtachmentSystem;
 
     private ServiceStatus status;
     private String stockId;

@@ -1,0 +1,40 @@
+import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-dashboard-panel',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+    <div class="border border-[#1e2530] bg-[#111418] flex flex-col">
+
+      <!-- HEADER -->
+      <div class="flex items-center justify-between
+                  px-5 py-4
+                  border-b border-[#1e2530]">
+
+        <span class="font-['Share_Tech_Mono']
+                     text-[11px]
+                     uppercase
+                     tracking-[2px]
+                     text-[#4a5568]">
+          {{ title }}
+        </span>
+
+        <ng-content select="[panel-actions]"></ng-content>
+
+      </div>
+
+      <!-- BODY -->
+      <div class="p-5 flex flex-col gap-3">
+        <ng-content></ng-content>
+      </div>
+
+    </div>
+  `
+})
+export class DashboardPanelComponent {
+
+  @Input() title!: string;
+
+}

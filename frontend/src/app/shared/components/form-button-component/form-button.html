@@ -1,0 +1,29 @@
+<button
+  [type]="type"
+  [disabled]="disabled"
+  (click)="onClick()"
+  class="
+    px-5
+    py-2 
+    bg-[#111418] 
+    border 
+    border-[#1e2530] 
+    text-[#4a5568] 
+    font-['Share_Tech_Mono'] 
+    tracking-[2px] 
+    uppercase 
+    transition-all 
+  "
+  style="width: 100px; padding: 10px; margin: 20px;"
+
+  [ngClass]="{
+
+    'hover:text-[#00e5a0] hover:border-[#00e5a0]':
+      variant === 'primary',
+
+    'hover:text-[#ff3b3b] hover:border-[#ff3b3b]':
+      variant === 'danger'
+  }"
+>
+  {{ label }}
+</button>

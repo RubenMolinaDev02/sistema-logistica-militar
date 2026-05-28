@@ -1,43 +1,26 @@
-<div class="min-h-screen bg-[#0a0c0f] text-[#c8d4e0] font-['Share_Tech_Mono'] p-8">
+<div class="min-h-screen bg-[#0a0c0f] text-[#c8d4e0] p-8">
 
   @if (item) {
 
     <div class="bg-[#111418] border border-[#1e2530]">
 
       <!-- TOPBAR -->
-      <div class="flex items-end justify-between px-8 pt-8 pb-6 border-b border-[#1e2530]">
-
-        <div>
-          <div class="text-[#00e5a0] uppercase tracking-[4px] text-[15px] mb-2">
-            ITEM DETAILS
-          </div>
-
-          <h1 class="text-[28px] font-bold text-[#f4f7fb] tracking-wide leading-none">
-            {{ item?.name }}
-          </h1>
-
-          <div class="text-[#c8d4e0] text-[13px] tracking-[2px] mt-2">
-            {{ item?.reference }}
-          </div>
-        </div>
-
-        <div class="flex gap-2 flex-wrap justify-end">
-
-          <span *ngIf="item?.status"
-            class="text-[9px] tracking-[1.5px] uppercase px-[10px] py-[4px]
-            border border-[#00e5a030] text-[#00e5a0] bg-[#00e5a008]">
-            {{ item?.status }}
-          </span>
-
-          <span *ngFor="let t of (item?.type ?? [])"
-            class="text-[9px] tracking-[1.5px] uppercase px-[10px] py-[4px]
-            border border-[#1e2530] text-[#c8d4e0]">
-            {{ t }}
-          </span>
-
-        </div>
-
-      </div>
+  <app-item-header 
+      [title]="`Military logistics software`"
+      [subtitle]="item?.name"
+      [text]="item?.reference"
+  >
+    <app-ui-button
+      label="EDIT"
+      variant="primary"
+      (pressed)="openEdit(category)"
+    />
+    <app-ui-button
+      label="← Back"
+      variant="danger"
+      (pressed)="back(category)"
+    />
+  </app-item-header>
 
       <!-- BODY -->
       <div class="flex max-w-[1400px] mx-auto h-full overflow-y-auto h-screen" style="min-height: 0;">

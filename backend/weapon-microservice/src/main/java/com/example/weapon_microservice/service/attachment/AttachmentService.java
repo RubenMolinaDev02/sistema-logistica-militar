@@ -53,7 +53,7 @@ public class AttachmentService {
     public AttachmentModel updateAttachment(AttachmentUpdateRequest attachment, String id) {
         AttachmentModel exists = getAttachmentById(id);
 
-        itemSearchService.validateReference(attachment.getReference());
+        itemSearchService.validateReference(attachment.getReference(), exists.getReference());
         if (Utils.validateString(attachment.getReference())) exists.setReference(attachment.getReference());
 
         if (Utils.validateString(attachment.getName())) exists.setName(attachment.getName());

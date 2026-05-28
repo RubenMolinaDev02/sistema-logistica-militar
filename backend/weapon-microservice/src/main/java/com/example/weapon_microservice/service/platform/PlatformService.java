@@ -57,7 +57,7 @@ public class PlatformService {
     public PlatformModel updatePlatform(PlatformUpdateRequest request, String id){
         PlatformModel exists = getPlatformById(id);
 
-        itemSearchService.validateReference(request.getReference());
+        itemSearchService.validateReference(request.getReference(), exists.getReference());
 
         exists.setName(request.getName());
 

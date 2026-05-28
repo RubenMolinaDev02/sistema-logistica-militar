@@ -59,6 +59,14 @@ ngOnInit() {
   if (this.field.type === 'SELECT_REMOTE_DEPENDENT') {
     this.loadDependentOptions();
   }
+
+  if (this.field.type === 'SELECT_REMOTE_MULTIPLE') {
+    this.loadRemoteOptions();
+  }
+}
+
+isSelected(id: any): boolean {
+  return Array.isArray(this.value) && this.value.includes(id);
 }
 
 private _formValues: Record<string, any> = {};
@@ -93,14 +101,20 @@ private tryReload() {
 }
 
 loadRemoteOptions() {
-  this.api.get(this.field.endpoint).subscribe(res => {
+  this.api.get(`/armory/${this.field.endpoint}`).subscribe(res => {
     this.options = res;
 
-    if (!this.value && this.options.length) {
-
+    // Solo auto-seleccionar el primero para SELECT_REMOTE simple
+    if (this.field.type === 'SELECT_REMOTE' && !this.value && this.options.length) {
       this.value = this.options[0].id;
-
       this.valueChange.emit(this.value);
+    }
+
+    // Para SELECT_REMOTE_MULTIPLE, garantizar que value sea siempre un array
+    if (this.field.type === 'SELECT_REMOTE_MULTIPLE') {
+      if (!Array.isArray(this.value)) {
+        this.value = this.value ? [this.value] : [];
+      }
     }
 
     this.cdr.detectChanges();
@@ -155,42 +169,68 @@ onFileSelected(event: Event) {
 }
 
 loadDependentOptions() {
-  console.log("entra en el metodo")
-
   if (!this.field.dependsOn?.length) return;
-  console.log("1")
 
   const params: Record<string, any> = {};
 
   for (const dep of this.field.dependsOn) {
-    console.log("2")
-
     const value = this.formValues[dep];
-    console.log(dep)
-    console.log(value)
 
     if (!value) {
       this.options = [];
+      this.value = null;
+      this.valueChange.emit(null);
       return;
     }
 
     params[dep] = value;
   }
 
-  this.api
-    .getWithParams(this.field.endpoint!, params)
-    .subscribe(res => {
+  // 🔥 reset antes de cargar nuevas opciones
+  this.options = [];
+  this.value = null;
+  this.valueChange.emit(null);
 
+  this.api.getWithParams(this.field.endpoint!, params)
+    .subscribe(res => {
       this.options = res;
 
-      if (!this.value && this.options.length) {
-
-      this.value = this.options[0].id;
-
-      this.valueChange.emit(this.value);
-    }
+      if (this.options.length) {
+        this.value = this.options[0].id;
+        this.valueChange.emit(this.value);
+      }
 
       this.cdr.detectChanges();
     });
+}
+
+msOpen = false;
+
+// Para MULTISELECT (opciones estáticas)
+toggleOption(opt: string) {
+  const current: string[] = this.value ?? [];
+  const idx = current.indexOf(opt);
+  const next = idx >= 0 ? current.filter(o => o !== opt) : [...current, opt];
+  this.onChange(next);
+}
+
+removeOption(opt: string) {
+  this.onChange((this.value ?? []).filter((o: string) => o !== opt));
+}
+
+// Para SELECT_REMOTE_MULTIPLE (opciones remotas con id/name)
+toggleOptionById(id: any) {
+  const current: any[] = this.value ?? [];
+  const idx = current.findIndex(v => v == id);
+  const next = idx >= 0 ? current.filter(v => v != id) : [...current, id];
+  this.onChange(next);
+}
+
+removeOptionById(id: any) {
+  this.onChange((this.value ?? []).filter((v: any) => v != id));
+}
+
+getOptionName(id: any): string {
+  return this.options.find(o => o.id == id)?.name ?? id;
 }
 }

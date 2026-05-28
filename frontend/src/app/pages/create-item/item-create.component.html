@@ -1,39 +1,24 @@
-<div class="font-['Barlow'] text-[#c8d4e0] bg-[#0d1117] flex flex-col h-full" style="margin-bottom: 30px;">
+<div class="font-['Barlow'] text-[#c8d4e0] bg-[#0d1117] flex flex-col h-full ">
 
   <!-- TOPBAR -->
-  <div class="shrink-0 px-8 pt-8 pb-6 border-b border-[#1e2530]">
-    <div class="flex justify-between items-center">
-      <div>
-        <div class="font-['Share_Tech_Mono'] text-[10px] tracking-[3px] text-[#00e5a0] mb-1 uppercase">
-          Item Management
-        </div>
-        <h1 class="text-[22px] font-bold text-[#f4f7fb]">Create Item</h1>
-      </div>
-      <div>
-        <button
-          (click)="cancel()"
-          class="font-['Share_Tech_Mono'] text-[10px] uppercase tracking-[2px] px-4 py-2 border border-[#1e2530] text-[#4a5568] bg-transparent transition-all duration-150 hover:border-[#c8d4e0] hover:text-[#c8d4e0] cursor-pointer"
-          style="margin-right: 30px;"
-          >
-          ← Back
-        </button>
-        <button
-          type="button"
-          (click)="submitForm()"
-          class="px-5 py-2 bg-[#00e5a0] text-[#0d1117]
-                font-bold uppercase tracking-[2px]
-                text-[12px] hover:bg-[#00c98d]
-                transition active:scale-[0.98]"
-        >
-          CREATE
-        </button>
-      </div>
-      
-    </div>
-  </div>
+  <app-item-header 
+      [title]="`Military logistics software`"
+      [subtitle]="`Create Item`"
+  >
+    <app-ui-button
+      label="SAVE"
+      variant="primary"
+      (pressed)="submitForm()"
+    />
+    <app-ui-button
+      label="← Back"
+      variant="danger"
+      (pressed)="cancel()"
+    />
+  </app-item-header>
 
   <!-- FORM — ocupa el resto de la pantalla -->
-  <div class="flex-1 min-h-0 px-8 py-6">
+  <div class="flex-1 min-h-0 overflow-y-auto">
     <div class="h-full max-w-4xl mx-auto bg-[#111418] border border-[#1e2530] flex flex-col">
       <app-dynamic-form
         [model]="model"
@@ -41,5 +26,7 @@
       />
     </div>
   </div>
+
+  <decorative-footer/>
 
 </div>

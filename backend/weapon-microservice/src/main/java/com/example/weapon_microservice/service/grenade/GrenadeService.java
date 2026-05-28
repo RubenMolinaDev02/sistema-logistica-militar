@@ -51,7 +51,7 @@ public class GrenadeService {
     public GrenadeModel updateGrenade(GrenadeUpdateRequest request, String id){
         GrenadeModel exists = getGrenadeById(id);
 
-        itemSearchService.validateReference(request.getReference());
+        itemSearchService.validateReference(request.getReference(), exists.getReference());
         if (Utils.validateString(request.getReference())) exists.setReference(request.getReference());
 
         if (Utils.validateString(request.getName())) exists.setName(request.getName());

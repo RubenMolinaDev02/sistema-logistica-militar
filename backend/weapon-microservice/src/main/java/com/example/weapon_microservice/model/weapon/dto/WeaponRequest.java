@@ -45,7 +45,7 @@ public class WeaponRequest {
 
     private boolean hasBayonetMount;
     @NotNull
-    private StockAtachmentSystem stockAttachmentSystem;
+    private StockAtachmentSystem stockAtachmentSystem;
     @NotNull
     private ServiceStatus status;
     private String stockId;

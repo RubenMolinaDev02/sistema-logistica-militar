@@ -52,7 +52,7 @@ public class HelmetService {
     public HelmetModel updateHelmet(HelmetUpdateRequest helmet, String id) {
         HelmetModel exists = getHelmetById(id);
 
-        itemSearchService.validateReference(helmet.getReference());
+        itemSearchService.validateReference(helmet.getReference(), exists.getReference());
         if (Utils.validateString(helmet.getReference())) exists.setReference(helmet.getReference());
 
         if (Utils.validateString(helmet.getName())) exists.setName(helmet.getName());

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-item-header',
@@ -6,4 +6,8 @@ import { Component } from '@angular/core';
   templateUrl: './item-header.html',
   styleUrl: './item-header.css',
 })
-export class ItemHeader {}
+export class ItemHeader {
+    @Input() title = '';
+    @Input() subtitle = '';
+    @Input() text = '';
+}

@@ -44,6 +44,11 @@ public class WeaponController {
         return responseFromModel(weaponService.getWeaponById(id));
     }
 
+    @GetMapping("/model/{id}")
+    public WeaponModel getWeaponByIdModel(@PathVariable String id){
+        return weaponService.getWeaponById(id);
+    }
+
     @PreAuthorize("hasRole('system-admin')")
     @PatchMapping("/{id}")
     public WeaponResponse modifyWeapon(@PathVariable String id, @RequestBody WeaponUpdateRequest request){

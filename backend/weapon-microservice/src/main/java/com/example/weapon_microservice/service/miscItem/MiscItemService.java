@@ -79,7 +79,7 @@ public class MiscItemService {
     public MiscItemModel updateMiscItem(MiscItemUpdateRequest miscItem, String id) {
         MiscItemModel exists = getMiscItemById(id);
 
-        itemSearchService.validateReference(miscItem.getReference());
+        itemSearchService.validateReference(miscItem.getReference(), exists.getReference());
 
         if (Utils.validateString(miscItem.getName())) exists.setName(miscItem.getName());
         if (Utils.validateString(miscItem.getReference())) exists.setReference(miscItem.getReference());

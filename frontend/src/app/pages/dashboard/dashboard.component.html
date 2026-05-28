@@ -1,0 +1,33 @@
+<div class="relative overflow-hidden border border-[#1e2530] bg-[#111418] p-5">
+
+    <app-item-header 
+      [title]="`Military logistics software`"
+      [subtitle]="`Dashboard`"
+    />
+
+      <div class="absolute top-0 left-0 right-0 h-[2px]"
+           [class.bg-[#00e5a0]]="accent"
+           [class.bg-[#0088ff]]="!accent">
+      </div>
+
+      <div class="font-['Share_Tech_Mono']
+                  text-[10px]
+                  uppercase
+                  tracking-[2px]
+                  text-[#4a5568]
+                  mb-3">
+        {{ label }}
+      </div>
+
+      <div class="text-[38px]
+                  leading-none
+                  font-bold"
+           [class.text-[#00e5a0]]="accent">
+        {{ value }}
+      </div>
+
+      <div class="mt-2 text-[11px] text-[#4a5568]">
+        {{ sub }}
+      </div>
+
+    </div>

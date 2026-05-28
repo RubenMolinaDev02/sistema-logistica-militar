@@ -47,7 +47,7 @@ public class CaliberService {
     public CaliberModel updateCaliber(CaliberUpdateRequest request, String id){
         CaliberModel exists = getCaliberById(id);
 
-        itemSearchService.validateReference(request.getReference());
+        itemSearchService.validateReference(request.getReference(), exists.getReference());
         if (Utils.validateString(request.getReference())) exists.setReference(request.getReference());
 
         if (Utils.validateString(request.getName())) exists.setName(request.getName());

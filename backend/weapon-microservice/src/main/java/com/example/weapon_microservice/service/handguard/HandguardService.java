@@ -64,7 +64,7 @@ public class HandguardService {
 
         HandguardModel exists = getHandguardById(id);
 
-        itemSearchService.validateReference(model.getReference());
+        itemSearchService.validateReference(model.getReference(), exists.getReference());
         if (Utils.validateString(model.getReference())) exists.setReference(model.getReference());
 
         if (model.getCompatiblePlatformsIds() != null) exists.setCompatiblePlatformsIds(filterExistingPlatformIds(model.getCompatiblePlatformsIds()));

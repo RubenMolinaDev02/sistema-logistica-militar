@@ -52,7 +52,7 @@ public class NvgService {
     public NvgModel updateNvg(NvgUpdateRequest nvg, String id) {
         NvgModel exists = getNvgById(id);
 
-        itemSearchService.validateReference(nvg.getReference());
+        itemSearchService.validateReference(nvg.getReference(), exists.getReference());
 
         if (Utils.validateString(nvg.getName())) exists.setName(nvg.getName());
         if (Utils.validateString(nvg.getReference())) exists.setReference(nvg.getReference());

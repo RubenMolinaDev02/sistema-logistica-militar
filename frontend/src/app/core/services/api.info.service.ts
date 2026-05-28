@@ -85,10 +85,10 @@ export class ApiInfoService{
   }
 
 
-    getItems(size: number, page: number, request: any, category: string): Observable<BaseResponse<BaseModel>> {
+    getItems(size: number, page: number, request: any, endpoint: string): Observable<BaseResponse<BaseModel>> {
       return this.requestWithAuth(() =>
         this.http.post<BaseResponse<BaseModel>>(
-          `${this.base}/armory/${category}/search`,
+          `${this.base}${endpoint}`,
           request, { 
             headers: this.authHeaders(),
             params: new HttpParams()
@@ -99,18 +99,19 @@ export class ApiInfoService{
       );
     }
     
-    getItemsById(id: string, category: string): Observable<ItemDetailModel> {
+    getItemsById(id: string, endpoint: string): Observable<ItemDetailModel> {
       return this.requestWithAuth(() =>
         this.http.get<ItemDetailModel>(
-          `${this.base}/armory/${category}/id/` + id,
+          `${this.base}${endpoint}` + id,
           { 
             headers: this.authHeaders()
-           }
+          }
         )
       );
     }
 
     createItem(request: any, category: string): Observable<ItemDetailModel> {
+      console.log(request);
       return this.requestWithAuth(() =>
         this.http.post<ItemDetailModel>(
           `${this.base}/armory/${category}`,
@@ -121,10 +122,22 @@ export class ApiInfoService{
       );
     }
 
+    editItem(request: any, endpoint: string): Observable<ItemDetailModel> {
+      console.log(request);
+      return this.requestWithAuth(() =>
+        this.http.patch<ItemDetailModel>(
+          `${this.base}${endpoint}`,
+          request, { 
+            headers: this.authHeaders()
+           }
+        )
+      );
+    }
+
     get(endpoint: string | undefined): Observable<BaseModel[]>{
         return this.requestWithAuth(() =>
         this.http.get<BaseModel[]>(
-          `${this.base}/armory/${endpoint}`,
+          `${this.base}${endpoint}`,
           { 
             headers: this.authHeaders()
            }

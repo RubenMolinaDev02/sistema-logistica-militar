@@ -63,7 +63,7 @@ public class BarrelAtachmentService {
     public BarrelAtachmentModel updateBarrelAtachment(BarrelAtachmentUpdateRequest request, String id){
         BarrelAtachmentModel exists = getBarrelAtachmentById(id);
 
-        itemSearchService.validateReference(request.getReference());
+        itemSearchService.validateReference(request.getReference(), exists.getReference());
         if (Utils.validateString(request.getReference())) exists.setReference(request.getReference());
 
         if (Utils.validateString(request.getName())) exists.setName(request.getName());

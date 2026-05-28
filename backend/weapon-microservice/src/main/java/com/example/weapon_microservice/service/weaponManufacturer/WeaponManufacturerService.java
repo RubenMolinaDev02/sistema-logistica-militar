@@ -50,7 +50,7 @@ public class WeaponManufacturerService {
     public WeaponManufacturerModel updateWeaponManufacturer(ManufacturerUpdateRequest request, String id){
         WeaponManufacturerModel exists = getWeaponManufacturerById(id);
 
-        itemSearchService.validateReference(request.getReference());
+        itemSearchService.validateReference(request.getReference(), exists.getReference());
 
             if (Utils.validateString(exists.getName())) exists.setName(request.getName());
 

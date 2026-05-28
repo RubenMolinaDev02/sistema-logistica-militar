@@ -2,7 +2,16 @@
 
   <div class="shrink-0 px-8 pt-8">
 
-    <app-item-header />
+    <app-item-header 
+      [title]="`Military logistics software`"
+      [subtitle]="`Item catalog`"
+    >
+      <app-ui-button
+        label="+ Create"
+        variant="primary"
+        (pressed)="openCreate(activeTab)"
+      />
+    </app-item-header>
 
     
 
@@ -17,25 +26,6 @@
     <app-item-search
       (search)="applyFilters($event)"
     ></app-item-search>
-    
-    <button
-    class="
-      px-5 py-2
-      bg-[#111418]
-      border border-[#1e2530]
-      text-[#4a5568]
-      font-['Share_Tech_Mono']
-      tracking-[2px]
-      uppercase
-      transition-all
-      hover:text-[#00e5a0]
-      hover:border-[#00e5a0]
-    "
-    style="width: 100px; padding: 10px; margin: 20px;"
-    (click)="openCreate(activeTab)"
-  >
-    + Create
-  </button>
 
   </div>
 

@@ -63,7 +63,7 @@ public class BayonetService {
     public BayonetModel updateBayonet(BayonetUpdateRequest bayonet, String id) {
         BayonetModel exists = getBayonetById(id);
 
-        itemSearchService.validateReference(bayonet.getReference());
+        itemSearchService.validateReference(bayonet.getReference(), exists.getReference());
         if (Utils.validateString(bayonet.getReference())) exists.setReference(bayonet.getReference());
 
         if (Utils.validateString(bayonet.getName())) exists.setName(bayonet.getName());

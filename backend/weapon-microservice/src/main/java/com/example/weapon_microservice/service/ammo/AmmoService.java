@@ -65,7 +65,7 @@ public class AmmoService {
     public AmmoModel updateAmmo(AmmoUpdateRequest ammo, String id) {
         AmmoModel exists = getAmmoById(id);
 
-        itemSearchService.validateReference(ammo.getReference());
+        itemSearchService.validateReference(ammo.getReference(), exists.getReference());
         if (Utils.validateString(ammo.getReference())) exists.setReference(ammo.getReference());
 
         if (Utils.validateString(ammo.getName())) exists.setName(ammo.getName());

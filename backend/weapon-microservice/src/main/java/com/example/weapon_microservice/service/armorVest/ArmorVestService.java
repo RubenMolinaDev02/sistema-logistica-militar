@@ -53,7 +53,7 @@ public class ArmorVestService {
     public ArmorVestModel updateArmorVest(ArmorVestUpdateRequest armorVest, String id) {
         ArmorVestModel exists = getArmorVestById(id);
 
-        itemSearchService.validateReference(armorVest.getReference());
+        itemSearchService.validateReference(armorVest.getReference(), exists.getReference());
         if (Utils.validateString(armorVest.getReference())) exists.setReference(armorVest.getReference());
 
         if (armorVest.getStatus() != null) exists.setStatus(armorVest.getStatus());

@@ -57,7 +57,7 @@ public class OpticService {
     public OpticModel updateOptic(OpticUpdateRequest request, String id){
         OpticModel exists = getOpticById(id);
 
-        itemSearchService.validateReference(request.getReference());
+        itemSearchService.validateReference(request.getReference(), exists.getReference());
 
         if (Utils.validateString(request.getName())) exists.setName(request.getName());
         if (Utils.validateString(request.getReference())) exists.setReference(request.getReference());

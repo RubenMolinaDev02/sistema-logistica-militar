@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { ItemDetailComponent } from './pages/item-detail/item-detail.component';
 import { ItemCreateComponent } from './pages/create-item/item-create.component';
+import { ItemEditComponent } from './pages/edit-item/item-edit.component';
 
 export const routes: Routes = [
 
@@ -43,7 +44,7 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         loadComponent: () =>
-          import('./modules/dashboard/dashboard.component')
+          import('./pages/dashboard/dashboard')
             .then(m => m.DashboardComponent)
       },
 
@@ -54,7 +55,7 @@ export const routes: Routes = [
       */
 
       {
-        path: 'items',
+        path: 'items/:category',
         loadComponent: () =>
           import('./modules/items/items.component')
             .then(m => m.ItemsComponent)
@@ -62,6 +63,10 @@ export const routes: Routes = [
       {
         path: 'items/:category/:id',
         component: ItemDetailComponent
+      },
+      {
+        path: 'items/edit/:category/:id',
+        component: ItemEditComponent
       },
       {
         path: 'create/:category',

@@ -180,10 +180,12 @@ public class ItemSearchService {
         ));
     }
 
-    public void validateReference(String ref){
-        if (ref != null && getByReference(ref).isPresent())
+    public void validateReference(String ref, String oldRef){
+        if (ref != null && getByReference(ref).isPresent()) {
+            if (ref.equals(oldRef)) return;
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Reference already in use"
             );
+        }
     }
 }

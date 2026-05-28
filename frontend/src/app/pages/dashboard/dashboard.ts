@@ -1,0 +1,338 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { forkJoin } from 'rxjs';
+
+import { InventoryService } from '../../core/services/api.inventory.service';
+import { LocationService } from '../../core/services/api.location.service';
+
+import { ShipmentResponse, StockResponse } from '../../shared/models/models';
+import { DashboardKpiComponent } from "./dashboard.component";
+import { DashboardPanelComponent } from "./dashboard.panel.component";
+
+
+@Component({
+  selector: 'app-dashboard',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterLink,
+    DashboardKpiComponent,
+    DashboardPanelComponent
+],
+  template: `
+    <div class="min-h-screen
+                bg-[#0a0c0f]
+                text-[#c8d4e0]
+                font-['Barlow']
+                p-8">
+
+      <!-- HEADER -->
+      <div class="flex items-end justify-between mb-8">
+
+        <div>
+
+          <div class="font-['Share_Tech_Mono']
+                      text-[10px]
+                      tracking-[3px]
+                      uppercase
+                      text-[#00e5a0]
+                      mb-1">
+            SISTEMA DE LOGÍSTICA MILITAR
+          </div>
+
+          <h1 class="text-[30px] font-bold tracking-[-0.5px]">
+            Dashboard
+          </h1>
+
+        </div>
+
+        <div class="font-['Share_Tech_Mono']
+                    text-[12px]
+                    text-[#4a5568]">
+          {{ now | date:'dd MMM yyyy · HH:mm' }}
+        </div>
+
+      </div>
+
+      <!-- KPI GRID -->
+      <div class="grid
+                  grid-cols-[repeat(auto-fit,minmax(190px,1fr))]
+                  gap-4
+                  mb-8">
+
+        @for (kpi of kpis; track kpi.label) {
+
+          <app-dashboard-kpi
+            [label]="kpi.label"
+            [value]="kpi.value"
+            [sub]="kpi.sub"
+            [accent]="kpi.accent"
+          />
+
+        }
+
+      </div>
+
+      <!-- PANELS -->
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+
+        <!-- SHIPMENTS -->
+        <app-dashboard-panel title="ENVÍOS RECIENTES">
+
+          <a
+            panel-actions
+            routerLink="/shipments"
+            class="text-[#00e5a0]
+                   text-[12px]
+                   hover:opacity-80
+                   transition">
+            Ver todos →
+          </a>
+
+          @if (!shipments.length) {
+
+            <div class="text-center
+                        py-8
+                        text-[#4a5568]
+                        text-[12px]
+                        font-['Share_Tech_Mono']">
+              Sin datos
+            </div>
+
+          }
+
+          @if (shipments.length) {
+
+            <table class="w-full border-collapse">
+
+              <thead>
+
+                <tr class="border-b border-[#1e2530]">
+
+                  <th class="text-left
+                             pb-3
+                             font-['Share_Tech_Mono']
+                             text-[10px]
+                             tracking-[2px]
+                             text-[#4a5568]">
+                    REFERENCIA
+                  </th>
+
+                  <th class="text-left
+                             pb-3
+                             font-['Share_Tech_Mono']
+                             text-[10px]
+                             tracking-[2px]
+                             text-[#4a5568]">
+                    ESTADO
+                  </th>
+
+                  <th class="text-left
+                             pb-3
+                             font-['Share_Tech_Mono']
+                             text-[10px]
+                             tracking-[2px]
+                             text-[#4a5568]">
+                    FECHA
+                  </th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                @for (s of shipments.slice(0, 8); track s.reference) {
+
+                  <tr class="border-b border-[#1e253050]">
+
+                    <td class="py-3
+                               font-['Share_Tech_Mono']
+                               text-[12px]">
+                      {{ s.reference }}
+                    </td>
+
+                    <td class="py-3">
+
+                      <span
+                        class="border
+                               px-2 py-[2px]
+                               text-[10px]
+                               tracking-[1px]
+                               uppercase
+                               font-['Share_Tech_Mono']"
+
+                        [class.text-[#0088ff]]="s.status === 'CREATED'"
+                        [class.border-[#0088ff]]="s.status === 'CREATED'"
+
+                        [class.text-[#ffaa00]]="s.status === 'IN_PROGRESS'"
+                        [class.border-[#ffaa00]]="s.status === 'IN_PROGRESS'"
+
+                        [class.text-[#00e5a0]]="s.status === 'COMPLETED'"
+                        [class.border-[#00e5a0]]="s.status === 'COMPLETED'"
+
+                        [class.text-[#ff3b3b]]="s.status === 'FAILED'"
+                        [class.border-[#ff3b3b]]="s.status === 'FAILED'">
+
+                        {{ s.status }}
+
+                      </span>
+
+                    </td>
+
+                    <td class="py-3 text-[#4a5568] text-[12px]">
+                      {{ s.creationDate | date:'dd/MM/yy' }}
+                    </td>
+
+                  </tr>
+
+                }
+
+              </tbody>
+
+            </table>
+
+          }
+
+        </app-dashboard-panel>
+
+        <!-- STOCK -->
+        <app-dashboard-panel title="STOCK CRÍTICO">
+
+          <a
+            panel-actions
+            routerLink="/inventory/stock"
+            class="text-[#00e5a0]
+                   text-[12px]
+                   hover:opacity-80
+                   transition">
+            Ver stock →
+          </a>
+
+          @if (!lowStock.length) {
+
+            <div class="text-center
+                        py-8
+                        text-[#4a5568]
+                        text-[12px]
+                        font-['Share_Tech_Mono']">
+              Sin alertas
+            </div>
+
+          }
+
+          @for (s of lowStock; track s.reference) {
+
+            <div class="flex items-center gap-3
+                        py-2
+                        border-b border-[#1e253050]">
+
+              <div class="flex-1
+                          min-w-0
+                          truncate
+                          font-['Share_Tech_Mono']
+                          text-[12px]">
+                {{ s.reference }}
+              </div>
+
+              <div class="w-[90px]
+                          h-[4px]
+                          bg-[#1e2530]">
+
+                <div
+                  class="h-full"
+                  [class.bg-[#00e5a0]]="s.units >= 5"
+                  [class.bg-[#ff3b3b]]="s.units < 5"
+                  [style.width.%]="Math.min(s.units * 5, 100)">
+                </div>
+
+              </div>
+
+              <div
+                class="w-[55px]
+                       text-right
+                       font-['Share_Tech_Mono']
+                       text-[12px]"
+                [class.text-[#ff3b3b]]="s.units < 5">
+
+                {{ s.units }} uds
+
+              </div>
+
+            </div>
+
+          }
+
+        </app-dashboard-panel>
+
+      </div>
+
+    </div>
+  `
+})
+export class DashboardComponent implements OnInit {
+
+  now = new Date();
+
+  shipments: ShipmentResponse[] = [];
+
+  lowStock: StockResponse[] = [];
+
+  Math = Math;
+
+  kpis = [
+    { label: 'SKUs activos', value: '—', sub: 'referencias de inventario', accent: false },
+    { label: 'Stock total', value: '—', sub: 'unidades en almacén', accent: true },
+    { label: 'Envíos activos', value: '—', sub: 'en tránsito', accent: false },
+    { label: 'Unidades serializadas', value: '—', sub: 'con nº de serie', accent: false },
+    { label: 'Localizaciones', value: '—', sub: 'bases y almacenes', accent: false },
+    { label: 'Alertas stock', value: '—', sub: 'bajo mínimos', accent: false }
+  ];
+
+  constructor(
+    private inventory: InventoryService,
+    private locationSvc: LocationService
+  ) {}
+
+  ngOnInit() {
+
+    forkJoin({
+      skus: this.inventory.getAllSkus(),
+      stock: this.inventory.getAllStock(),
+      shipments: this.inventory.getAllShipments(),
+      locations: this.locationSvc.getAll()
+    }).subscribe({
+
+      next: ({ skus, stock, shipments, locations }) => {
+
+        this.shipments = shipments.sort((a, b) =>
+          b.creationDate.localeCompare(a.creationDate)
+        );
+
+        this.lowStock = stock
+          .filter(s => s.units < 10)
+          .sort((a, b) => a.units - b.units);
+
+        const activeShipments =
+          shipments.filter(s =>
+            s.status === 'CREATED' ||
+            s.status === 'IN_PROGRESS'
+          ).length;
+
+        const totalUnits =
+          stock.reduce((acc, s) => acc + s.units, 0);
+
+        this.kpis[0].value = skus.length.toString();
+        this.kpis[1].value = totalUnits.toLocaleString();
+        this.kpis[2].value = activeShipments.toString();
+        this.kpis[4].value = locations.length.toString();
+        this.kpis[5].value = this.lowStock.length.toString();
+
+      }
+
+    });
+
+  }
+
+}

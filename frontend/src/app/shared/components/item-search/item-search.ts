@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { UiButtonComponent } from "../form-button-component/form-button";
 
 export interface SearchFilter {
   field: string;
@@ -10,17 +11,21 @@ export interface SearchFilter {
 
 @Component({
   selector: 'app-item-search',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, UiButtonComponent],
   templateUrl: './item-search.html',
   styleUrl: './item-search.css',
 })
 export class ItemSearch {
+openCreate(arg0: any) {
+throw new Error('Method not implemented.');
+}
   @Output() search = new EventEmitter<SearchFilter[]>();
 
   text = '';
   type = '';
   searchField: 'name' | 'reference' = 'name';
   operator: 'EQ' | 'REGEX' = 'REGEX';
+activeTab: any;
 
   onFieldChange() {
 

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiInfoService } from '../../core/services/api.info.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { mapToWeaponDetail } from './detail-mappers/weapon-detail.mapper';
 import { mapToMiscDetail } from './detail-mappers/misc-item-detail.mapper';
 import { mapToCaliberDetail } from './detail-mappers/ammo-detail.mapper';
@@ -21,11 +21,15 @@ import { mapToBarrelAttachmentDetail } from './detail-mappers/barrel-attachment-
 import { mapToAttachmentDetail } from './detail-mappers/attachment-detail.mapper';
 import { mapToPlatformDetail } from './detail-mappers/platform-detail.mapper';
 import { mapToAmmoDetail } from './detail-mappers/ammo-type.mapper';
+import { UiButtonComponent } from "../../shared/components/form-button-component/form-button";
+import { mapToStockDetail } from './detail-mappers/weapon-stock-detail.mapper';
+import { mapToHandguardDetail } from './detail-mappers/handguard-detail.mapper';
+import { ItemHeader } from "../../shared/components/item-header/item-header";
 
 @Component({
   selector: 'app-item-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, UiButtonComponent, ItemHeader],
   templateUrl: './item-detail.component.html'
 })
 export class ItemDetailComponent {
@@ -33,7 +37,8 @@ export class ItemDetailComponent {
     constructor(
         private apiInfoService: ApiInfoService,
         private route: ActivatedRoute,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private router: Router
     ) {}
 
     loading = false;
@@ -42,6 +47,10 @@ export class ItemDetailComponent {
 
   category = '';
   id = '';
+
+  openEdit(category: string) {
+  this.router.navigate([`/items/edit/${category}/${this.id}`])
+  }
 
   ngOnInit(): void {
 
@@ -77,32 +86,36 @@ export class ItemDetailComponent {
       .replace(/^./, s => s.toUpperCase());
   }
 
+  back(category: string){
+  this.router.navigate([`/items/${category}`])
+}
+
   loadData(): void {
 
   this.loading = true;
 
   const map: Record<string, any> = {
-    weapons: () => this.apiInfoService.getItemsById(this.id, "weapons"),
-    ammo: () => this.apiInfoService.getItemsById(this.id, "calibers"),
-    ammotype: () => this.apiInfoService.getItemsById(this.id, "ammo"),
-    magazines: () => this.apiInfoService.getItemsById(this.id, "magazines"),
-    armorVests: () => this.apiInfoService.getItemsById(this.id, "vests"),
-    nvgs: () => this.apiInfoService.getItemsById(this.id, "nvg"),
-    helmets: () => this.apiInfoService.getItemsById(this.id, 'helmet'),
-    plates: () => this.apiInfoService.getItemsById(this.id, "plates"),
-    textile: () => this.apiInfoService.getItemsById(this.id, "textile"),
-    optics: () => this.apiInfoService.getItemsById(this.id, "optics"),
-    holsters: () => this.apiInfoService.getItemsById(this.id, "holsters"),
-    grenades: () => this.apiInfoService.getItemsById(this.id, "grenades"),
-    gasmaskfilter: () => this.apiInfoService.getItemsById(this.id, "gas-mask-filter"),
-    gasmask: () => this.apiInfoService.getItemsById(this.id, "gas-mask"),
-    bayonets: () => this.apiInfoService.getItemsById(this.id, "bayonets"),
-    barrelattachments: () => this.apiInfoService.getItemsById(this.id, "barrel-attachments"),
-    attachments: () => this.apiInfoService.getItemsById(this.id, "attachments"),
-    platforms: () => this.apiInfoService.getItemsById(this.id, "platforms"),
-    stocks: () => this.apiInfoService.getItemsById(this.id, "stocks"),
-    handguards: () => this.apiInfoService.getItemsById(this.id, "handguards"),
-    misc: () => this.apiInfoService.getItemsById(this.id, 'misc')
+    weapons: () => this.apiInfoService.getItemsById(this.id, `/armory/weapons/id/`),
+    ammo: () => this.apiInfoService.getItemsById(this.id, `/armory/calibers/id/`),
+    ammotype: () => this.apiInfoService.getItemsById(this.id, `/armory/ammo/id/`),
+    magazines: () => this.apiInfoService.getItemsById(this.id, `/armory/magazines/id/`),
+    armorVests: () => this.apiInfoService.getItemsById(this.id, `/armory/vests/id/`),
+    nvgs: () => this.apiInfoService.getItemsById(this.id, `/armory/nvg/id/`),
+    helmets: () => this.apiInfoService.getItemsById(this.id, `/armory/helmet/id/`),
+    plates: () => this.apiInfoService.getItemsById(this.id, `/armory/plates/id/`),
+    textile: () => this.apiInfoService.getItemsById(this.id, `/armory/textile/id/`),
+    optics: () => this.apiInfoService.getItemsById(this.id, `/armory/optics/id/`),
+    holsters: () => this.apiInfoService.getItemsById(this.id, `/armory/holsters/id/`),
+    grenades: () => this.apiInfoService.getItemsById(this.id, `/armory/grenades/id/`),
+    gasmaskfilter: () => this.apiInfoService.getItemsById(this.id, `/armory/gas-mask-filter/id/`),
+    gasmask: () => this.apiInfoService.getItemsById(this.id, `/armory/gas-mask/id/`),
+    bayonets: () => this.apiInfoService.getItemsById(this.id, `/armory/bayonets/id/`),
+    barrelattachments: () => this.apiInfoService.getItemsById(this.id, `/armory/barrel-attachments/id/`),
+    attachments: () => this.apiInfoService.getItemsById(this.id, `/armory/attachments/id/`),
+    platforms: () => this.apiInfoService.getItemsById(this.id, `/armory/platforms/id/`),
+    stocks: () => this.apiInfoService.getItemsById(this.id, `/armory/stocks/id/`),
+    handguards: () => this.apiInfoService.getItemsById(this.id, `/armory/handguards/id/`),
+    misc: () => this.apiInfoService.getItemsById(this.id, `/armory/misc/id/`)
   };
 
   const req = map[this.category];
@@ -134,8 +147,8 @@ export class ItemDetailComponent {
         barrelattachments: () => mapToBarrelAttachmentDetail(res),
         attachments: () => mapToAttachmentDetail(res),
         platforms: () => mapToPlatformDetail(res),
-        /*stocks: () => mapToSto,
-        handguards: () => mapToPlatformDetail(res),*/
+        stocks: () => mapToStockDetail(res),
+        handguards: () => mapToHandguardDetail(res),
         misc: () => mapToMiscDetail(res)
     };
 

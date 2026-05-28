@@ -11,7 +11,8 @@ import { ItemHeader } from "../../shared/components/item-header/item-header";
 import { ItemPagination } from "../../shared/components/item-pagination/item-pagination";
 import { ItemSearch } from "../../shared/components/item-search/item-search";
 import { DynamicFormComponent } from "../../shared/components/dynamic-form-component/dynamic-form.component";
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UiButtonComponent } from "../../shared/components/form-button-component/form-button";
 
 @Component({
   selector: 'app-items',
@@ -22,7 +23,8 @@ import { Router } from '@angular/router';
     ItemTabs,
     ItemHeader,
     ItemPagination,
-    ItemSearch
+    ItemSearch,
+    UiButtonComponent
 ],
   templateUrl: './items.component.html'
 })
@@ -32,6 +34,7 @@ export class ItemsComponent implements OnInit {
 openCreate(category: string) {
   this.router.navigate(['/create/' + category])
 }
+
 
   page = 0;
   size = 24;
@@ -48,7 +51,7 @@ openCreate(category: string) {
   tabs = [
     { key: 'weapons', label: 'Armas' },
     { key: 'ammo', label: 'Calibres' },
-    { key: 'ammotypes', label: 'Munición' },
+    { key: 'ammotype', label: 'Munición' },
     { key: 'magazines', label: 'Cargadores' },
     { key: 'helmets', label: 'Cascos' },
     { key: 'armorVests', label: 'Chalecos' },
@@ -72,12 +75,15 @@ openCreate(category: string) {
   constructor(
     private info: ApiInfoService,
     private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.activeTab =
+      this.route.snapshot.paramMap.get('category') ?? '';
 
-    this.loadTab('weapons');
+    this.loadTab(this.activeTab);
   }
 
   loadTab(key: string, page: number = 0): void {
@@ -86,6 +92,7 @@ openCreate(category: string) {
 
     this.tabsDisabled = true;
 
+    this.router.navigate(['/items', key]);
     this.activeTab = key;
     this.page = page;
     this.loadData();
@@ -114,27 +121,27 @@ loadData(): void {
   console.log(request)
 
   const map: Record<string, any> = {
-    weapons: () => this.info.getItems(this.size, this.page, request, "weapons"),
-    ammo: () => this.info.getItems(this.size, this.page, request, "calibers"),
-    ammotypes: () => this.info.getItems(this.size, this.page, request, "ammo"),
-    magazines: () => this.info.getItems(this.size, this.page, request, "magazines"),
-    helmets: () => this.info.getItems(this.size, this.page, request, "helmet"),
-    armorVests: () => this.info.getItems(this.size, this.page, request, "vests"),
-    plates: () => this.info.getItems(this.size, this.page, request, "plates"),
-    nvgs: () => this.info.getItems(this.size, this.page, request, "nvg"),
-    textile: () => this.info.getItems(this.size, this.page, request, "textile"),
-    optics: () => this.info.getItems(this.size, this.page, request, "optics"),
-    holsters: () => this.info.getItems(this.size, this.page, request, "holsters"),
-    grenades: () => this.info.getItems(this.size, this.page, request, "grenades"),
-    gasmaskfilter: () => this.info.getItems(this.size, this.page, request, "gas-mask-filter"),
-    gasmask: () => this.info.getItems(this.size, this.page, request, "gas-mask"),
-    bayonets: () => this.info.getItems(this.size, this.page, request, "bayonets"),
-    barrelattachments: () => this.info.getItems(this.size, this.page, request, "barrel-attachments"),
-    attachments: () => this.info.getItems(this.size, this.page, request, "attachments"),
-    platforms: () => this.info.getItems(this.size, this.page, request, "platforms"),
-    stocks: () => this.info.getItems(this.size, this.page, request, "stocks"),
-    handguards: () => this.info.getItems(this.size, this.page, request, "handguards"),
-    misc: () => this.info.getItems(this.size, this.page, request, "misc")
+    weapons: () => this.info.getItems(this.size, this.page, request, `/armory/weapons/search`),
+    ammo: () => this.info.getItems(this.size, this.page, request, `/armory/calibers/search`),
+    ammotype: () => this.info.getItems(this.size, this.page, request, `/armory/ammo/search`),
+    magazines: () => this.info.getItems(this.size, this.page, request, `/armory/magazines/search`),
+    helmets: () => this.info.getItems(this.size, this.page, request, `/armory/helmet/search`),
+    armorVests: () => this.info.getItems(this.size, this.page, request, `/armory/vests/search`),
+    plates: () => this.info.getItems(this.size, this.page, request, `/armory/plates/search`),
+    nvgs: () => this.info.getItems(this.size, this.page, request, `/armory/nvg/search`),
+    textile: () => this.info.getItems(this.size, this.page, request, `/armory/textile/search`),
+    optics: () => this.info.getItems(this.size, this.page, request, `/armory/optics/search`),
+    holsters: () => this.info.getItems(this.size, this.page, request, `/armory/holsters/search`),
+    grenades: () => this.info.getItems(this.size, this.page, request, `/armory/grenades/search`),
+    gasmaskfilter: () => this.info.getItems(this.size, this.page, request, `/armory/gas-mask-filter/search`),
+    gasmask: () => this.info.getItems(this.size, this.page, request, `/armory/gas-mask/search`),
+    bayonets: () => this.info.getItems(this.size, this.page, request, `/armory/bayonets/search`),
+    barrelattachments: () => this.info.getItems(this.size, this.page, request, `/armory/barrel-attachments/search`),
+    attachments: () => this.info.getItems(this.size, this.page, request, `/armory/attachments/search`),
+    platforms: () => this.info.getItems(this.size, this.page, request, `/armory/platforms/search`),
+    stocks: () => this.info.getItems(this.size, this.page, request, `/armory/stocks/search`),
+    handguards: () => this.info.getItems(this.size, this.page, request, `/armory/handguards/search`),
+    misc: () => this.info.getItems(this.size, this.page, request, `/armory/misc/search`)
   };
 
   const req = map[this.activeTab];

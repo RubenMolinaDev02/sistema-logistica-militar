@@ -46,43 +46,15 @@
 
   <div>
     <!-- SEARCH BUTTON -->
-  <button
-    (click)="onSearch()"
-    class="
-      px-5 py-2
-      bg-[#111418]
-      border border-[#1e2530]
-      text-[#4a5568]
-      font-['Share_Tech_Mono']
-      tracking-[2px]
-      uppercase
-      transition-all
-      hover:text-[#00e5a0]
-      hover:border-[#00e5a0]
-    "
-    style="width: 100px; padding: 10px; margin-right: 20px;"
-  >
-    Buscar
-  </button>
-
-  <!-- CLEAR -->
-  <button
-    (click)="clear()"
-    class="
-      px-5 py-2
-      bg-transparent
-      border border-[#1e2530]
-      text-[#4a5568]
-      font-['Share_Tech_Mono']
-      tracking-[2px]
-      uppercase
-      transition-all
-      hover:text-[#ff3b3b]
-      hover:border-[#ff3b3b]
-    "
-    style="width: 100px; padding: 10px;"
-  >
-    Limpiar
-  </button>
+     <app-ui-button
+      label="SEARCH"
+      variant="primary"
+      (pressed)="onSearch()"
+    ></app-ui-button>
+    <app-ui-button
+      label="CLEAR"
+      variant="danger"
+      (pressed)="clear()"
+    ></app-ui-button>
   </div>
 </div>

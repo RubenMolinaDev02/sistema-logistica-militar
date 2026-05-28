@@ -63,7 +63,7 @@ public class HolsterService {
     public HolsterModel updateHolster(HolsterUpdateRequest holster, String id) {
         HolsterModel exists = getHolsterById(id);
 
-        itemSearchService.validateReference(holster.getReference());
+        itemSearchService.validateReference(holster.getReference(), exists.getReference());
         if(Utils.validateString(holster.getReference())) exists.setReference(holster.getReference());
 
         if (Utils.validateString(holster.getName())) exists.setName(holster.getName());

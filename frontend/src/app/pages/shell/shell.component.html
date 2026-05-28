@@ -1,10 +1,10 @@
-<div class="min-h-screen flex bg-[#0a0c0f] text-[#c8d4e0] font-['Share_Tech_Mono'] tracking-wide">
+<div class="h-screen overflow-hidden flex bg-[#0a0c0f] text-[#c8d4e0] font-['Share_Tech_Mono'] tracking-wide">
 
   <!-- SIDEBAR -->
   <nav class="w-[240px] min-w-[240px] bg-[#111418] border-r border-[#1e2530] flex flex-col h-screen">
 
     <!-- LOGO -->
-    <div class="flex items-center gap-4 px-6 py-7 border-b border-[#1e2530]">
+    <div class="flex items-center gap-4 px-6 py-7 border-b border-[#1e2530]" style="height: 100px; text-align: center;">
       <span class="text-[#00e5a0] text-3xl">⬡</span>
 
       <span class="text-[#00e5a0] text-[1.5em] tracking-[0.45em] uppercase" style="padding: 10px;">
@@ -25,7 +25,7 @@
       </li>
 
       <li>
-        <a routerLink="/items"
+        <a routerLink="/items/weapons"
            routerLinkActive="!text-[#00e5a0] !border-[#00e5a0] bg-[#00e5a0]/5"
            class="flex items-center gap-3 px-6 py-3 border-l-2 border-transparent text-[#4a5568] hover:text-[#c8d4e0] hover:bg-[#181c22] transition-all uppercase tracking-[0.25em] text-[0.9em] no-underline" style="padding: 10px;">
           <span>◈</span>
@@ -103,7 +103,7 @@
   </nav>
 
   <!-- MAIN -->
-  <main class="flex-1 bg-[#0a0c0f] p-6">
+  <main class="flex-1 bg-[#0a0c0f] flex flex-col overflow-hidden">
     <router-outlet />
   </main>
 

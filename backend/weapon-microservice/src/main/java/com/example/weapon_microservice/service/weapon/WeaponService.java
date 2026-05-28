@@ -28,6 +28,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -107,7 +108,7 @@ public class WeaponService {
     public WeaponModel updateWeapon(WeaponUpdateRequest weapon, String id){
         WeaponModel existing = getWeaponById(id);
 
-        validateWeaponUpdate(weapon);
+        validateWeaponUpdate(weapon, existing.getReference());
 
         if (Utils.validateString(weapon.getCaliberId())) existing.setCaliberId(weapon.getCaliberId());
 
@@ -141,7 +142,7 @@ public class WeaponService {
 
         if (weapon.getHasBayonetMount() != null) existing.setHasBayonetMount(weapon.getHasBayonetMount());
 
-        if (weapon.getStockAttachmentSystem() != null) existing.setStockAttachmentSystem(weapon.getStockAttachmentSystem());
+        if (weapon.getStockAtachmentSystem() != null) existing.setStockAttachmentSystem(weapon.getStockAtachmentSystem());
 
         if (weapon.getCompatibleWithSupressor() != null) existing.setCompatibleWithSupressor(weapon.getCompatibleWithSupressor());
 
@@ -188,8 +189,8 @@ public class WeaponService {
         getManufacturerById(weaponRequest.getManufacturerId());
     }
 
-    public void validateWeaponUpdate(WeaponUpdateRequest weaponRequest){
-        itemSearchService.validateReference(weaponRequest.getReference());
+    public void validateWeaponUpdate(WeaponUpdateRequest weaponRequest, String oldRef){
+        itemSearchService.validateReference(weaponRequest.getReference(), oldRef);
         if (weaponRequest.getPlatformId() != null) getPlatformById(weaponRequest.getPlatformId());
         if (weaponRequest.getHandguardId() != null) getHandguardById(weaponRequest.getHandguardId());
         if (weaponRequest.getStockId() != null) getStockById(weaponRequest.getStockId());

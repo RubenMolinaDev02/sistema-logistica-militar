@@ -52,7 +52,7 @@ public class ArmorPlateService {
     public ArmorPlateModel updateArmorPlate(ArmorPlateUpdateRequest armorPlate, String id) {
         ArmorPlateModel exists = getArmorPlateById(id);
 
-        itemSearchService.validateReference(armorPlate.getReference());
+        itemSearchService.validateReference(armorPlate.getReference(), exists.getReference());
         if (Utils.validateString(armorPlate.getReference())) exists.setReference(armorPlate.getReference());
 
         if (Utils.validateString(armorPlate.getName())) exists.setName(armorPlate.getName());

@@ -182,6 +182,19 @@ export const CREATE_WEAPON_MODEL: ItemFormModel = {
             nullable: true,
             dependsOn: ['platformId']
         },
+        {
+          key: 'hasBayonetMount',
+          label: 'Bayonet Mount',
+          type: 'BOOLEAN',
+          value: false
+        },
+
+        {
+          key: 'compatibleWithSupressor',
+          label: 'Suppressor Compatible',
+          type: 'BOOLEAN',
+          value: false
+        }
       ]
     }
   ]

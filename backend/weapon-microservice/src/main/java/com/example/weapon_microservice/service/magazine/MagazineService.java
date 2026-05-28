@@ -75,7 +75,7 @@ public class MagazineService {
 
         MagazineModel existing = getMagazineById(id);
 
-        itemSearchService.validateReference(model.getReference());
+        itemSearchService.validateReference(model.getReference(), existing.getReference());
         if (Utils.validateString(model.getReference())) existing.setReference(model.getReference());
 
         if (existing.getCompatiblePlatformsIds() != null) existing.setCompatiblePlatformsIds(filterExistingPlatformIds(model.getCompatiblePlatformsIds()));

@@ -48,7 +48,7 @@ public class TextileService {
     public TextileModel updateTextile(TextileUpdateRequest textile, String id) {
         TextileModel exists = getTextileById(id);
 
-        itemSearchService.validateReference(textile.getReference());
+        itemSearchService.validateReference(textile.getReference(), exists.getReference());
 
         if (Utils.validateString(textile.getName())) exists.setName(textile.getName());
         if (textile.getReference() != null) exists.setReference(textile.getReference());

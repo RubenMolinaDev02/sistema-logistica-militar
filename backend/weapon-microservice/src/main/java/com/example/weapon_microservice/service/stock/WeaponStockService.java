@@ -74,7 +74,7 @@ public class WeaponStockService {
     public WeaponStockModel updateWeaponStock(StockUpdateRequest stock, String id) {
         WeaponStockModel exists = getWeaponStockById(id);
 
-        itemSearchService.validateReference(stock.getReference());
+        itemSearchService.validateReference(stock.getReference(), exists.getReference());
 
         exists.setCompatiblePlatformsIds(filterExistingPlatformIds(stock.getCompatiblePlatformsIds()));
 

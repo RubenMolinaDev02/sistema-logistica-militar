@@ -50,7 +50,7 @@ public class GasMaskService {
     public GasMaskModel updateGasMask(GasMaskUpdateRequest request, String id){
         GasMaskModel exists = getGasMaskById(id);
 
-        itemSearchService.validateReference(request.getReference());
+        itemSearchService.validateReference(request.getReference(), exists.getReference());
         if (Utils.validateString(request.getReference())) exists.setReference(request.getReference());
 
         if (Utils.validateString(request.getName())) exists.setName(request.getName());

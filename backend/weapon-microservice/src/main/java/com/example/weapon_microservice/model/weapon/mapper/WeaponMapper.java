@@ -41,7 +41,7 @@ public class WeaponMapper {
                 .sightMount(request.getSightMount())
                 .handguardId(request.getHandguardId())
                 .hasBayonetMount(request.isHasBayonetMount())
-                .stockAttachmentSystem(request.getStockAttachmentSystem())
+                .stockAttachmentSystem(request.getStockAtachmentSystem())
                 .stockId(request.getStockId())
                 .compatibleWithSupressor(request.isCompatibleWithSupressor())
                 .manufacturerId(request.getManufacturerId())
