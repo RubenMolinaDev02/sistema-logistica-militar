@@ -13,6 +13,7 @@ import { ItemSearch } from "../../shared/components/item-search/item-search";
 import { DynamicFormComponent } from "../../shared/components/dynamic-form-component/dynamic-form.component";
 import { ActivatedRoute, Router } from '@angular/router';
 import { UiButtonComponent } from "../../shared/components/form-button-component/form-button";
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-items',
@@ -24,7 +25,7 @@ import { UiButtonComponent } from "../../shared/components/form-button-component
     ItemHeader,
     ItemPagination,
     ItemSearch,
-    UiButtonComponent
+    UiButtonComponent,
 ],
   templateUrl: './items.component.html'
 })
@@ -76,7 +77,8 @@ openCreate(category: string) {
     private info: ApiInfoService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public authService: AuthService
   ) {}
 
   ngOnInit(): void {

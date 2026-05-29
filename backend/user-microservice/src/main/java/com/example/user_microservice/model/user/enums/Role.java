@@ -22,7 +22,6 @@ public enum Role {
 
     // Tecnología e inteligencia
     IT_SPECIALIST,
-
     // Mando
     TEAM_LEADER,           // Líder de equipo (~4)
     SQUAD_LEADER,          // Líder de escuadra (~9)

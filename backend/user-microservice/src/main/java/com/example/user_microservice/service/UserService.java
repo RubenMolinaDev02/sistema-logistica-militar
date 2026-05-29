@@ -1,6 +1,7 @@
 package com.example.user_microservice.service;
 
 import com.example.user_microservice.dto.user.CreateUserRequest;
+import com.example.user_microservice.dto.user.UserResponse;
 import com.example.user_microservice.mapper.UserMapper;
 import com.example.user_microservice.model.user.UserModel;
 import com.example.user_microservice.repository.KeycloakRepository;
@@ -10,6 +11,7 @@ import com.example.user_microservice.utils.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -37,7 +39,7 @@ public class UserService {
                 ));
     }
 
-    public void createUser(CreateUserRequest request, String token, String role){
+    public UserResponse createUser(CreateUserRequest request, String token, String role){
         String id = keycloakRepository.createUser(token, request);
 
         String password = PasswordGenerator.generate(15);
@@ -50,7 +52,7 @@ public class UserService {
                 keycloakRepository.getRoleByName(token, role)
         );
 
-        userRepository.save(UserMapper.modelFromRequest(request, id));
+        UserModel user = userRepository.save(UserMapper.modelFromRequest(request, id));
 
         userEventProducer.sendUserCreatedEvent(
                 Map.of(
@@ -59,5 +61,10 @@ public class UserService {
                         "username", request.getUsername()
                 )
         );
+        return UserMapper.responseFromModelWithTempPassword(user ,password);
+    }
+
+    public List<UserModel> getAllUsers(){
+        return userRepository.findAll();
     }
 }

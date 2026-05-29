@@ -71,4 +71,41 @@ async refreshToken(): Promise<string> {
 
   return data.access_token;
 }
+
+getUserRoles(): string[] {
+
+  const token =
+    localStorage.getItem('access_token');
+
+  if (!token) return [];
+
+  try {
+
+    const payload =
+      JSON.parse(atob(token.split('.')[1]));
+
+    const realmRoles =
+      payload?.realm_access?.roles || [];
+
+    const clientRoles =
+      payload?.resource_access?.[
+        environment.keycloak.clientId
+      ]?.roles || [];
+
+    return [
+      ...realmRoles,
+      ...clientRoles
+    ];
+
+  } catch {
+
+    return [];
+
+  }
+
+}
+
+hasRole(role: string): boolean {
+  return this.getUserRoles().includes(role);
+}
 }

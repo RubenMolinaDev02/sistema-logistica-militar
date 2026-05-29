@@ -2,7 +2,12 @@ package com.example.user_microservice.controller;
 
 import com.example.user_microservice.dto.role.RoleMapping;
 import com.example.user_microservice.dto.user.CreateUserRequest;
+import com.example.user_microservice.dto.user.UserResponse;
+import com.example.user_microservice.mapper.UserMapper;
+import com.example.user_microservice.model.user.enums.Role;
+import com.example.user_microservice.repository.KeycloakRepository;
 import com.example.user_microservice.service.UserService;
+import com.example.user_microservice.utils.AuthUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +20,26 @@ import java.util.Map;
 public class KeycloakAdminController {
     @Autowired
     private UserService service;
+    @Autowired
+    private KeycloakRepository keycloakRepository;
 
     private String cleanToken(String token) {
         return token.replace("Bearer ", "");
     }
 
     @PostMapping
-    public void createUser(
+    public UserResponse createUser(
             @RequestHeader("Authorization") String token,
             @RequestBody CreateUserRequest request
     ) {
-        service.createUser(request, token, request.getRole());
+        return service.createUser(request, token, request.getKeycloakRoles());
+    }
+
+    @GetMapping("roles")
+    public List<RoleMapping> getRealmRoles(
+            @RequestHeader("Authorization") String token
+    ){
+        return keycloakRepository.getRealmRoles(token);
     }
 /*
     @PutMapping("/{userId}")

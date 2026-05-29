@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ItemHeader } from "../../shared/components/item-header/item-header";
+import { ItemHeader } from "../../../shared/components/item-header/item-header";
 
 @Component({
   selector: 'app-dashboard-kpi',
   standalone: true,
   imports: [CommonModule, ItemHeader],
-  templateUrl: './dashboard.component.html'
+  templateUrl: './dashboard-kpi.component.html'
 })
 export class DashboardKpiComponent {
 

@@ -3,6 +3,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { ItemDetailComponent } from './pages/item-detail/item-detail.component';
 import { ItemCreateComponent } from './pages/create-item/item-create.component';
 import { ItemEditComponent } from './pages/edit-item/item-edit.component';
+import { MyUserComponent } from './pages/my-user-page/my-user.page';
 
 export const routes: Routes = [
 
@@ -44,7 +45,7 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         loadComponent: () =>
-          import('./pages/dashboard/dashboard')
+          import('./pages/dashboard/dashboard.page')
             .then(m => m.DashboardComponent)
       },
 
@@ -71,6 +72,19 @@ export const routes: Routes = [
       {
         path: 'create/:category',
         component: ItemCreateComponent
+      },
+
+
+      {
+        path: 'users',
+        loadComponent: () =>
+          import('./pages/login/login.component')
+            .then(m => m.LoginComponent)
+      },
+
+      {
+        path: 'myuser',
+        component: MyUserComponent
       },
 
       /*

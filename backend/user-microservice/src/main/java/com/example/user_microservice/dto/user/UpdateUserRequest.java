@@ -3,25 +3,18 @@ package com.example.user_microservice.dto.user;
 import com.example.user_microservice.model.user.enums.Rank;
 import com.example.user_microservice.model.user.enums.Role;
 import jakarta.validation.constraints.*;
-
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
-public class CreateUserRequest {
-
+public class UpdateUserRequest {
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
 
     @NotBlank(message = "Username is required")
     private String username;
-
-    @NotEmpty(message = "Keycloak roles required")
-    private String keycloakRoles;
 
     @NotBlank(message = "First name is required")
     private String firstName;
@@ -37,6 +30,9 @@ public class CreateUserRequest {
 
     @NotBlank(message = "Avatar URL is required")
     private String avatarUrl;
+
+    @NotBlank(message = "Created date is required")
+    private String createdAt;
 
     @NotNull(message = "Rank is required")
     private Rank rank;

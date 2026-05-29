@@ -1,12 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-@Component({
-  selector: 'app-dashboard-panel',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
-    <div class="border border-[#1e2530] bg-[#111418] flex flex-col">
+<div class="border border-[#1e2530] bg-[#111418] flex flex-col">
 
       <!-- HEADER -->
       <div class="flex items-center justify-between
@@ -31,10 +23,3 @@ import { CommonModule } from '@angular/common';
       </div>
 
     </div>
-  `
-})
-export class DashboardPanelComponent {
-
-  @Input() title!: string;
-
-}

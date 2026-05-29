@@ -5,12 +5,13 @@
     <app-item-header 
       [title]="`Military logistics software`"
       [subtitle]="`Item catalog`"
-    >
+    >@if (this.authService.hasRole("system-admin")) {
       <app-ui-button
         label="+ Create"
         variant="primary"
         (pressed)="openCreate(activeTab)"
       />
+    }
     </app-item-header>
 
     

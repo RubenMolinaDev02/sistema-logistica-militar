@@ -1,59 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { forkJoin } from 'rxjs';
-
-import { InventoryService } from '../../core/services/api.inventory.service';
-import { LocationService } from '../../core/services/api.location.service';
-
-import { ShipmentResponse, StockResponse } from '../../shared/models/models';
-import { DashboardKpiComponent } from "./dashboard.component";
-import { DashboardPanelComponent } from "./dashboard.panel.component";
-
-
-@Component({
-  selector: 'app-dashboard',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterLink,
-    DashboardKpiComponent,
-    DashboardPanelComponent
-],
-  template: `
-    <div class="min-h-screen
+<div class="min-h-screen
                 bg-[#0a0c0f]
                 text-[#c8d4e0]
                 font-['Barlow']
                 p-8">
 
       <!-- HEADER -->
-      <div class="flex items-end justify-between mb-8">
-
-        <div>
-
-          <div class="font-['Share_Tech_Mono']
-                      text-[10px]
-                      tracking-[3px]
-                      uppercase
-                      text-[#00e5a0]
-                      mb-1">
-            SISTEMA DE LOGÍSTICA MILITAR
-          </div>
-
-          <h1 class="text-[30px] font-bold tracking-[-0.5px]">
-            Dashboard
-          </h1>
-
-        </div>
-
-        <div class="font-['Share_Tech_Mono']
-                    text-[12px]
-                    text-[#4a5568]">
-          {{ now | date:'dd MMM yyyy · HH:mm' }}
-        </div>
-
-      </div>
+      <app-item-header 
+      [title]="`Military logistics software`"
+      [subtitle]="`Dashboard`"
+    />
 
       <!-- KPI GRID -->
       <div class="grid
@@ -269,70 +224,3 @@ import { DashboardPanelComponent } from "./dashboard.panel.component";
       </div>
 
     </div>
-  `
-})
-export class DashboardComponent implements OnInit {
-
-  now = new Date();
-
-  shipments: ShipmentResponse[] = [];
-
-  lowStock: StockResponse[] = [];
-
-  Math = Math;
-
-  kpis = [
-    { label: 'SKUs activos', value: '—', sub: 'referencias de inventario', accent: false },
-    { label: 'Stock total', value: '—', sub: 'unidades en almacén', accent: true },
-    { label: 'Envíos activos', value: '—', sub: 'en tránsito', accent: false },
-    { label: 'Unidades serializadas', value: '—', sub: 'con nº de serie', accent: false },
-    { label: 'Localizaciones', value: '—', sub: 'bases y almacenes', accent: false },
-    { label: 'Alertas stock', value: '—', sub: 'bajo mínimos', accent: false }
-  ];
-
-  constructor(
-    private inventory: InventoryService,
-    private locationSvc: LocationService
-  ) {}
-
-  ngOnInit() {
-
-    forkJoin({
-      skus: this.inventory.getAllSkus(),
-      stock: this.inventory.getAllStock(),
-      shipments: this.inventory.getAllShipments(),
-      locations: this.locationSvc.getAll()
-    }).subscribe({
-
-      next: ({ skus, stock, shipments, locations }) => {
-
-        this.shipments = shipments.sort((a, b) =>
-          b.creationDate.localeCompare(a.creationDate)
-        );
-
-        this.lowStock = stock
-          .filter(s => s.units < 10)
-          .sort((a, b) => a.units - b.units);
-
-        const activeShipments =
-          shipments.filter(s =>
-            s.status === 'CREATED' ||
-            s.status === 'IN_PROGRESS'
-          ).length;
-
-        const totalUnits =
-          stock.reduce((acc, s) => acc + s.units, 0);
-
-        this.kpis[0].value = skus.length.toString();
-        this.kpis[1].value = totalUnits.toLocaleString();
-        this.kpis[2].value = activeShipments.toString();
-        this.kpis[4].value = locations.length.toString();
-        this.kpis[5].value = this.lowStock.length.toString();
-
-      }
-
-    });
-
-  }
-
-}

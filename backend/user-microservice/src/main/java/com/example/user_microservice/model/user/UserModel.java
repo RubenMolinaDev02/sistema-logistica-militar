@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDate;
+
 @Builder
 @Getter
 @Setter
@@ -24,7 +27,8 @@ public class UserModel {
     private String email;
     private String username;
     private String avatarUrl;
-    private String createdAt;
+    private LocalDate createdAt;
+    private String locationId;
     private Rank rank;
     private Role role;
 
