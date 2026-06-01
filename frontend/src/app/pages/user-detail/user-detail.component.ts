@@ -4,19 +4,19 @@ import { ApiInfoService } from '../../core/services/api.info.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UiButtonComponent } from "../../shared/components/form-button-component/form-button";
 import { ItemHeader } from "../../shared/components/item-header/item-header";
-import { mapToUserDetail } from './user-detail.dto';
-import { UserService } from '../../core/services/user.service';
+import { mapToUserDetail } from '../my-user-page/user-detail.dto';
 
 @Component({
-  selector: 'app-my-user-detail',
+  selector: 'app-user-detail',
   standalone: true,
   imports: [CommonModule, UiButtonComponent, ItemHeader],
-  templateUrl: './my-user.page.html'
+  templateUrl: './user-detail.component.html'
 })
-export class MyUserComponent {
+export class UserDetailComponent {
 
     constructor(
-        private userService: UserService,
+        private apiInfoService: ApiInfoService,
+        private route: ActivatedRoute,
         private cdr: ChangeDetectorRef,
         private router: Router
     ) {}
@@ -25,11 +25,18 @@ export class MyUserComponent {
 
   item: any = null;
 
+  id = '';
+
   openEdit() {
-  this.router.navigate([`/myuser/edit`])
+  this.router.navigate([`/users/edit/${this.id}`])
   }
 
   ngOnInit(): void {
+
+
+    this.id =
+      this.route.snapshot.paramMap.get('id') ?? '';
+
     this.loadData();
   }
 
@@ -56,14 +63,18 @@ export class MyUserComponent {
       .replace(/^./, s => s.toUpperCase());
   }
 
+  back(){
+  this.router.navigate([`/users`])
+}
 
   loadData(): void {
 
   this.loading = true;
 
-  this.userService.getMyUser().subscribe({
+  this.apiInfoService.getItemsById(this.id, `/admin/users/`).subscribe({
     next: (res: any) => {
-      this.item = mapToUserDetail(res);
+
+      this.item = mapToUserDetail(res)
       console.log(this.item);
       this.loading = false;
       this.cdr.detectChanges();

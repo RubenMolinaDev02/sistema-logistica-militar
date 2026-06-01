@@ -4,6 +4,8 @@ import com.example.user_microservice.dto.role.RoleMapping;
 import com.example.user_microservice.dto.user.CreateUserRequest;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
@@ -110,44 +112,6 @@ public class KeycloakRepository {
     }
 
     // =========================
-    // ROLES
-    // =========================
-
-    public void assignRealmRoles(String token, String userId, List<RoleMapping> roles) {
-
-        webClient.post()
-                .uri("/admin/realms/{realm}/users/{id}/role-mappings/realm", REALM, userId)
-                .header("Authorization", token)
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(roles)
-                .retrieve()
-                .toBodilessEntity()
-                .block();
-    }
-
-    public void removeRealmRoles(String token, String userId, List<Map<String, Object>> roles) {
-
-        webClient.method(org.springframework.http.HttpMethod.DELETE)
-                .uri("/admin/realms/{realm}/users/{id}/role-mappings/realm", REALM, userId)
-                .header("Authorization", "Bearer " + token)
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(roles)
-                .retrieve()
-                .toBodilessEntity()
-                .block();
-    }
-
-    public List<Map> getUserRoles(String token, String userId) {
-
-        return webClient.get()
-                .uri("/admin/realms/{realm}/users/{id}/role-mappings/realm", REALM, userId)
-                .header("Authorization", "Bearer " + token)
-                .retrieve()
-                .bodyToMono(List.class)
-                .block();
-    }
-
-    // =========================
     // ROLE INFO
     // =========================
 
@@ -173,19 +137,31 @@ public class KeycloakRepository {
         return role != null ? List.of(role) : List.of();
     }
 
-    public boolean userExists(String token, String username) {
+    public boolean validatePassword(String username, String password) {
 
-        List<Map> users = webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/admin/realms/{realm}/users")
-                        .queryParam("username", username)
-                        .build(REALM))
-                .header("Authorization", token)
-                .retrieve()
-                .bodyToMono(List.class)
-                .block();
+        try {
 
-        return users != null && !users.isEmpty();
+            MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+
+            body.add("client_id", "weapon-service");
+            body.add("grant_type", "password");
+            body.add("username", username);
+            body.add("password", password);
+
+            webClient.post()
+                    .uri("http://localhost:9090/realms/armory-realm/protocol/openid-connect/token")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .bodyValue(body)
+                    .retrieve()
+                    .bodyToMono(Map.class)
+                    .block();
+
+            return true;
+
+        } catch (Exception e) {
+
+            return false;
+        }
     }
 
     // =========================

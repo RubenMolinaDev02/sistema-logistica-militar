@@ -35,6 +35,12 @@ public class UserMapper {
                 .locationId(user.getLocationId())
                 .rank(user.getRank())
                 .active(user.isActive())
+                .soldierNumber(user.getSoldierNumber())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .dni(user.getDni())
+                .phoneNumber(user.getPhoneNumber())
+                .role(user.getRole())
                 .build();
     }
 

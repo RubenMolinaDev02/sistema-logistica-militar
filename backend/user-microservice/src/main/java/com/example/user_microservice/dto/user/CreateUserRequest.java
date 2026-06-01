@@ -20,9 +20,6 @@ public class CreateUserRequest {
     @NotBlank(message = "Username is required")
     private String username;
 
-    @NotEmpty(message = "Keycloak roles required")
-    private String keycloakRoles;
-
     @NotBlank(message = "First name is required")
     private String firstName;
 

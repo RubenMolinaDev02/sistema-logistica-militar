@@ -4,6 +4,9 @@ import { ItemDetailComponent } from './pages/item-detail/item-detail.component';
 import { ItemCreateComponent } from './pages/create-item/item-create.component';
 import { ItemEditComponent } from './pages/edit-item/item-edit.component';
 import { MyUserComponent } from './pages/my-user-page/my-user.page';
+import { EditMyProfileComponent } from './pages/edit-my-profile/edit-my-profile.component';
+import { UsersComponent } from './pages/users-page/users-page';
+import { UserDetailComponent } from './pages/user-detail/user-detail.component';
 
 export const routes: Routes = [
 
@@ -77,14 +80,21 @@ export const routes: Routes = [
 
       {
         path: 'users',
-        loadComponent: () =>
-          import('./pages/login/login.component')
-            .then(m => m.LoginComponent)
+        component: UsersComponent
+      },
+      {
+        path: 'users/detail/:id',
+        component: UserDetailComponent
       },
 
       {
         path: 'myuser',
         component: MyUserComponent
+      },
+
+      {
+        path: 'myuser/edit',
+        component: EditMyProfileComponent
       },
 
       /*

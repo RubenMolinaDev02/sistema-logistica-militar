@@ -96,7 +96,27 @@ export class UserService{
       );
     }
 
+    editMyUser(request: any): Observable<ItemDetailModel> {
+      return this.requestWithAuth(() =>
+        this.http.patch<ItemDetailModel>(
+          `${this.base}/users/me/update`,
+          request, { 
+            headers: this.authHeaders()
+           }
+        )
+      );
+    }
 
+    changeMyPassword(newPassword: string, oldPassword: string): Observable<ItemDetailModel> {
+      return this.requestWithAuth(() =>
+        this.http.post<ItemDetailModel>(
+          `${this.base}/users/me/update?newPassword${newPassword}?oldPassword${oldPassword}`,
+           { 
+            headers: this.authHeaders()
+           }
+        )
+      );
+    }
     
 
   getWithParams(endpoint: string, params: Record<string, any>) {
