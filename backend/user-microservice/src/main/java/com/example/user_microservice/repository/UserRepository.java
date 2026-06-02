@@ -4,4 +4,13 @@ import com.example.user_microservice.model.user.UserModel;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface UserRepository extends MongoRepository<UserModel, String> {
+    UserModel findByEmail(String email);
+
+    UserModel findByUsername(String username);
+
+    UserModel findByPhoneNumber(int phoneNumber);
+
+    UserModel findBySoldierNumber(String soldierNumber);
+
+    UserModel findByDni(String dni);
 }

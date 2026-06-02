@@ -8,6 +8,7 @@ import com.example.weapon_microservice.model.attachment.mapper.AttachmentMapper;
 import com.example.weapon_microservice.model.bayonet.BayonetModel;
 import com.example.weapon_microservice.model.bayonet.dto.BayonetResponse;
 import com.example.weapon_microservice.model.bayonet.mapper.BayonetMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.attachment.AttachmentService;
 import jakarta.validation.Valid;
@@ -26,6 +27,11 @@ public class AttachmentController {
     @GetMapping
     public List<AttachmentResponse> getAllAttachments(){
         return AttachmentMapper.responseFromModelList(service.getAllAttachments());
+    }
+
+    @GetMapping("/model/{id}")
+    public AttachmentModel getAttachmentByIdModel(@PathVariable String id){
+        return service.getAttachmentById(id);
     }
 
     @PreAuthorize("hasRole('system-admin')")

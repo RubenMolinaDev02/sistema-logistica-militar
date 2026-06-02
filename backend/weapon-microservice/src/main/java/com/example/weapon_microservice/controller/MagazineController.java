@@ -8,6 +8,7 @@ import com.example.weapon_microservice.model.magazine.mapper.MagazineMapper;
 import com.example.weapon_microservice.model.nvg.NvgModel;
 import com.example.weapon_microservice.model.nvg.dto.NvgResponse;
 import com.example.weapon_microservice.model.nvg.mapper.NvgMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.magazine.MagazineService;
 import jakarta.validation.Valid;
@@ -26,6 +27,11 @@ public class MagazineController {
     @GetMapping
     public List<MagazineResponse> getAllMagazines(){
         return MagazineMapper.responseFromModelListSimple(service.getAllMagazines());
+    }
+
+    @GetMapping("/model/{id}")
+    public MagazineModel getMagazineByIdModel(@PathVariable String id){
+        return service.getMagazineById(id);
     }
 
     @GetMapping("/reference/{reference}")

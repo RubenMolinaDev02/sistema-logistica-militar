@@ -9,6 +9,7 @@ import com.example.weapon_microservice.model.grenade.mapper.GrenadeMapper;
 import com.example.weapon_microservice.model.holster.HolsterModel;
 import com.example.weapon_microservice.model.holster.dto.HolsterResponse;
 import com.example.weapon_microservice.model.holster.mapper.HolsterMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.grenade.GrenadeService;
 import jakarta.validation.Valid;
@@ -26,6 +27,11 @@ public class GrenadeController {
     @GetMapping
     public List<GrenadeResponse> getAllGrenades(){
         return GrenadeMapper.responseFromModelList(service.getAllGrenades());
+    }
+
+    @GetMapping("/model/{id}")
+    public GrenadeModel getGrenadeByIdModel(@PathVariable String id){
+        return service.getGrenadeById(id);
     }
 
     @PreAuthorize("hasRole('system-admin')")

@@ -7,6 +7,13 @@ import { MyUserComponent } from './pages/my-user-page/my-user.page';
 import { EditMyProfileComponent } from './pages/edit-my-profile/edit-my-profile.component';
 import { UsersComponent } from './pages/users-page/users-page';
 import { UserDetailComponent } from './pages/user-detail/user-detail.component';
+import { EditUserComponent } from './pages/edit-user/edit-user.component';
+import { UserCreateComponent } from './pages/create-user/create-user.page';
+import { UserCreatedComponent } from './pages/show-created-user/user-created.component';
+import { LocationsComponent } from './pages/locations-page/location.page';
+import { LocationDetailComponent } from './pages/locations-detail/locations-detail.page';
+import { LocationCreateComponent } from './pages/create-location/create-location.page';
+import { EditLocationComponent } from './pages/edit-location/location-edit.page';
 
 export const routes: Routes = [
 
@@ -83,10 +90,17 @@ export const routes: Routes = [
         component: UsersComponent
       },
       {
+        path: 'users/create',
+        component: UserCreateComponent
+      },
+      {
         path: 'users/detail/:id',
         component: UserDetailComponent
       },
-
+      {
+        path: 'users/edit/:id',
+        component: EditUserComponent
+      },
       {
         path: 'myuser',
         component: MyUserComponent
@@ -95,6 +109,10 @@ export const routes: Routes = [
       {
         path: 'myuser/edit',
         component: EditMyProfileComponent
+      },
+      {
+        path: 'users/create/results',
+        component: UserCreatedComponent
       },
 
       /*
@@ -158,9 +176,19 @@ export const routes: Routes = [
 
       {
         path: 'locations',
-        loadComponent: () =>
-          import('./modules/locations/locations.component')
-            .then(m => m.LocationsComponent)
+        component: LocationsComponent
+      },
+      {
+        path: 'locations/detail/:id',
+        component: LocationDetailComponent
+      },
+      {
+        path: 'locations/create',
+        component: LocationCreateComponent
+      },
+      {
+        path: 'locations/edit/:id',
+        component: EditLocationComponent
       },
 
       /*

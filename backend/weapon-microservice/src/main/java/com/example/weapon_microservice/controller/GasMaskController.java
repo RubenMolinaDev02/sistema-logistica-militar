@@ -9,6 +9,7 @@ import com.example.weapon_microservice.model.gasMask.mapper.GasMaskMapper;
 import com.example.weapon_microservice.model.gasMaskFilter.GasMaskFilterModel;
 import com.example.weapon_microservice.model.gasMaskFilter.dto.GasMaskFilterResponse;
 import com.example.weapon_microservice.model.gasMaskFilter.mapper.GasMaskFilterMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.gasMask.GasMaskService;
 import jakarta.validation.Valid;
@@ -26,6 +27,11 @@ public class GasMaskController {
     @GetMapping
     public List<GasMaskResponse> getAllGasMasks(){
         return GasMaskMapper.responseFromModelList(service.getAllGasMasks());
+    }
+
+    @GetMapping("/model/{id}")
+    public GasMaskModel getGasMaskByIdModel(@PathVariable String id){
+        return service.getGasMaskById(id);
     }
 
     @PreAuthorize("hasRole('system-admin')")

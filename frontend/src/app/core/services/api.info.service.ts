@@ -122,6 +122,18 @@ export class ApiInfoService{
       );
     }
 
+    create(request: any, endpoint: string): Observable<ItemDetailModel> {
+      console.log(request);
+      return this.requestWithAuth(() =>
+        this.http.post<ItemDetailModel>(
+          `${this.base}${endpoint}`,
+          request, { 
+            headers: this.authHeaders()
+           }
+        )
+      );
+    }
+
     editItem(request: any, endpoint: string): Observable<ItemDetailModel> {
       console.log(request);
       return this.requestWithAuth(() =>

@@ -8,6 +8,7 @@ import com.example.weapon_microservice.model.bayonet.mapper.BayonetMapper;
 import com.example.weapon_microservice.model.gasMaskFilter.GasMaskFilterModel;
 import com.example.weapon_microservice.model.gasMaskFilter.dto.GasMaskFilterResponse;
 import com.example.weapon_microservice.model.gasMaskFilter.mapper.GasMaskFilterMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.bayonet.BayonetService;
 import jakarta.validation.Valid;
@@ -26,6 +27,11 @@ public class BayonetController {
     @GetMapping
     public List<BayonetResponse> getAllBayonets(){
         return BayonetMapper.responseFromModelListSimple(service.getAllBayonets());
+    }
+
+    @GetMapping("/model/{id}")
+    public BayonetModel getBayonetByIdModel(@PathVariable String id){
+        return service.getBayonetById(id);
     }
 
     @PreAuthorize("hasRole('system-admin')")

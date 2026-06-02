@@ -8,6 +8,7 @@ import com.example.weapon_microservice.model.platform.mapper.PlatformMapper;
 import com.example.weapon_microservice.model.stock.WeaponStockModel;
 import com.example.weapon_microservice.model.stock.dto.WeaponStockResponse;
 import com.example.weapon_microservice.model.stock.mapper.StockMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.model.weapon.dto.WeaponResponse;
 import com.example.weapon_microservice.model.weapon.mapper.WeaponMapper;
 import com.example.weapon_microservice.service.SearchRequest;
@@ -32,6 +33,11 @@ public class PlatformController {
     @GetMapping
     public List<PlatformResponse> getAllPlatforms(){
         return PlatformMapper.responseFromModelList(service.getAllPlatforms());
+    }
+
+    @GetMapping("/model/{id}")
+    public PlatformModel getPlatformByIdModel(@PathVariable String id){
+        return service.getPlatformById(id);
     }
 
     @PreAuthorize("hasRole('system-admin')")

@@ -12,6 +12,12 @@ export const UPDATE_MY_PROFILE_MODEL: ItemFormModel = {
           value: ''
         },
         {
+          key: 'username',
+          label: 'Username',
+          type: 'TEXT',
+          value: ''
+        },
+        {
           key: 'firstName',
           label: 'First Name',
           type: 'TEXT',

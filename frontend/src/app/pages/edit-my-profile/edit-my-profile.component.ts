@@ -14,7 +14,7 @@ import { UserService } from '../../core/services/user.service';
 import { UPDATE_MY_PROFILE_MODEL } from '../../shared/models/users/update-my-profile.dto';
 
 @Component({
-  selector: 'app-item-edit',
+  selector: 'app-my-profile-edit',
   standalone: true,
   imports: [CommonModule, DynamicFormComponent, DynamicFieldComponent, ItemHeader, UiButtonComponent],
   templateUrl: './edit-my-profile.component.html'

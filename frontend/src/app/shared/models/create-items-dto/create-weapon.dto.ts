@@ -17,7 +17,7 @@ export const CREATE_WEAPON_MODEL: ItemFormModel = {
             label: 'Manufacturer',
             type: 'SELECT_REMOTE',
             value: '',
-            endpoint: 'manufacturers',
+            endpoint: '/armory/manufacturers',
         },
       ]
     },
@@ -155,14 +155,14 @@ export const CREATE_WEAPON_MODEL: ItemFormModel = {
             label: 'Platform',
             type: 'SELECT_REMOTE',
             value: '',
-            endpoint: 'platforms',
+            endpoint: '/armory/platforms',
         },
         {
             key: 'caliberId',
             label: 'Caliber',
             type: 'SELECT_REMOTE',
             value: '',
-            endpoint: 'calibers',
+            endpoint: '/armory/calibers',
         },
         {
             key: 'stockId',

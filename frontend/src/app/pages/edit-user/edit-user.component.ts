@@ -12,7 +12,7 @@ import { UiButtonComponent } from "../../shared/components/form-button-component
 import { UPDATE_USER_MODEL } from '../../shared/models/users/update-user.dto';
 
 @Component({
-  selector: 'app-item-edit',
+  selector: 'app-user-edit',
   standalone: true,
   imports: [CommonModule, DynamicFormComponent, DynamicFieldComponent, ItemHeader, UiButtonComponent],
   templateUrl: './edit-user.component.html'

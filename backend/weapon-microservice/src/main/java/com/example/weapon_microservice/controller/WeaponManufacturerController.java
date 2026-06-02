@@ -8,6 +8,7 @@ import com.example.weapon_microservice.model.manufacturer.mapper.ManufacturerMap
 import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.model.textile.dto.TextileResponse;
 import com.example.weapon_microservice.model.textile.mapper.TextileMapper;
+import com.example.weapon_microservice.model.weapon.WeaponModel;
 import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.weaponManufacturer.WeaponManufacturerService;
 import jakarta.validation.Valid;
@@ -26,6 +27,11 @@ public class WeaponManufacturerController {
     @GetMapping
     public List<WeaponManufacturerResponse> getAllWeaponManufacturers(){
         return ManufacturerMapper.responseFromModelList(service.getAllWeaponManufacturers());
+    }
+
+    @GetMapping("/model/{id}")
+    public WeaponManufacturerModel getWeaponManufacturerByIdModel(@PathVariable String id){
+        return service.getWeaponManufacturerById(id);
     }
 
     @GetMapping("/reference/{reference}")

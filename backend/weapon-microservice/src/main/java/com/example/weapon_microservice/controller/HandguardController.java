@@ -7,6 +7,7 @@ import com.example.weapon_microservice.model.handguard.dto.HandguardUpdateReques
 import com.example.weapon_microservice.model.handguard.mapper.HandguardMapper;
 import com.example.weapon_microservice.model.platform.dto.PlatformResponse;
 import com.example.weapon_microservice.model.platform.mapper.PlatformMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.handguard.HandguardService;
 import jakarta.validation.Valid;
@@ -25,6 +26,11 @@ public class HandguardController {
     @GetMapping
     public List<HandguardResponse> getAllHandguards(){
         return HandguardMapper.resposeFromModelList(service.getAllHandguards());
+    }
+
+    @GetMapping("/model/{id}")
+    public HandguardModel getHandguardByIdModel(@PathVariable String id){
+        return service.getHandguardById(id);
     }
 
     @GetMapping("/compatible")

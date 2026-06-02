@@ -108,4 +108,52 @@ getUserRoles(): string[] {
 hasRole(role: string): boolean {
   return this.getUserRoles().includes(role);
 }
+
+async logout(): Promise<void> {
+
+  const refreshToken =
+    localStorage.getItem('refresh_token');
+
+  try {
+
+    if (refreshToken) {
+
+      const body = new URLSearchParams();
+
+      body.set(
+        'client_id',
+        environment.keycloak.clientId
+      );
+
+      body.set(
+        'refresh_token',
+        refreshToken
+      );
+
+      await fetch(
+        `${environment.keycloak.url}/realms/${environment.keycloak.realm}/protocol/openid-connect/logout`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type':
+              'application/x-www-form-urlencoded'
+          },
+          body
+        }
+      );
+    }
+
+  } catch (err) {
+
+    console.error('Logout error', err);
+
+  } finally {
+
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+
+    sessionStorage.clear();
+    localStorage.clear();
+  }
+}
 }

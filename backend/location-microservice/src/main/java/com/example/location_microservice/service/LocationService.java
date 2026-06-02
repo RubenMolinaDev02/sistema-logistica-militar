@@ -1,5 +1,6 @@
 package com.example.location_microservice.service;
 
+import com.example.location_microservice.model.PageResponse;
 import com.example.location_microservice.model.location.LocationModel;
 import com.example.location_microservice.model.location.dto.LocationRequest;
 import com.example.location_microservice.model.location.dto.LocationUpdateRequest;
@@ -19,6 +20,9 @@ public class LocationService {
 
     @Autowired
     LocationRepository repository;
+
+    @Autowired
+    LocationQueryBuilder queryBuilder;
 
     public LocationModel getLocationById(String id){
         return repository.findById(id).orElseThrow(
@@ -56,6 +60,10 @@ public class LocationService {
         }
 
         return repository.save(model);
+    }
+
+    public PageResponse<LocationModel> search(SearchRequest request, int page, int size) {
+        return queryBuilder.search(request, page, size);
     }
 
     public LocationModel updateLocation(LocationUpdateRequest location, String id) {

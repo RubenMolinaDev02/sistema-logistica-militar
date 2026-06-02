@@ -42,7 +42,7 @@ export const CREATE_HANDGUARD_MODEL: ItemFormModel = {
           label: 'Compatible Platforms',
           type: 'SELECT_REMOTE_MULTIPLE',
           value: [],
-          endpoint: 'platforms'
+          endpoint: '/armory/platforms'
         }
 
       ]

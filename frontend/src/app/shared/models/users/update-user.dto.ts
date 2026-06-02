@@ -49,8 +49,8 @@ export const UPDATE_USER_MODEL: ItemFormModel = {
         },
         {
           key: 'avatarUrl',
-          label: 'Avatar URL',
-          type: 'TEXT',
+          label: 'Avatar',
+          type: 'IMAGE_UPLOAD',
           value: ''
         },
         {
@@ -132,7 +132,7 @@ export const UPDATE_USER_MODEL: ItemFormModel = {
           label: 'Location',
           type: 'SELECT_REMOTE',
           value: '',
-          endpoint: 'locations'
+          endpoint: '/organization/locations'
         }
       ]
     },

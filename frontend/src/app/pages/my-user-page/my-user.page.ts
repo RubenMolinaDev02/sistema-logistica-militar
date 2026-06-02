@@ -25,6 +25,8 @@ export class MyUserComponent {
 
   item: any = null;
 
+  
+
   openEdit() {
   this.router.navigate([`/myuser/edit`])
   }
@@ -61,10 +63,9 @@ export class MyUserComponent {
 
   this.loading = true;
 
-  this.userService.getMyUser().subscribe({
+  this.userService.getMyUserDetail().subscribe({
     next: (res: any) => {
       this.item = mapToUserDetail(res);
-      console.log(this.item);
       this.loading = false;
       this.cdr.detectChanges();
     },

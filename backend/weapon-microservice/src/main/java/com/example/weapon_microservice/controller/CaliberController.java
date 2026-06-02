@@ -11,6 +11,7 @@ import com.example.weapon_microservice.model.caliber.mapper.CaliberMapper;
 import com.example.weapon_microservice.model.gasMaskFilter.GasMaskFilterModel;
 import com.example.weapon_microservice.model.gasMaskFilter.dto.GasMaskFilterResponse;
 import com.example.weapon_microservice.model.gasMaskFilter.mapper.GasMaskFilterMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.ammo.AmmoService;
 import com.example.weapon_microservice.service.caliber.CaliberService;
@@ -32,6 +33,11 @@ public class CaliberController {
     @GetMapping
     public List<CaliberResponse> getAllCalibers(){
         return CaliberMapper.responseFromModelList(service.getAllCalibers());
+    }
+
+    @GetMapping("/model/{id}")
+    public CaliberModel getCaliberByIdModel(@PathVariable String id){
+        return service.getCaliberById(id);
     }
 
     @PreAuthorize("hasRole('system-admin')")

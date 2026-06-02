@@ -1,0 +1,39 @@
+<div class="font-['Barlow'] text-[#c8d4e0] bg-[#0d1117] flex flex-col h-screen ">
+
+  <div class="shrink-0 px-8 pt-8">
+
+    <app-item-header 
+      [title]="`Military logistics software`"
+      [subtitle]="`Locations`"
+    >@if (this.authService.hasRole("system-admin")) {
+      <app-ui-button
+        label="+ Create"
+        variant="primary"
+        (pressed)="openCreate()"
+      />
+    }
+    </app-item-header>
+    
+
+    <app-item-search
+      (search)="applyFilters($event)"
+    ></app-item-search>
+
+  </div>
+
+  <div class="flex-1 overflow-y-auto px-8 pb-4">
+    @if (!loading) {
+      <app-location-grid
+      [items]="items"
+    />
+    }
+  </div>
+
+  <app-item-pagination
+    [page]="page"
+    [totalPages]="totalPages"
+    (previous)="loadTab(page - 1)"
+    (next)="loadTab(page + 1)"
+  />
+
+</div>

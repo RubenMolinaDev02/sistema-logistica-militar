@@ -101,7 +101,7 @@ private tryReload() {
 }
 
 loadRemoteOptions() {
-  this.api.get(`/armory/${this.field.endpoint}`).subscribe(res => {
+  this.api.get(`${this.field.endpoint}`).subscribe(res => {
     this.options = res;
 
     // Solo auto-seleccionar el primero para SELECT_REMOTE simple

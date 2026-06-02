@@ -34,6 +34,11 @@ public class OpticController {
         return OpticMapper.responseFromModel(service.saveOptic(Optic));
     }
 
+    @GetMapping("/model/{id}")
+    public OpticModel getOpticByIdModel(@PathVariable String id){
+        return service.getOpticById(id);
+    }
+
     @GetMapping("/reference/{reference}")
     public OpticResponse getOpticByReference(@PathVariable String reference){
         return OpticMapper.responseFromModel(service.getByReference(reference));

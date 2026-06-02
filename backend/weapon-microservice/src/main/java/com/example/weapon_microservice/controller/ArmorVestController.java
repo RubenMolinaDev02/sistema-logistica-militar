@@ -9,6 +9,7 @@ import com.example.weapon_microservice.model.armorVest.mapper.ArmorVestMapper;
 import com.example.weapon_microservice.model.attachment.AttachmentModel;
 import com.example.weapon_microservice.model.attachment.dto.AttachmentResponse;
 import com.example.weapon_microservice.model.attachment.mapper.AttachmentMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.armorVest.ArmorVestService;
 import jakarta.validation.Valid;
@@ -26,6 +27,11 @@ public class ArmorVestController {
     @GetMapping
     public List<ArmorVestResponse> getAllArmorVest(){
         return ArmorVestMapper.responseFromModelList(service.getAllArmorVest());
+    }
+
+    @GetMapping("/model/{id}")
+    public ArmorVestModel getArmorVestByIdModel(@PathVariable String id){
+        return service.getArmorVestById(id);
     }
 
     @PreAuthorize("hasRole('system-admin')")

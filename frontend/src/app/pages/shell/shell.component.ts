@@ -7,6 +7,7 @@ import {
 
 import { CommonModule } from '@angular/common';
 import { KeycloakService } from 'keycloak-angular';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-shell',
@@ -24,7 +25,10 @@ export class ShellComponent implements OnInit {
   username = '';
   roles = '';
 
-  constructor(private keycloak: KeycloakService) {}
+  constructor(
+    private keycloak: KeycloakService,
+    private authService: AuthService
+  ) {}
 
   async ngOnInit(): Promise<void> {
 
@@ -44,8 +48,7 @@ export class ShellComponent implements OnInit {
   }
 
   logout(): void {
-    this.keycloak.logout(window.location.origin);
-    localStorage.setItem('access_token', "");
-    localStorage.setItem('refresh_token', "");
+    this.authService.logout()
+    this.keycloak.logout(window.location.origin);    
   }
 }

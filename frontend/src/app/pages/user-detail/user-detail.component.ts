@@ -27,9 +27,12 @@ export class UserDetailComponent {
 
   id = '';
 
+  canDelete: boolean = false;
+
   openEdit() {
   this.router.navigate([`/users/edit/${this.id}`])
   }
+
 
   ngOnInit(): void {
 
@@ -71,10 +74,10 @@ export class UserDetailComponent {
 
   this.loading = true;
 
-  this.apiInfoService.getItemsById(this.id, `/admin/users/`).subscribe({
+  this.apiInfoService.getItemsById(this.id, `/admin/users/detail/`).subscribe({
     next: (res: any) => {
-
-      this.item = mapToUserDetail(res)
+      this.canDelete = res.canDelete;
+      this.item = mapToUserDetail(res);
       console.log(this.item);
       this.loading = false;
       this.cdr.detectChanges();

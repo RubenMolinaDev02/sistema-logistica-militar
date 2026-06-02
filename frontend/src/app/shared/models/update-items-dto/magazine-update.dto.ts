@@ -41,14 +41,14 @@ export const UPDATE_MAGAZINE_MODEL: ItemFormModel = {
           label: 'Compatible Platforms',
           type: 'SELECT_REMOTE_MULTIPLE',
           value: [],
-          endpoint: 'platforms'
+          endpoint: '/armory/platforms'
         },
         {
           key: 'caliberId',
           label: 'Caliber',
           type: 'SELECT_REMOTE',
           value: '',
-          endpoint: 'calibers'
+          endpoint: '/armory/calibers'
         }
       ]
     },

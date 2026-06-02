@@ -1,0 +1,116 @@
+<div *ngIf="user" class="min-h-screen bg-gray-100 flex items-center justify-center p-6">
+
+  <div class="w-full max-w-3xl bg-white rounded-2xl shadow-lg overflow-hidden">
+
+    <!-- Header -->
+    <div class="px-8 py-6 border-b border-gray-200">
+      <h1 class="text-3xl font-bold text-gray-900">
+        User Created Successfully
+      </h1>
+      <p class="text-gray-500 mt-1">
+        Save the temporary password before leaving this page.
+      </p>
+    </div>
+
+    <!-- Password -->
+    <div class="m-6 rounded-xl border-2 border-amber-300 bg-amber-50 p-6">
+
+      <h2 class="text-lg font-semibold text-amber-900 mb-3">
+        Temporary Password
+      </h2>
+
+      <div
+        class="bg-white border border-amber-200 rounded-lg p-4 text-center text-3xl font-bold tracking-widest text-pink-600 break-all">
+        {{ user.tempPassword }}
+      </div>
+
+      <div class="flex items-center gap-3 mt-4">
+
+        <button
+          (click)="copyPassword()"
+          class="px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition">
+          Copy Password
+        </button>
+
+        <span
+          *ngIf="copied"
+          class="text-green-600 font-medium">
+          ✓ Copied
+        </span>
+
+      </div>
+    </div>
+
+    <!-- User Info -->
+    <div class="p-6">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <div class="border rounded-lg p-4">
+          <p class="text-sm text-gray-500">Name</p>
+          <p class="font-semibold">
+            {{ user.firstName }} {{ user.lastName }}
+          </p>
+        </div>
+
+        <div class="border rounded-lg p-4">
+          <p class="text-sm text-gray-500">Username</p>
+          <p class="font-semibold">{{ user.username }}</p>
+        </div>
+
+        <div class="border rounded-lg p-4">
+          <p class="text-sm text-gray-500">Email</p>
+          <p class="font-semibold">{{ user.email }}</p>
+        </div>
+
+        <div class="border rounded-lg p-4">
+          <p class="text-sm text-gray-500">Soldier Number</p>
+          <p class="font-semibold">{{ user.soldierNumber }}</p>
+        </div>
+
+        <div class="border rounded-lg p-4">
+          <p class="text-sm text-gray-500">DNI</p>
+          <p class="font-semibold">{{ user.dni }}</p>
+        </div>
+
+        <div class="border rounded-lg p-4">
+          <p class="text-sm text-gray-500">Phone</p>
+          <p class="font-semibold">{{ user.phoneNumber }}</p>
+        </div>
+
+        <div class="border rounded-lg p-4">
+          <p class="text-sm text-gray-500">Rank</p>
+          <p class="font-semibold">{{ user.rank }}</p>
+        </div>
+
+        <div class="border rounded-lg p-4">
+          <p class="text-sm text-gray-500">Role</p>
+          <p class="font-semibold">{{ user.role }}</p>
+        </div>
+
+        <div class="border rounded-lg p-4">
+          <p class="text-sm text-gray-500">Status</p>
+
+          <span
+            class="inline-flex px-3 py-1 rounded-full text-sm font-medium"
+            [ngClass]="user.active
+              ? 'bg-green-100 text-green-700'
+              : 'bg-red-100 text-red-700'">
+
+            {{ user.active ? 'Active' : 'Inactive' }}
+
+          </span>
+        </div>
+
+        <div class="border rounded-lg p-4">
+          <p class="text-sm text-gray-500">Created At</p>
+          <p class="font-semibold">{{ user.createdAt }}</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

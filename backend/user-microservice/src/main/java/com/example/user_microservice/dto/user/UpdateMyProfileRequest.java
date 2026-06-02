@@ -18,4 +18,6 @@ public class UpdateMyProfileRequest {
     private Integer phoneNumber;
 
     private String avatarUrl;
+
+    private String username;
 }

@@ -1,0 +1,31 @@
+<div class="font-['Barlow'] text-[#c8d4e0] bg-[#0d1117] flex flex-col h-full" style="margin-bottom: 30px;">
+
+  <!-- TOPBAR -->
+  <app-item-header 
+      [title]="`Military logistics software`"
+      [subtitle]="`Create User`"
+  >
+    <app-ui-button
+      label="SAVE"
+      variant="primary"
+      (pressed)="submitForm()"
+    />
+    <app-ui-button
+      label="← Back"
+      variant="danger"
+      (pressed)="cancel()"
+    />
+  </app-item-header>
+
+  <!-- FORM — ocupa el resto de la pantalla -->
+  <div class="flex-1 overflow-y-auto min-h-0 px-8 py-6">
+    <div class="h-full max-w-4xl mx-auto bg-[#111418] border border-[#1e2530] flex flex-col">
+      <app-dynamic-form
+        [model]="model"
+        (submit)="handleCreate($event)"
+      />
+    </div>
+  </div>
+  <decorative-footer/>
+
+</div>

@@ -71,7 +71,7 @@ export const CREATE_BARREL_ATTACHMENT_MODEL: ItemFormModel = {
           label: 'Compatible Platforms',
           type: 'SELECT_REMOTE_MULTIPLE',
           value: [],
-          endpoint: 'platforms'
+          endpoint: '/armory/platforms'
         },
 
         {
@@ -79,7 +79,7 @@ export const CREATE_BARREL_ATTACHMENT_MODEL: ItemFormModel = {
           label: 'Compatible Caliber',
           type: 'SELECT_REMOTE',
           value: '',
-          endpoint: 'calibers'
+          endpoint: '/armory/calibers'
         }
 
       ]

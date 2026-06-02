@@ -15,6 +15,13 @@
       variant="primary"
       (pressed)="openEdit()"
     />
+    @if (this.canDelete == true){
+      <app-ui-button
+        label="DELETE"
+        variant="danger"
+        (pressed)="openEdit()"
+      />
+    }
     <app-ui-button
       label="← Back"
       variant="danger"

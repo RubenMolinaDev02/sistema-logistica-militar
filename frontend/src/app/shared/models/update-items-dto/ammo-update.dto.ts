@@ -29,7 +29,7 @@ export const UPDATE_AMMO_MODEL: ItemFormModel = {
           label: 'Caliber',
           type: 'SELECT_REMOTE',
           value: '',
-          endpoint: 'calibers'
+          endpoint: '/armory/calibers'
         },
 
         {

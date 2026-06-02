@@ -1,6 +1,7 @@
 package com.example.weapon_microservice.controller;
 import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.common.enums.StockAtachmentSystem;
+import com.example.weapon_microservice.model.manufacturer.WeaponManufacturerModel;
 import com.example.weapon_microservice.model.platform.mapper.PlatformMapper;
 import com.example.weapon_microservice.model.stock.WeaponStockModel;
 import com.example.weapon_microservice.model.stock.dto.StockRequest;
@@ -33,6 +34,11 @@ public class WeaponStockController {
     @GetMapping
     public List<WeaponStockResponse> getAllWeaponStocks(){
         return StockMapper.responseFromModelList(service.getAllWeaponStocks());
+    }
+
+    @GetMapping("/model/{id}")
+    public WeaponStockModel getWeaponStockByIdModel(@PathVariable String id){
+        return service.getWeaponStockById(id);
     }
 
     @GetMapping("/compatible")

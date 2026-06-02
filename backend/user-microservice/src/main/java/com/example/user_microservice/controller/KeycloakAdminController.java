@@ -1,5 +1,7 @@
 package com.example.user_microservice.controller;
 
+import com.example.user_microservice.client.LocationClient;
+import com.example.user_microservice.client.LocationResponse;
 import com.example.user_microservice.dto.role.RoleMapping;
 import com.example.user_microservice.dto.user.CreateUserRequest;
 import com.example.user_microservice.dto.user.UpdateUserRequest;
@@ -27,6 +29,8 @@ public class KeycloakAdminController {
     private UserService service;
     @Autowired
     private KeycloakRepository keycloakRepository;
+    @Autowired
+    private LocationClient locationClient;
 
     @PreAuthorize("hasRole('system-admin')")
     @PostMapping
@@ -79,6 +83,25 @@ public class KeycloakAdminController {
             @PathVariable String userId
     ) {
         return UserMapper.responseFromModel(service.getUserById(userId));
+    }
+
+    @PreAuthorize("hasRole('system-admin')")
+    @GetMapping("/detail/{userId}")
+    public UserResponse getUserDetail(
+            @PathVariable String userId
+    ) {
+        UserModel model = service.getUserById(userId);
+        LocationResponse locationResponse = locationClient.getById(model.getLocationId());
+        return UserMapper.responseFromModelDetail(model, locationResponse, service.canDelete(model));
+    }
+
+    @PreAuthorize("hasRole('system-admin')")
+    @GetMapping("/candelete/{userId}")
+    public boolean getUserCanDelete(
+            @PathVariable String userId
+    ) {
+        UserModel model = service.getUserById(userId);
+        return service.canDelete(model);
     }
 
     @PreAuthorize("hasRole('system-admin')")

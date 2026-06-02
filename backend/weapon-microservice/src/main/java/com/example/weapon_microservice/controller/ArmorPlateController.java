@@ -9,6 +9,7 @@ import com.example.weapon_microservice.model.armorPlate.mapper.ArmorPlateMapper;
 import com.example.weapon_microservice.model.armorVest.ArmorVestModel;
 import com.example.weapon_microservice.model.armorVest.dto.ArmorVestResponse;
 import com.example.weapon_microservice.model.armorVest.mapper.ArmorVestMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.armorPlate.ArmorPlateService;
 import jakarta.validation.Valid;
@@ -27,6 +28,11 @@ public class ArmorPlateController {
     @GetMapping
     public List<ArmorPlateResponse> getAllArmorPlate(){
         return ArmorPlateMapper.responseFromModelList(service.getAllArmorPlate());
+    }
+
+    @GetMapping("/model/{id}")
+    public ArmorPlateModel getArmorPlateByIdModel(@PathVariable String id){
+        return service.getArmorPlateById(id);
     }
 
     @PreAuthorize("hasRole('system-admin')")

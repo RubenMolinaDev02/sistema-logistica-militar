@@ -1,0 +1,23 @@
+<div
+  class="
+    grid
+    gap-6
+    justify-center
+  "
+  style="
+    grid-template-columns:
+    repeat(auto-fit, minmax(220px, 240px));
+    padding-right: 30px;
+  "
+>
+
+  @for (item of items; track item.reference) {
+
+    <app-location-card
+      [item]="item"
+      [category]="category"
+    />
+
+  }
+
+</div>

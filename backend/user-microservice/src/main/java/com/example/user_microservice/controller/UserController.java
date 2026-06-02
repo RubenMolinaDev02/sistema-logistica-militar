@@ -1,5 +1,7 @@
 package com.example.user_microservice.controller;
 
+import com.example.user_microservice.client.LocationClient;
+import com.example.user_microservice.client.LocationResponse;
 import com.example.user_microservice.dto.user.CreateUserRequest;
 import com.example.user_microservice.dto.user.UpdateMyProfileRequest;
 import com.example.user_microservice.dto.user.UserResponse;
@@ -19,10 +21,19 @@ public class UserController {
 
     @Autowired
     private UserService service;
+    @Autowired
+    private LocationClient locationClient;
 
     @GetMapping("/me")
-    public UserModel getMyProfile() {
-        return service.getMyProfile();
+    public UserResponse getMyProfile() {
+        return UserMapper.responseFromModel(service.getMyProfile());
+    }
+
+    @GetMapping("/me/detail")
+    public UserResponse getMyProfileDetail() {
+        UserModel user = service.getMyProfile();
+        LocationResponse locationResponse = locationClient.getById(user.getLocationId());
+        return UserMapper.responseFromModelDetail(user, locationResponse, service.canDelete(user));
     }
 
     @PatchMapping("/me/update")

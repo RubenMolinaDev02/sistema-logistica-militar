@@ -9,6 +9,7 @@ import com.example.weapon_microservice.model.nvg.mapper.NvgMapper;
 import com.example.weapon_microservice.model.optic.OpticModel;
 import com.example.weapon_microservice.model.optic.dto.OpticResponse;
 import com.example.weapon_microservice.model.optic.mapper.OpticMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.nvg.NvgService;
 import jakarta.validation.Valid;
@@ -33,6 +34,11 @@ public class NvgController {
     public NvgResponse createNvg(@Valid @RequestBody NvgRequest nvg){
         NvgModel model = service.saveNvg(nvg);
         return NvgMapper.responseFromModel(model);
+    }
+
+    @GetMapping("/model/{id}")
+    public NvgModel getNvgByIdModel(@PathVariable String id){
+        return service.getNvgById(id);
     }
 
     @GetMapping("/reference/{reference}")

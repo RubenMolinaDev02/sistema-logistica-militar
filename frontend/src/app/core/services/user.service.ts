@@ -96,6 +96,17 @@ export class UserService{
       );
     }
 
+    getMyUserDetail(): Observable<BaseModel>{
+        return this.requestWithAuth(() =>
+        this.http.get<BaseModel>(
+          `${this.base}/users/me/detail`,
+          { 
+            headers: this.authHeaders()
+           }
+        )
+      );
+    }
+
     editMyUser(request: any): Observable<ItemDetailModel> {
       return this.requestWithAuth(() =>
         this.http.patch<ItemDetailModel>(

@@ -71,7 +71,7 @@ export const CREATE_HOLSTER_MODEL: ItemFormModel = {
           label: 'Compatible Weapons',
           type: 'SELECT_REMOTE_MULTIPLE',
           value: [],
-          endpoint: 'weapons'
+          endpoint: '/armory/weapons'
         }
 
       ]

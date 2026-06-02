@@ -6,6 +6,7 @@ import com.example.weapon_microservice.model.miscItems.dto.MiscItemRequest;
 import com.example.weapon_microservice.model.miscItems.dto.MiscItemResponse;
 import com.example.weapon_microservice.model.miscItems.dto.MiscItemUpdateRequest;
 import com.example.weapon_microservice.model.miscItems.mapper.MiscItemMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.model.weapon.WeaponModel;
 import com.example.weapon_microservice.model.weapon.dto.WeaponResponse;
 import com.example.weapon_microservice.model.weapon.mapper.WeaponMapper;
@@ -29,6 +30,11 @@ public class MiscItemController {
             @RequestParam(defaultValue = "10") int size
     ){
         return pageToResponse(service.getAllMiscItem(page, size));
+    }
+
+    @GetMapping("/model/{id}")
+    public MiscItemModel getMiscItemByIdModel(@PathVariable String id){
+        return service.getMiscItemById(id);
     }
 
     @PreAuthorize("hasRole('system-admin')")

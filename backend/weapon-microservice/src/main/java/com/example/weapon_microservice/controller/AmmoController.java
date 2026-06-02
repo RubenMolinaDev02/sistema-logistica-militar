@@ -11,6 +11,7 @@ import com.example.weapon_microservice.model.caliber.mapper.CaliberMapper;
 import com.example.weapon_microservice.model.handguard.HandguardModel;
 import com.example.weapon_microservice.model.handguard.dto.HandguardResponse;
 import com.example.weapon_microservice.model.handguard.mapper.HandguardMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.ammo.AmmoService;
 import jakarta.validation.Valid;
@@ -37,6 +38,11 @@ public class AmmoController {
                 service.getCaliberById(ammo.getCaliberId())
         );
         return AmmoMapper.responseFromModel(ammo, caliber);
+    }
+
+    @GetMapping("/model/{id}")
+    public AmmoModel getAmmoByIdModel(@PathVariable String id){
+        return service.getAmmoById(id);
     }
 
     @PreAuthorize("hasRole('system-admin')")

@@ -9,6 +9,7 @@ import com.example.weapon_microservice.model.holster.mapper.HolsterMapper;
 import com.example.weapon_microservice.model.magazine.MagazineModel;
 import com.example.weapon_microservice.model.magazine.dto.MagazineResponse;
 import com.example.weapon_microservice.model.magazine.mapper.MagazineMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.model.weapon.dto.WeaponResponse;
 import com.example.weapon_microservice.model.weapon.mapper.WeaponMapper;
 import com.example.weapon_microservice.service.SearchRequest;
@@ -29,6 +30,11 @@ public class HolsterController {
     @GetMapping
     public List<HolsterResponse> getAllHolster(){
         return HolsterMapper.responseFromModelSimpleList(service.getAllHolster());
+    }
+
+    @GetMapping("/model/{id}")
+    public HolsterModel getHolsterByIdModel(@PathVariable String id){
+        return service.getHolsterById(id);
     }
 
     @PreAuthorize("hasRole('system-admin')")

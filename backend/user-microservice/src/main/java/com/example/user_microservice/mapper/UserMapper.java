@@ -1,5 +1,6 @@
 package com.example.user_microservice.mapper;
 
+import com.example.user_microservice.client.LocationResponse;
 import com.example.user_microservice.dto.user.CreateUserRequest;
 import com.example.user_microservice.dto.user.UserResponse;
 import com.example.user_microservice.model.user.UserModel;
@@ -22,6 +23,7 @@ public class UserMapper {
                 .active(request.getActive())
                 .soldierNumber(request.getSoldierNumber())
                 .locationId(request.getLocationId())
+                .role(request.getRole())
                 .build();
     }
 
@@ -41,6 +43,26 @@ public class UserMapper {
                 .dni(user.getDni())
                 .phoneNumber(user.getPhoneNumber())
                 .role(user.getRole())
+                .build();
+    }
+
+    public static UserResponse responseFromModelDetail(UserModel user, LocationResponse locationResponse, boolean canDelete){
+        return UserResponse.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .avatarUrl(user.getAvatarUrl())
+                .createdAt(user.getCreatedAt())
+                .locationResponse(locationResponse)
+                .rank(user.getRank())
+                .active(user.isActive())
+                .soldierNumber(user.getSoldierNumber())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .dni(user.getDni())
+                .phoneNumber(user.getPhoneNumber())
+                .role(user.getRole())
+                .canDelete(canDelete)
                 .build();
     }
 

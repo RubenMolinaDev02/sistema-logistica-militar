@@ -4,6 +4,7 @@ import com.example.weapon_microservice.model.PageResponse;
 import com.example.weapon_microservice.model.miscItems.MiscItemModel;
 import com.example.weapon_microservice.model.miscItems.dto.MiscItemResponse;
 import com.example.weapon_microservice.model.miscItems.mapper.MiscItemMapper;
+import com.example.weapon_microservice.model.stock.WeaponStockModel;
 import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.model.textile.dto.TextileRequest;
 import com.example.weapon_microservice.model.textile.dto.TextileResponse;
@@ -28,6 +29,11 @@ public class TextileController {
     @GetMapping
     public List<TextileResponse> getAllTextile(){
         return TextileMapper.responseFromModelList(service.getAllTextile());
+    }
+
+    @GetMapping("/model/{id}")
+    public TextileModel getTextileByIdModel(@PathVariable String id){
+        return service.getTextileById(id);
     }
 
     @PreAuthorize("hasRole('system-admin')")

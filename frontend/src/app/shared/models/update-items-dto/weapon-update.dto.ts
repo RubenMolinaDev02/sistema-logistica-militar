@@ -32,7 +32,7 @@ export const UPDATE_WEAPON_MODEL: ItemFormModel = {
           label: 'Manufacturer',
           type: 'SELECT_REMOTE',
           value: '',
-          endpoint: 'manufacturers'
+          endpoint: '/armory/manufacturers'
         }
       ]
     },
@@ -165,7 +165,7 @@ export const UPDATE_WEAPON_MODEL: ItemFormModel = {
       title: 'Stock & Compatibility',
       fields: [
         {
-          key: 'stockAttachmentSystem',
+          key: 'stockAtachmentSystem',
           label: 'Stock System',
           type: 'SELECT',
           value: '',
@@ -192,14 +192,14 @@ export const UPDATE_WEAPON_MODEL: ItemFormModel = {
           label: 'Platform',
           type: 'SELECT_REMOTE',
           value: '',
-          endpoint: 'platforms'
+          endpoint: '/armory/platforms'
         },
         {
           key: 'caliberId',
           label: 'Caliber',
           type: 'SELECT_REMOTE',
           value: '',
-          endpoint: 'calibers'
+          endpoint: '/armory/calibers'
         },
         {
           key: 'stockId',
@@ -208,7 +208,7 @@ export const UPDATE_WEAPON_MODEL: ItemFormModel = {
           value: '',
           endpoint: '/armory/stocks/compatible',
           nullable: true,
-          dependsOn: ['platformId', 'stockAttachmentSystem']
+          dependsOn: ['platformId', 'stockAtachmentSystem']
         },
         {
           key: 'handguardId',

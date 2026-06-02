@@ -87,7 +87,7 @@ export function mapToUserDetail(item: any): ItemDetailModel {
         {
           key: 'locationId',
           label: 'Location',
-          value: item.locationId,
+          value: item.locationResponse.name,
           type: 'TEXT'
         }
       ]

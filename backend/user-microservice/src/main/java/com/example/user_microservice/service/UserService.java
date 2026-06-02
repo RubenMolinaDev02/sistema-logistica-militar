@@ -1,5 +1,6 @@
 package com.example.user_microservice.service;
 
+import com.example.user_microservice.client.LocationClient;
 import com.example.user_microservice.dto.user.CreateUserRequest;
 import com.example.user_microservice.dto.user.UpdateMyProfileRequest;
 import com.example.user_microservice.dto.user.UpdateUserRequest;
@@ -11,6 +12,7 @@ import com.example.user_microservice.repository.KeycloakRepository;
 import com.example.user_microservice.repository.UserRepository;
 import com.example.user_microservice.utils.AuthUtils;
 import com.example.user_microservice.utils.PasswordGenerator;
+import jakarta.ws.rs.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -22,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -37,6 +40,8 @@ public class UserService {
 
     @Autowired
     private UserQueryBuilder userQueryBuilder;
+    @Autowired
+    private LocationClient locationClient;
 
 
     public UserModel getMyProfile() {
@@ -57,6 +62,24 @@ public class UserService {
 
     public UserResponse createUser(CreateUserRequest request, String token){
         String id = keycloakRepository.createUser(token, request);
+
+        if (getUserByUsername(request.getUsername()) != null) throw
+            new ResponseStatusException(HttpStatus.CONFLICT);
+
+        if (getUserByDni(request.getDni()) != null) throw
+            new ResponseStatusException(HttpStatus.CONFLICT);
+
+        if (getUserByEmail(request.getEmail()) != null) throw
+                new ResponseStatusException(HttpStatus.CONFLICT);
+
+        if (getUserByPhone(request.getPhoneNumber()) != null) throw
+                new ResponseStatusException(HttpStatus.CONFLICT);
+
+        if (getUserBySoldierNumber(request.getSoldierNumber()) != null) throw
+                new ResponseStatusException(HttpStatus.CONFLICT);
+
+        if (locationClient.getById(request.getLocationId()) == null) throw
+                new ResponseStatusException(HttpStatus.NOT_FOUND);
 
         String password = PasswordGenerator.generate(15);
         System.out.println(password);
@@ -85,6 +108,9 @@ public class UserService {
         UserModel user = getMyProfile();
 
         if (request.getEmail() != null && !request.getEmail().isBlank()) {
+            UserModel temp = getUserByEmail(request.getEmail());
+            if (temp != null && !temp.getId().equals(user.getId())) throw
+                    new ResponseStatusException(HttpStatus.CONFLICT);
             user.setEmail(request.getEmail());
         }
 
@@ -97,10 +123,20 @@ public class UserService {
         }
 
         if (request.getPhoneNumber() != null && request.getPhoneNumber() > 0) {
+            UserModel temp = getUserByPhone(request.getPhoneNumber());
+            if (temp != null && !temp.getId().equals(user.getId())) throw
+                    new ResponseStatusException(HttpStatus.CONFLICT);
             user.setPhoneNumber(request.getPhoneNumber());
         }
 
         if (request.getAvatarUrl() != null && !request.getAvatarUrl().isBlank()) {
+            user.setAvatarUrl(request.getAvatarUrl());
+        }
+
+        if (request.getUsername() != null && !request.getUsername().isBlank()) {
+            UserModel temp = getUserByUsername(request.getUsername());
+            if (temp != null && !temp.getId().equals(user.getId())) throw
+                    new ResponseStatusException(HttpStatus.CONFLICT);
             user.setAvatarUrl(request.getAvatarUrl());
         }
 
@@ -128,10 +164,16 @@ public class UserService {
         );
 
         if (request.getEmail() != null && !request.getEmail().isBlank()) {
+            UserModel temp = getUserByEmail(request.getEmail());
+            if (temp != null && !temp.getId().equals(user.getId())) throw
+                    new ResponseStatusException(HttpStatus.CONFLICT);
             user.setEmail(request.getEmail());
         }
 
         if (request.getUsername() != null && !request.getUsername().isBlank()) {
+            UserModel temp = getUserByUsername(request.getUsername());
+            if (temp != null && !temp.getId().equals(user.getId())) throw
+                    new ResponseStatusException(HttpStatus.CONFLICT);
             user.setUsername(request.getUsername());
         }
 
@@ -144,10 +186,16 @@ public class UserService {
         }
 
         if (request.getDni() != null && !request.getDni().isBlank()) {
+            UserModel temp = getUserByDni(request.getDni());
+            if (temp != null && !temp.getId().equals(user.getId())) throw
+                    new ResponseStatusException(HttpStatus.CONFLICT);
             user.setDni(request.getDni());
         }
 
         if (request.getPhoneNumber() != null && request.getPhoneNumber() > 0) {
+            UserModel temp = getUserByPhone(request.getPhoneNumber());
+            if (temp != null && !temp.getId().equals(user.getId())) throw
+                    new ResponseStatusException(HttpStatus.CONFLICT);
             user.setPhoneNumber(request.getPhoneNumber());
         }
 
@@ -156,6 +204,11 @@ public class UserService {
         }
 
         if (request.getLocationId() != null && !request.getLocationId().isBlank()) {
+            try {
+                locationClient.getById(request.getLocationId());
+            }catch(Exception e){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
             user.setLocationId(request.getLocationId());
         }
 
@@ -168,6 +221,9 @@ public class UserService {
         }
 
         if (request.getSoldierNumber() != null && !request.getSoldierNumber().isBlank()) {
+            UserModel temp = getUserBySoldierNumber(request.getSoldierNumber());
+            if (temp != null && !temp.getId().equals(user.getId())) throw
+                    new ResponseStatusException(HttpStatus.CONFLICT);
             user.setSoldierNumber(request.getSoldierNumber());
         }
 
@@ -203,16 +259,19 @@ public class UserService {
 
         UserModel user = getUserById(userId);
 
-        LocalDate limitDate = user.getCreatedAt().plusDays(7);
-
-        if (LocalDate.now().isAfter(limitDate)) {
+        if (canDelete(user)) userRepository.delete(user);
+        else {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN,
                     "User can only be deleted within the first 7 days after creation"
             );
         }
+    }
 
-        userRepository.delete(user);
+    public boolean canDelete(UserModel userModel){
+        LocalDate limitDate = userModel.getCreatedAt().plusDays(7);
+
+        return LocalDate.now().isBefore(limitDate);
     }
 
     public UserModel getUserById(String userId) {
@@ -221,5 +280,21 @@ public class UserService {
                          HttpStatus.NOT_FOUND
                  )
         );
+    }
+
+    public UserModel getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+    public UserModel getUserByUsername(String username){
+        return userRepository.findByUsername(username);
+    }
+    public UserModel getUserByPhone(int phone){
+        return userRepository.findByPhoneNumber(phone);
+    }
+    public UserModel getUserBySoldierNumber(String soldierNumber){
+        return userRepository.findBySoldierNumber(soldierNumber);
+    }
+    public UserModel getUserByDni(String dni){
+        return userRepository.findByDni(dni);
     }
 }

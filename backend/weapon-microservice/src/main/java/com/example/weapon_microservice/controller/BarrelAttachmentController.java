@@ -12,6 +12,7 @@ import com.example.weapon_microservice.model.caliber.CaliberModel;
 import com.example.weapon_microservice.model.caliber.mapper.CaliberMapper;
 import com.example.weapon_microservice.model.platform.PlatformModel;
 import com.example.weapon_microservice.model.platform.mapper.PlatformMapper;
+import com.example.weapon_microservice.model.textile.TextileModel;
 import com.example.weapon_microservice.service.SearchRequest;
 import com.example.weapon_microservice.service.barrelAtachment.BarrelAtachmentService;
 import jakarta.validation.Valid;
@@ -30,6 +31,11 @@ public class BarrelAttachmentController {
     @GetMapping
     public List<BarrelAtachmentResponse> getAllBarrelAtachments(){
         return BarrelAtachmentMapper.responseFromModelListSimple(service.getAllBarrelAtachments());
+    }
+
+    @GetMapping("/model/{id}")
+    public BarrelAtachmentModel getBarrelAtachmentByIdModel(@PathVariable String id){
+        return service.getBarrelAtachmentById(id);
     }
 
     @PreAuthorize("hasRole('system-admin')")
