@@ -14,6 +14,7 @@ import { DynamicFormComponent } from "../../shared/components/dynamic-form-compo
 import { ActivatedRoute, Router } from '@angular/router';
 import { UiButtonComponent } from "../../shared/components/form-button-component/form-button";
 import { AuthService } from '../../core/services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-items',
@@ -44,6 +45,8 @@ openCreate(category: string) {
   items: any[] = [];
 
   loading = false;
+
+  environment = environment;
 
   activeTab = 'weapons';
 
@@ -78,7 +81,7 @@ openCreate(category: string) {
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
-    public authService: AuthService
+    public authService: AuthService,
   ) {}
 
   ngOnInit(): void {

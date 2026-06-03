@@ -11,6 +11,7 @@ import com.example.user_microservice.service.UserService;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,11 +25,13 @@ public class UserController {
     @Autowired
     private LocationClient locationClient;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/me")
     public UserResponse getMyProfile() {
         return UserMapper.responseFromModel(service.getMyProfile());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/me/detail")
     public UserResponse getMyProfileDetail() {
         UserModel user = service.getMyProfile();
@@ -36,6 +39,7 @@ public class UserController {
         return UserMapper.responseFromModelDetail(user, locationResponse, service.canDelete(user));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PatchMapping("/me/update")
     public UserResponse updateUser(
             @RequestBody UpdateMyProfileRequest request
@@ -44,13 +48,14 @@ public class UserController {
         return UserMapper.responseFromModel(service.updateMyProfile(request));
     }
 
+    /*@PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/me/password")
     public String changePassword(
             @RequestParam String newPassword,
             @RequestParam String oldPassword
     ){
         return service.changePassword(oldPassword, newPassword);
-    }
+    }*/
 
 
 }

@@ -24,48 +24,53 @@ public class ArmorVestController {
     @Autowired
     private ArmorVestService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<ArmorVestResponse> getAllArmorVest(){
         return ArmorVestMapper.responseFromModelList(service.getAllArmorVest());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public ArmorVestModel getArmorVestByIdModel(@PathVariable String id){
         return service.getArmorVestById(id);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public ArmorVestResponse createArmorVest(@Valid @RequestBody ArmorVestRequest armorVest){
         ArmorVestModel model = service.saveArmorVest(armorVest);
         return ArmorVestMapper.responseFromModel(model);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public ArmorVestResponse getArmorVestByReference(@PathVariable String reference){
         ArmorVestModel armorVest = service.getByReference(reference);
         return ArmorVestMapper.responseFromModel(armorVest);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public ArmorVestResponse getArmorVestById(@PathVariable String id){
         ArmorVestModel armorVest = service.getArmorVestById(id);
         return ArmorVestMapper.responseFromModel(armorVest);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public ArmorVestResponse updateArmorVest(@PathVariable String id, @RequestBody ArmorVestUpdateRequest ArmorVest){
         ArmorVestModel armorVest = service.updateArmorVest(ArmorVest, id);
         return ArmorVestMapper.responseFromModel(armorVest);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteArmorVest(@PathVariable String id){
         service.deleteArmorVest(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<ArmorVestResponse> search(
             @RequestBody SearchRequest request,

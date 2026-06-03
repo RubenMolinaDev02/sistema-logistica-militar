@@ -2,6 +2,7 @@ package com.example.image_microservice.controller;
 
 import com.example.image_microservice.service.CloudinaryService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ public class ImageController {
         this.cloudinaryService = cloudinaryService;
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/upload")
     public ResponseEntity<?> uploadImage(
             @RequestParam("file") MultipartFile file) {

@@ -8,6 +8,8 @@ import {
 import { CommonModule } from '@angular/common';
 import { KeycloakService } from 'keycloak-angular';
 import { AuthService } from '../../core/services/auth.service';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-shell',
@@ -24,10 +26,11 @@ export class ShellComponent implements OnInit {
 
   username = '';
   roles = '';
+  environment = environment;
 
   constructor(
     private keycloak: KeycloakService,
-    private authService: AuthService
+    public authService: AuthService
   ) {}
 
   async ngOnInit(): Promise<void> {

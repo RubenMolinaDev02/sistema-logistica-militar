@@ -25,48 +25,53 @@ public class ArmorPlateController {
     @Autowired
     private ArmorPlateService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<ArmorPlateResponse> getAllArmorPlate(){
         return ArmorPlateMapper.responseFromModelList(service.getAllArmorPlate());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public ArmorPlateModel getArmorPlateByIdModel(@PathVariable String id){
         return service.getArmorPlateById(id);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public ArmorPlateResponse createArmorPlate(@Valid @RequestBody ArmorPlateRequest armorPlate){
         ArmorPlateModel model = service.saveArmorPlate(armorPlate);
         return ArmorPlateMapper.responseFromModel(model);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public ArmorPlateResponse getArmorPlateByReference(@PathVariable String reference){
         ArmorPlateModel armorPlate = service.getByReference(reference);
         return ArmorPlateMapper.responseFromModel(armorPlate);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public ArmorPlateResponse getArmorPlateById(@PathVariable String id){
         ArmorPlateModel armorPlate = service.getArmorPlateById(id);
         return ArmorPlateMapper.responseFromModel(armorPlate);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public ArmorPlateResponse updateArmorPlate(@PathVariable String id, @RequestBody ArmorPlateUpdateRequest armorPlateUpdateRequest){
         ArmorPlateModel armorPlate = service.updateArmorPlate(armorPlateUpdateRequest, id);
         return ArmorPlateMapper.responseFromModel(armorPlate);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteArmorPlate(@PathVariable String id){
         service.deleteArmorPlate(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<ArmorPlateResponse> search(
             @RequestBody SearchRequest request,

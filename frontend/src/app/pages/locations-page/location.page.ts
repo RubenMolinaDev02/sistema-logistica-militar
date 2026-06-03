@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UiButtonComponent } from "../../shared/components/form-button-component/form-button";
 import { AuthService } from '../../core/services/auth.service';
 import { UserGrid } from "../../shared/components/location-grid/location-grid.component";
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-locations',
@@ -35,7 +36,7 @@ openCreate() {
   this.router.navigate(['/locations/create'])
 }
 
-
+  environment = environment;
   page = 0;
   size = 24;
   totalPages = 0;

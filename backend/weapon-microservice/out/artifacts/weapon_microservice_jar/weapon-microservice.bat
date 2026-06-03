@@ -1,0 +1,1 @@
+java -jar weapon-microservice.jar --spring.config.location=file:application.properties

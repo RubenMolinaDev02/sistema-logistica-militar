@@ -26,11 +26,13 @@ public class AmmoController {
     @Autowired
     private AmmoService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<AmmoResponse> getAllAmmo(){
         return AmmoMapper.responseFromModelListSimple(service.getAllAmmo());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public AmmoResponse getAmmoByReference(@PathVariable String reference){
         AmmoModel ammo = service.getByReference(reference);
@@ -40,12 +42,13 @@ public class AmmoController {
         return AmmoMapper.responseFromModel(ammo, caliber);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public AmmoModel getAmmoByIdModel(@PathVariable String id){
         return service.getAmmoById(id);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public AmmoResponse createAmmo(@Valid @RequestBody AmmoRequest ammo){
         AmmoModel model = service.saveAmmo(ammo);
@@ -55,6 +58,7 @@ public class AmmoController {
         return AmmoMapper.responseFromModel(model, caliber);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public AmmoResponse getAmmoById(@PathVariable String id){
         AmmoModel ammo = service.getAmmoById(id);
@@ -64,7 +68,7 @@ public class AmmoController {
         return AmmoMapper.responseFromModel(ammo, caliber);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public AmmoResponse updateAmmo(@PathVariable String id, @RequestBody AmmoUpdateRequest ammoUpdateRequest){
         AmmoModel ammo = service.updateAmmo(ammoUpdateRequest, id);
@@ -75,12 +79,13 @@ public class AmmoController {
         return AmmoMapper.responseFromModel(ammo, caliber);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteAmmo(@PathVariable String id){
         service.deleteAmmo(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<AmmoResponse> search(
             @RequestBody SearchRequest request,

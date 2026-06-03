@@ -24,16 +24,19 @@ public class MagazineController {
     @Autowired
     private MagazineService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<MagazineResponse> getAllMagazines(){
         return MagazineMapper.responseFromModelListSimple(service.getAllMagazines());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public MagazineModel getMagazineByIdModel(@PathVariable String id){
         return service.getMagazineById(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public MagazineResponse getMagazineByReference(@PathVariable String reference){
         MagazineModel magazine = service.getByReference(reference);
@@ -44,6 +47,7 @@ public class MagazineController {
         );
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public MagazineResponse getMagazineById(@PathVariable String id){
         MagazineModel magazine = service.getMagazineById(id);
@@ -54,7 +58,7 @@ public class MagazineController {
         );
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public MagazineResponse createMagazine(@Valid @RequestBody MagazineRequest magazine){
         return MagazineMapper.responseFromModel(
@@ -64,7 +68,7 @@ public class MagazineController {
         );
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public MagazineResponse updateMagazine(@RequestBody MagazineUpdateRequest magazine, @PathVariable String id){
         MagazineModel model = service.updateMagazine(id, magazine);
@@ -75,12 +79,13 @@ public class MagazineController {
         );
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteMagazine(@PathVariable String id){
         service.deleteMagazine(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<MagazineResponse> search(
             @RequestBody SearchRequest request,

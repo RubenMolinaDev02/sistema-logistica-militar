@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UiButtonComponent } from "../../shared/components/form-button-component/form-button";
 import { ItemHeader } from "../../shared/components/item-header/item-header";
 import { mapToUserDetail } from '../my-user-page/user-detail.dto';
+import { AuthService } from '../../core/services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-user-detail',
@@ -14,12 +16,21 @@ import { mapToUserDetail } from '../my-user-page/user-detail.dto';
 })
 export class UserDetailComponent {
 
+openKeycloak() {
+  const url = environment.keycloak.consoleUrl;
+
+  window.open(url, '_blank');
+}
+
     constructor(
         private apiInfoService: ApiInfoService,
         private route: ActivatedRoute,
         private cdr: ChangeDetectorRef,
-        private router: Router
+        private router: Router,
+        public authService: AuthService
     ) {}
+
+    environment = environment
 
     loading = false;
 
@@ -31,6 +42,16 @@ export class UserDetailComponent {
 
   openEdit() {
   this.router.navigate([`/users/edit/${this.id}`])
+  }
+
+  openDelete(){
+    console.log(this.id);
+
+    this.apiInfoService.deleteItemsById(this.id, "/admin/users/").subscribe({
+    next: () => {
+        this.router.navigate(['/users']);
+    }
+  });
   }
 
 

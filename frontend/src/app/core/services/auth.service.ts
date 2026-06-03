@@ -6,35 +6,59 @@ export class AuthService {
 
   async login(username: string, password: string): Promise<any> {
 
-    const body = new URLSearchParams();
+  const body = new URLSearchParams();
 
-    body.set('client_id', environment.keycloak.clientId);
-    body.set('grant_type', 'password');
-    body.set('username', username);
-    body.set('password', password);
+  body.set('client_id', environment.keycloak.clientId);
+  body.set('grant_type', 'password');
+  body.set('username', username);
+  body.set('password', password);
 
-    const response = await fetch(
-      `${environment.keycloak.url}/realms/${environment.keycloak.realm}/protocol/openid-connect/token`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Login failed');
+  const response = await fetch(
+    `${environment.keycloak.url}/realms/${environment.keycloak.realm}/protocol/openid-connect/token`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body
     }
+  );
 
-    const data = await response.json();
-
-    localStorage.setItem('access_token', data.access_token);
-    localStorage.setItem('refresh_token', data.refresh_token);
-
-    return data;
+  if (!response.ok) {
+    throw new Error('Login failed');
   }
+
+  const data = await response.json();
+
+  // Decodificar JWT
+  const payload = JSON.parse(
+    atob(data.access_token.split('.')[1])
+  );
+
+  const roles: string[] = [
+    ...(payload?.realm_access?.roles || []),
+    ...(payload?.resource_access?.[environment.keycloak.clientId]?.roles || [])
+  ];
+
+  const allowedRoles = [
+    environment.roles.admin,
+    environment.roles.manager,
+    environment.roles.soldier,
+    environment.roles.publicAccess,
+  ];
+
+  const hasPermission =
+    allowedRoles.some(role => roles.includes(role));
+
+  if (!hasPermission) {
+    throw new Error('You do not have permission to access this application');
+  }
+
+  localStorage.setItem('access_token', data.access_token);
+  localStorage.setItem('refresh_token', data.refresh_token);
+
+  return data;
+}
   
 async refreshToken(): Promise<string> {
 

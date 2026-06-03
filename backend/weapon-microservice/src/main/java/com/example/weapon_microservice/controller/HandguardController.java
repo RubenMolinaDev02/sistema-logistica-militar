@@ -23,21 +23,25 @@ public class HandguardController {
     @Autowired
     private HandguardService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<HandguardResponse> getAllHandguards(){
         return HandguardMapper.resposeFromModelList(service.getAllHandguards());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public HandguardModel getHandguardByIdModel(@PathVariable String id){
         return service.getHandguardById(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/compatible")
     public List<HandguardResponse> getCompatible(@RequestParam String platformId){
         return HandguardMapper.resposeFromModelList(service.getCompatibleHandguards(platformId));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public HandguardResponse getHandguardByReference(@PathVariable String reference){
         HandguardModel handguardModel = service.getByReference(reference);
@@ -50,6 +54,7 @@ public class HandguardController {
         return HandguardMapper.responseFromModel(handguardModel, platformResponses);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public HandguardResponse getHandguardById(@PathVariable String id){
         HandguardModel handguardModel = service.getHandguardById(id);
@@ -62,7 +67,7 @@ public class HandguardController {
         return HandguardMapper.responseFromModel(handguardModel, platformResponses);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public HandguardResponse createHandguard(@Valid @RequestBody HandguardRequest handguard){
         List<PlatformResponse> platforms =
@@ -71,7 +76,7 @@ public class HandguardController {
         return HandguardMapper.responseFromModel(service.saveHandguard(handguard), platforms);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public HandguardResponse updateHandguard(@Valid @RequestBody HandguardUpdateRequest handguard, @PathVariable String id){
         List<PlatformResponse> platforms =
@@ -80,12 +85,13 @@ public class HandguardController {
         return HandguardMapper.responseFromModel(service.updateHandguard(handguard, id), platforms);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteHandguard(@PathVariable String id){
         service.deleteHandguard(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<HandguardResponse> search(
             @RequestBody SearchRequest request,

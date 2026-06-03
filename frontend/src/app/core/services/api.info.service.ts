@@ -110,6 +110,17 @@ export class ApiInfoService{
       );
     }
 
+    deleteItemsById(id: string, endpoint: string): Observable<ItemDetailModel> {
+      return this.requestWithAuth(() =>
+        this.http.delete<ItemDetailModel>(
+          `${this.base}${endpoint}` + id,
+          { 
+            headers: this.authHeaders()
+          }
+        )
+      );
+    }
+
     createItem(request: any, category: string): Observable<ItemDetailModel> {
       console.log(request);
       return this.requestWithAuth(() =>
@@ -140,6 +151,17 @@ export class ApiInfoService{
         this.http.patch<ItemDetailModel>(
           `${this.base}${endpoint}`,
           request, { 
+            headers: this.authHeaders()
+           }
+        )
+      );
+    }
+
+    changePassword(oldPassword: string, newPassword: string): Observable<ItemDetailModel> {
+      return this.requestWithAuth(() =>
+        this.http.post<ItemDetailModel>(
+          `${this.base}/users/me/password?oldPassword=${oldPassword}&newPassword=${newPassword}`,
+           { 
             headers: this.authHeaders()
            }
         )

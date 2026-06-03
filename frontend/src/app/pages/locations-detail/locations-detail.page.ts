@@ -6,6 +6,8 @@ import { UiButtonComponent } from "../../shared/components/form-button-component
 import { ItemHeader } from "../../shared/components/item-header/item-header";
 import { mapToUserDetail } from '../my-user-page/user-detail.dto';
 import { mapToLocationDetail } from './locations-detail.dto';
+import { AuthService } from '../../core/services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-location-detail',
@@ -19,8 +21,11 @@ export class LocationDetailComponent {
         private apiInfoService: ApiInfoService,
         private route: ActivatedRoute,
         private cdr: ChangeDetectorRef,
-        private router: Router
+        private router: Router,
+        public authService: AuthService
     ) {}
+
+    environment = environment;
 
     loading = false;
 

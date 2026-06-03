@@ -26,48 +26,53 @@ public class TextileController {
     @Autowired
     private TextileService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<TextileResponse> getAllTextile(){
         return TextileMapper.responseFromModelList(service.getAllTextile());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public TextileModel getTextileByIdModel(@PathVariable String id){
         return service.getTextileById(id);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public TextileResponse createTextile(@Valid @RequestBody TextileRequest textile){
         TextileModel model = service.saveTextile(textile);
         return TextileMapper.responseFromModel(model);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public TextileResponse getTextileByReference(@PathVariable String reference){
         TextileModel textile = service.getByReference(reference);
         return TextileMapper.responseFromModel(textile);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public TextileResponse getTextileById(@PathVariable String id){
         TextileModel textile = service.getTextileById(id);
         return TextileMapper.responseFromModel(textile);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public TextileResponse updateTextile(@PathVariable String id, @RequestBody TextileUpdateRequest Textile){
         TextileModel textile = service.updateTextile(Textile, id);
         return TextileMapper.responseFromModel(textile);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteTextile(@PathVariable String id){
         service.deleteTextile(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<TextileResponse> search(
             @RequestBody SearchRequest request,

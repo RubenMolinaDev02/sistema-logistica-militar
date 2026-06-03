@@ -25,48 +25,53 @@ public class HelmetController {
     @Autowired
     private HelmetService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<HelmetResponse> getAllHelmet(){
         return HelmetMapper.responseFromModelList(service.getAllHelmet());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public HelmetModel getHelmetByIdModel(@PathVariable String id){
         return service.getHelmetById(id);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public HelmetResponse createHelmet(@Valid @RequestBody HelmetRequest helmet){
         HelmetModel model = service.saveHelmet(helmet);
         return HelmetMapper.responseFromModel(model);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public HelmetResponse getHelmetByReference(@PathVariable String reference){
         HelmetModel helmet = service.getHelmetByReference(reference);
         return HelmetMapper.responseFromModel(helmet);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public HelmetResponse getHelmetById(@PathVariable String id){
         HelmetModel helmet = service.getHelmetById(id);
         return HelmetMapper.responseFromModel(helmet);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public HelmetResponse updateHelmet(@PathVariable String id, @RequestBody HelmetUpdateRequest helmetUpdateRequest){
         HelmetModel helmet = service.updateHelmet(helmetUpdateRequest, id);
         return HelmetMapper.responseFromModel(helmet);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteHelmet(@PathVariable String id){
         service.deleteHelmet(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<HelmetResponse> search(
             @RequestBody SearchRequest request,

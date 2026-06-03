@@ -32,7 +32,7 @@ public class KeycloakAdminController {
     @Autowired
     private LocationClient locationClient;
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public UserResponse createUser(
             @RequestHeader("Authorization") String token,
@@ -41,7 +41,7 @@ public class KeycloakAdminController {
         return service.createUser(request, token);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @GetMapping("roles")
     public List<RoleMapping> getRealmRoles(
             @RequestHeader("Authorization") String token
@@ -49,7 +49,7 @@ public class KeycloakAdminController {
         return keycloakRepository.getRealmRoles(token);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{userId}")
     public UserResponse updateUser(
             @PathVariable String userId,
@@ -63,21 +63,22 @@ public class KeycloakAdminController {
         );
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @GetMapping()
     public List<UserModel> getAll(){
         return service.getAllUsers();
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{userId}")
     public void deleteUser(
-            @PathVariable String userId
+            @PathVariable String userId,
+            @RequestHeader("Authorization") String token
     ) {
-        service.deleteUser(userId);
+        service.deleteUser(userId, token);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @GetMapping("/{userId}")
     public UserResponse getUser(
             @PathVariable String userId
@@ -85,7 +86,7 @@ public class KeycloakAdminController {
         return UserMapper.responseFromModel(service.getUserById(userId));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @GetMapping("/detail/{userId}")
     public UserResponse getUserDetail(
             @PathVariable String userId
@@ -95,7 +96,7 @@ public class KeycloakAdminController {
         return UserMapper.responseFromModelDetail(model, locationResponse, service.canDelete(model));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @GetMapping("/candelete/{userId}")
     public boolean getUserCanDelete(
             @PathVariable String userId
@@ -104,7 +105,7 @@ public class KeycloakAdminController {
         return service.canDelete(model);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping("/search")
     public PageResponse<UserResponse> search(
             @RequestBody SearchRequest request,

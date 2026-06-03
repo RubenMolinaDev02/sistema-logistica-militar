@@ -15,6 +15,7 @@ public class LocationMapper {
                 .name(request.getName())
                 .type(request.getType())
                 .status(request.getStatus())
+                .country(request.getCountry())
                 .build();
     }
 
@@ -26,6 +27,7 @@ public class LocationMapper {
                 .maxTroops(model.getMaxTroops())
                 .type(model.getType())
                 .status(model.getStatus())
+                .country(model.getCountry())
                 .build();
     }
 

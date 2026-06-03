@@ -10,6 +10,12 @@
       [subtitle]="item?.name"
       [text]="item?.reference"
   >
+  @if (this.authService.hasRole(`${environment.roles.admin}`)) {
+    <app-ui-button
+      label="KEYCLOAK"
+      variant="primary"
+      (pressed)="openKeycloak()"
+    />
     <app-ui-button
       label="EDIT"
       variant="primary"
@@ -19,9 +25,10 @@
       <app-ui-button
         label="DELETE"
         variant="danger"
-        (pressed)="openEdit()"
+        (pressed)="openDelete()"
       />
     }
+  }
     <app-ui-button
       label="← Back"
       variant="danger"

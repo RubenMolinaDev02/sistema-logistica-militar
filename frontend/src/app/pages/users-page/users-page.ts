@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UiButtonComponent } from "../../shared/components/form-button-component/form-button";
 import { AuthService } from '../../core/services/auth.service';
 import { UserGrid } from "../../shared/components/user-grid/user-grid.component";
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-items',
@@ -31,7 +32,13 @@ import { UserGrid } from "../../shared/components/user-grid/user-grid.component"
   templateUrl: './users-page.html'
 })
 export class UsersComponent implements OnInit {
+  environment = environment;
 
+openKeycloak() {
+  const url = environment.keycloak.consoleUrl;
+
+  window.open(url, '_blank');
+}
 
 openCreate() {
   this.router.navigate(['/users/create'])

@@ -24,16 +24,19 @@ public class WeaponManufacturerController {
     @Autowired
     private WeaponManufacturerService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<WeaponManufacturerResponse> getAllWeaponManufacturers(){
         return ManufacturerMapper.responseFromModelList(service.getAllWeaponManufacturers());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public WeaponManufacturerModel getWeaponManufacturerByIdModel(@PathVariable String id){
         return service.getWeaponManufacturerById(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public WeaponManufacturerResponse getWeaponManufacturerByReference(@PathVariable String reference){
         return ManufacturerMapper.responseFromModel(
@@ -41,6 +44,7 @@ public class WeaponManufacturerController {
         );
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public WeaponManufacturerResponse getWeaponManufacturerById(@PathVariable String id){
         return ManufacturerMapper.responseFromModel(
@@ -48,24 +52,25 @@ public class WeaponManufacturerController {
         );
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public WeaponManufacturerResponse createWeaponManufacturer(@Valid @RequestBody ManufacturerRequest manufacturerRequest){
         return ManufacturerMapper.responseFromModel(service.saveWeaponManufacturer(manufacturerRequest));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public WeaponManufacturerResponse updateWeaponManufacturer(@RequestBody ManufacturerUpdateRequest manufacturerRequest, @PathVariable String id){
         return ManufacturerMapper.responseFromModel(service.updateWeaponManufacturer(manufacturerRequest, id));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteWeaponManufacturer(@PathVariable String id){
         service.deleteWeaponManufacturer(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<WeaponManufacturerResponse> search(
             @RequestBody SearchRequest request,

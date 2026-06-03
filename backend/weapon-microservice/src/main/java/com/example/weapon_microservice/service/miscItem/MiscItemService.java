@@ -47,25 +47,8 @@ public class MiscItemService {
         );
     }
 
-    public PageResponse<MiscItemModel> getAllMiscItem(int page, int size) {
-        Query query = new Query();
-
-        query.skip((long) page * size);
-        query.limit(size);
-
-        List<MiscItemModel> content =
-                mongoTemplate.find(query, MiscItemModel.class);
-
-        long total =
-                mongoTemplate.count(new Query(), MiscItemModel.class);
-
-        return PageResponse.<MiscItemModel>builder()
-                .content(content)
-                .totalElements(total)
-                .totalPages((int) Math.ceil((double) total / size))
-                .page(page)
-                .size(size)
-                .build();
+    public List<MiscItemModel> getAllMiscItem() {
+        return repository.findAll();
     }
 
     public MiscItemModel saveMiscItem(MiscItemRequest miscItemModel){

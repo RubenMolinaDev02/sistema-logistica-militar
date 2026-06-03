@@ -25,6 +25,8 @@ import { UiButtonComponent } from "../../shared/components/form-button-component
 import { mapToStockDetail } from './detail-mappers/weapon-stock-detail.mapper';
 import { mapToHandguardDetail } from './detail-mappers/handguard-detail.mapper';
 import { ItemHeader } from "../../shared/components/item-header/item-header";
+import { AuthService } from '../../core/services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-item-detail',
@@ -38,8 +40,11 @@ export class ItemDetailComponent {
         private apiInfoService: ApiInfoService,
         private route: ActivatedRoute,
         private cdr: ChangeDetectorRef,
-        private router: Router
+        private router: Router,
+        public authService : AuthService
     ) {}
+
+    environment = environment;
 
     loading = false;
 

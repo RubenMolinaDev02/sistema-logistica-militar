@@ -24,47 +24,52 @@ public class BayonetController {
     @Autowired
     private BayonetService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<BayonetResponse> getAllBayonets(){
         return BayonetMapper.responseFromModelListSimple(service.getAllBayonets());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public BayonetModel getBayonetByIdModel(@PathVariable String id){
         return service.getBayonetById(id);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public BayonetResponse createBayonet(@Valid @RequestBody BayonetRequest bayonet){
         return BayonetMapper.responseFromModel(service.saveBayonet(bayonet), service.getWeaponsByIds(bayonet.getCompatibleWeaponsIds()));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public BayonetResponse getBayonetByReference(@PathVariable String reference){
         BayonetModel model = service.getByReference(reference);
         return BayonetMapper.responseFromModel(model, service.getWeaponsByIds(model.getCompatibleWeaponsIds()));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public BayonetResponse getBayonetById(@PathVariable String id){
         BayonetModel model = service.getBayonetById(id);
         return BayonetMapper.responseFromModel(model, service.getWeaponsByIds(model.getCompatibleWeaponsIds()));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public BayonetResponse updateBayonet(@PathVariable String id, @RequestBody BayonetUpdateRequest bayonet){
         BayonetModel model = service.updateBayonet(bayonet, id);
         return BayonetMapper.responseFromModel(model, service.getWeaponsByIds(model.getCompatibleWeaponsIds()));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteBayonet(@PathVariable String id){
         service.deleteBayonet(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<BayonetResponse> search(
             @RequestBody SearchRequest request,

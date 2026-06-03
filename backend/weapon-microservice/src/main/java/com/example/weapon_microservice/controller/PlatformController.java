@@ -30,27 +30,31 @@ public class PlatformController {
     @Autowired
     private WeaponService weaponService;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<PlatformResponse> getAllPlatforms(){
         return PlatformMapper.responseFromModelList(service.getAllPlatforms());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public PlatformModel getPlatformByIdModel(@PathVariable String id){
         return service.getPlatformById(id);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public PlatformResponse createPlatform(@Valid @RequestBody PlatformRequest platform){
         return PlatformMapper.responseFromModel(service.savePlatform(platform));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public PlatformResponse getPlatformByReference(@PathVariable String reference){
         return PlatformMapper.responseFromModel(service.getByReference(reference));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public PlatformResponse getPlatformById(@PathVariable String id){
         List<WeaponResponse> weapons =
@@ -58,18 +62,19 @@ public class PlatformController {
         return PlatformMapper.responseFromModelDetail(service.getPlatformById(id), weapons);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public PlatformResponse updatePlatform(@PathVariable String id, @RequestBody PlatformUpdateRequest platform){
         return PlatformMapper.responseFromModel(service.updatePlatform(platform, id));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deletePlatform(@PathVariable String id){
         service.deletePlatform(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<PlatformResponse> search(
             @RequestBody SearchRequest request,

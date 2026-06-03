@@ -30,17 +30,19 @@ public class CaliberController {
     @Autowired
     private AmmoService ammoService;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<CaliberResponse> getAllCalibers(){
         return CaliberMapper.responseFromModelList(service.getAllCalibers());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public CaliberModel getCaliberByIdModel(@PathVariable String id){
         return service.getCaliberById(id);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public CaliberResponse createCaliber(@Valid @RequestBody CaliberRequest caliber){
         CaliberModel caliberModel = service.saveCaliber(caliber);
@@ -49,6 +51,7 @@ public class CaliberController {
         return CaliberMapper.responseFromModel(caliberModel, ammo);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public CaliberResponse getCaliberByReference(@PathVariable String reference){
         CaliberModel caliberModel = service.getByReference(reference);
@@ -57,6 +60,7 @@ public class CaliberController {
         return CaliberMapper.responseFromModel(caliberModel, ammo);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public CaliberResponse getCaliberById(@PathVariable String id){
         CaliberModel caliberModel = service.getCaliberById(id);
@@ -65,7 +69,7 @@ public class CaliberController {
         return CaliberMapper.responseFromModel(caliberModel, ammo);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public CaliberResponse updateCaliber(@PathVariable String id, @RequestBody CaliberUpdateRequest caliber){
         CaliberModel caliberModel = service.updateCaliber(caliber, id);
@@ -74,12 +78,13 @@ public class CaliberController {
         return CaliberMapper.responseFromModel(caliberModel, ammo);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteCaliber(@PathVariable String id){
         service.deleteCaliber(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<CaliberResponse> search(
             @RequestBody SearchRequest request,

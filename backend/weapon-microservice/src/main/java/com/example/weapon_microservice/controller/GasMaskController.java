@@ -24,44 +24,49 @@ public class GasMaskController {
     @Autowired
     private GasMaskService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<GasMaskResponse> getAllGasMasks(){
         return GasMaskMapper.responseFromModelList(service.getAllGasMasks());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public GasMaskModel getGasMaskByIdModel(@PathVariable String id){
         return service.getGasMaskById(id);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public GasMaskResponse createGasMask(@Valid @RequestBody GasMaskRequest gasMask){
         return GasMaskMapper.responseFromModel(service.saveGasMask(gasMask));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public GasMaskResponse getGasMaskByReference(@PathVariable String reference){
         return GasMaskMapper.responseFromModel(service.getByReference(reference));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public GasMaskResponse getGasMaskById(@PathVariable String id){
         return GasMaskMapper.responseFromModel(service.getGasMaskById(id));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public GasMaskResponse updateGasMask(@PathVariable String id, @RequestBody GasMaskUpdateRequest gasMask){
         return GasMaskMapper.responseFromModel(service.updateGasMask(gasMask, id));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteGasMask(@PathVariable String id){
         service.deleteGasMask(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<GasMaskResponse> search(
             @RequestBody SearchRequest request,

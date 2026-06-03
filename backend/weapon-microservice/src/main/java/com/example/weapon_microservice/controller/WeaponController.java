@@ -23,44 +23,43 @@ public class WeaponController {
     @Autowired
     private WeaponService weaponService;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
-    public PageResponse<WeaponResponse> getAllWeapons(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    ){
-        PageResponse<WeaponModel> result =
-                weaponService.getAllWeapons(page, size);
-
-        return pageToResponse(result);
+    public List<WeaponResponse> getAllWeapons(){
+       return WeaponMapper.responseFromModelSimpleList(weaponService.getAllWeapons());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public WeaponResponse getWeaponByReference(@PathVariable String reference){
         return responseFromModel(weaponService.getByReference(reference));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public WeaponResponse getWeaponById(@PathVariable String id){
         return responseFromModel(weaponService.getWeaponById(id));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public WeaponModel getWeaponByIdModel(@PathVariable String id){
         return weaponService.getWeaponById(id);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public WeaponResponse modifyWeapon(@PathVariable String id, @RequestBody WeaponUpdateRequest request){
         return responseFromModel(weaponService.updateWeapon(request, id));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteWeapon(@PathVariable String id){
         weaponService.deleteWeapon(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<WeaponResponse> search(
             @RequestBody SearchRequest request,
@@ -71,7 +70,7 @@ public class WeaponController {
         return pageToResponse(result);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public WeaponResponse createWeapon(@Valid @RequestBody WeaponRequest weapon){
         return responseFromModel(weaponService.saveWeapon(weapon));

@@ -14,6 +14,7 @@ import { LocationsComponent } from './pages/locations-page/location.page';
 import { LocationDetailComponent } from './pages/locations-detail/locations-detail.page';
 import { LocationCreateComponent } from './pages/create-location/create-location.page';
 import { EditLocationComponent } from './pages/edit-location/location-edit.page';
+import { EditPasswordComponent } from './pages/edit-password/edit-password.component';
 
 export const routes: Routes = [
 
@@ -46,18 +47,6 @@ export const routes: Routes = [
 
     children: [
 
-      /*
-      |--------------------------------------------------------------------------
-      | DASHBOARD
-      |--------------------------------------------------------------------------
-      */
-
-      {
-        path: 'dashboard',
-        loadComponent: () =>
-          import('./pages/dashboard/dashboard.page')
-            .then(m => m.DashboardComponent)
-      },
 
       /*
       |--------------------------------------------------------------------------
@@ -110,62 +99,13 @@ export const routes: Routes = [
         path: 'myuser/edit',
         component: EditMyProfileComponent
       },
+      /*{
+        path: 'myuser/edit-password',
+        component: EditPasswordComponent
+      },*/
       {
         path: 'users/create/results',
         component: UserCreatedComponent
-      },
-
-      /*
-      |--------------------------------------------------------------------------
-      | INVENTORY
-      |--------------------------------------------------------------------------
-      */
-
-      {
-        path: 'inventory',
-        children: [
-
-          {
-            path: '',
-            loadComponent: () =>
-              import('./modules/inventory/inventory.component')
-                .then(m => m.InventoryComponent)
-          },
-
-          {
-            path: 'skus',
-            loadComponent: () =>
-              import('./modules/inventory/skus/skus.component')
-                .then(m => m.SkusComponent)
-          },
-
-          {
-            path: 'stock',
-            loadComponent: () =>
-              import('./modules/inventory/stock/stock.component')
-                .then(m => m.StockComponent)
-          },
-
-          {
-            path: 'units',
-            loadComponent: () =>
-              import('./modules/inventory/units/units.component')
-                .then(m => m.UnitsComponent)
-          }
-        ]
-      },
-
-      /*
-      |--------------------------------------------------------------------------
-      | SHIPMENTS
-      |--------------------------------------------------------------------------
-      */
-
-      {
-        path: 'shipments',
-        loadComponent: () =>
-          import('./modules/shipments/shipments.component')
-            .then(m => m.ShipmentsComponent)
       },
 
       /*
@@ -199,7 +139,7 @@ export const routes: Routes = [
 
       {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: '/items/weapons',
         pathMatch: 'full'
       }
     ]
@@ -213,6 +153,6 @@ export const routes: Routes = [
 
   {
     path: '**',
-    redirectTo: 'dashboard'
+    redirectTo: '/items/weapons'
   }
 ];

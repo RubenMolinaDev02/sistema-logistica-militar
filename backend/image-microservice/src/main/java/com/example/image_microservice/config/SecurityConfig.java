@@ -36,7 +36,6 @@ public class SecurityConfig {
 
         JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
 
-        // IMPORTANTE: aquí conectas roles reales
         jwtConverter.setJwtGrantedAuthoritiesConverter(converter);
 
         return jwtConverter;

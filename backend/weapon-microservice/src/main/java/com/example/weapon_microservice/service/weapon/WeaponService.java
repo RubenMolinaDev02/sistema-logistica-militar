@@ -60,25 +60,8 @@ public class WeaponService {
                 ));
     }
 
-    public PageResponse<WeaponModel> getAllWeapons(int page, int size){
-        Query query = new Query();
-
-        query.skip((long) page * size);
-        query.limit(size);
-
-        List<WeaponModel> content =
-                mongoTemplate.find(query, WeaponModel.class);
-
-        long total =
-                mongoTemplate.count(new Query(), WeaponModel.class);
-
-        return PageResponse.<WeaponModel>builder()
-                .content(content)
-                .totalElements(total)
-                .totalPages((int) Math.ceil((double) total / size))
-                .page(page)
-                .size(size)
-                .build();
+    public List<WeaponModel> getAllWeapons(){
+        return repository.findAll();
     }
 
     public WeaponModel saveWeapon(WeaponRequest weapon){

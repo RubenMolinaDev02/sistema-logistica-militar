@@ -24,44 +24,49 @@ public class GrenadeController {
     @Autowired
     private GrenadeService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<GrenadeResponse> getAllGrenades(){
         return GrenadeMapper.responseFromModelList(service.getAllGrenades());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public GrenadeModel getGrenadeByIdModel(@PathVariable String id){
         return service.getGrenadeById(id);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public GrenadeResponse createGrenade(@Valid @RequestBody GrenadeRequest grenade){
         return GrenadeMapper.responseFromModel(service.saveGrenade(grenade));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public GrenadeResponse getGrenadeByReference(@PathVariable String reference){
         return GrenadeMapper.responseFromModel(service.getByReference(reference));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public GrenadeResponse getGrenadeById(@PathVariable String id){
         return GrenadeMapper.responseFromModel(service.getGrenadeById(id));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public GrenadeResponse updateGrenade(@PathVariable String id, @RequestBody GrenadeUpdateRequest grenade){
         return GrenadeMapper.responseFromModel(service.updateGrenade(grenade, id));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteGrenade(@PathVariable String id){
         service.deleteGrenade(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<GrenadeResponse> search(
             @RequestBody SearchRequest request,

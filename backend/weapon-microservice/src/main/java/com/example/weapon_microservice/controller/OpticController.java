@@ -23,44 +23,49 @@ public class OpticController {
     @Autowired
     private OpticService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<OpticResponse> getAllOptics(){
         return OpticMapper.responseFromModelList(service.getAllOptics());
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public OpticResponse createOptic(@Valid @RequestBody OpticRequest Optic){
         return OpticMapper.responseFromModel(service.saveOptic(Optic));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public OpticModel getOpticByIdModel(@PathVariable String id){
         return service.getOpticById(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public OpticResponse getOpticByReference(@PathVariable String reference){
         return OpticMapper.responseFromModel(service.getByReference(reference));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public OpticResponse getOpticById(@PathVariable String id){
         return OpticMapper.responseFromModel(service.getOpticById(id));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public OpticResponse updateOptic(@PathVariable String id, @RequestBody OpticUpdateRequest Optic){
         return OpticMapper.responseFromModel(service.updateOptic(Optic, id));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteOptic(@PathVariable String id){
         service.deleteOptic(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<OpticResponse> search(
             @RequestBody SearchRequest request,

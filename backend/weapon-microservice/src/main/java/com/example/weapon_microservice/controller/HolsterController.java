@@ -27,17 +27,19 @@ public class HolsterController {
     @Autowired
     private HolsterService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<HolsterResponse> getAllHolster(){
         return HolsterMapper.responseFromModelSimpleList(service.getAllHolster());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public HolsterModel getHolsterByIdModel(@PathVariable String id){
         return service.getHolsterById(id);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public HolsterResponse createHolster(@Valid @RequestBody HolsterRequest holster){
         HolsterModel model = service.saveHolster(holster);
@@ -47,6 +49,7 @@ public class HolsterController {
         return HolsterMapper.responseFromModel(model, weapons);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public HolsterResponse getHolsterByReference(@PathVariable String reference){
         HolsterModel model = service.getByReference(reference);
@@ -56,6 +59,7 @@ public class HolsterController {
         return HolsterMapper.responseFromModel(model, weapons);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public HolsterResponse getHolsterById(@PathVariable String id){
         HolsterModel model = service.getHolsterById(id);
@@ -65,7 +69,7 @@ public class HolsterController {
         return HolsterMapper.responseFromModel(model, weapons);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public HolsterResponse updateHolster(@PathVariable String id, @RequestBody HolsterUpdateRequest holster){
         HolsterModel model = service.updateHolster(holster, id);
@@ -75,12 +79,13 @@ public class HolsterController {
         return HolsterMapper.responseFromModel(model, weapons);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteHolster(@PathVariable String id){
         service.deleteHolster(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<HolsterResponse> search(
             @RequestBody SearchRequest request,

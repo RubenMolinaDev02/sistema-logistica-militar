@@ -255,11 +255,14 @@ public class UserService {
         );
     }
 
-    public void deleteUser(String userId) {
+    public void deleteUser(String userId, String token) {
 
         UserModel user = getUserById(userId);
 
-        if (canDelete(user)) userRepository.delete(user);
+        if (canDelete(user)) {
+            userRepository.delete(user);
+            keycloakRepository.deleteUser(token, userId);
+        }
         else {
             throw new ResponseStatusException(
                     HttpStatus.FORBIDDEN,

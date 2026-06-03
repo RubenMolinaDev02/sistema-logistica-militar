@@ -1,0 +1,16 @@
+package com.example.weapon_microservice.config;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+@Data
+@Component
+@ConfigurationProperties(prefix = "security.roles")
+public class RoleProperties {
+
+    private String admin;
+    private String manager;
+    private String soldier;
+    private String publicAccess;
+}

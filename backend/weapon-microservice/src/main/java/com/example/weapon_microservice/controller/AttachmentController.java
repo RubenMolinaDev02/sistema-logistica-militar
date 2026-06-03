@@ -24,44 +24,49 @@ public class AttachmentController {
     @Autowired
     private AttachmentService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<AttachmentResponse> getAllAttachments(){
         return AttachmentMapper.responseFromModelList(service.getAllAttachments());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public AttachmentModel getAttachmentByIdModel(@PathVariable String id){
         return service.getAttachmentById(id);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public AttachmentResponse createAttachment(@Valid @RequestBody AttachmentRequest attachment){
         return AttachmentMapper.responseFromModel(service.saveAttachment(attachment));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public AttachmentResponse getAttachmentByReference(@PathVariable String reference){
         return AttachmentMapper.responseFromModel(service.getByReference(reference));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public AttachmentResponse getAttachmentById(@PathVariable String id){
         return AttachmentMapper.responseFromModel(service.getAttachmentById(id));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public AttachmentResponse updateAttachment(@PathVariable String id, @RequestBody AttachmentUpdateRequest attachment){
         return AttachmentMapper.responseFromModel(service.updateAttachment(attachment, id));
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteAttachment(@PathVariable String id){
         service.deleteAttachment(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<AttachmentResponse> search(
             @RequestBody SearchRequest request,

@@ -10,11 +10,13 @@
       [subtitle]="item?.name"
       [text]="item?.reference"
   >
+  @if (this.authService.hasRole(`${environment.roles.admin}`)) {
     <app-ui-button
       label="EDIT"
       variant="primary"
       (pressed)="openEdit()"
     />
+  }
     <app-ui-button
       label="← Back"
       variant="danger"

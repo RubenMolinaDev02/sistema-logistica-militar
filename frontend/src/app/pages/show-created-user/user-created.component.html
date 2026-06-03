@@ -1,114 +1,128 @@
-<div *ngIf="user" class="min-h-screen bg-gray-100 flex items-center justify-center p-6">
+<div *ngIf="user" class="h-full overflow-y-auto bg-[#0a0c0f] flex items-start justify-center p-8">
 
-  <div class="w-full max-w-3xl bg-white rounded-2xl shadow-lg overflow-hidden">
+  <div class="w-full max-w-3xl flex flex-col gap-0">
 
-    <!-- Header -->
-    <div class="px-8 py-6 border-b border-gray-200">
-      <h1 class="text-3xl font-bold text-gray-900">
-        User Created Successfully
-      </h1>
-      <p class="text-gray-500 mt-1">
-        Save the temporary password before leaving this page.
-      </p>
-    </div>
-
-    <!-- Password -->
-    <div class="m-6 rounded-xl border-2 border-amber-300 bg-amber-50 p-6">
-
-      <h2 class="text-lg font-semibold text-amber-900 mb-3">
-        Temporary Password
-      </h2>
-
-      <div
-        class="bg-white border border-amber-200 rounded-lg p-4 text-center text-3xl font-bold tracking-widest text-pink-600 break-all">
-        {{ user.tempPassword }}
-      </div>
-
-      <div class="flex items-center gap-3 mt-4">
-
-        <button
-          (click)="copyPassword()"
-          class="px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition">
-          Copy Password
-        </button>
-
-        <span
-          *ngIf="copied"
-          class="text-green-600 font-medium">
-          ✓ Copied
+    <!-- HEADER -->
+    <div class="border border-[#1e2530] bg-[#111418]">
+      <div class="flex items-center gap-3 px-6 py-4 border-b border-[#1e2530]">
+        <div class="w-[6px] h-[6px] bg-[#00e5a0]"></div>
+        <span class="font-['Share_Tech_Mono'] text-[11px] text-[#00e5a0] uppercase tracking-[3px]">
+          OPERACIÓN COMPLETADA
         </span>
-
+        <div class="ml-auto flex items-center gap-2">
+          <div class="w-[5px] h-[5px] rounded-full bg-[#00e5a0] animate-pulse"></div>
+          <span class="font-['Share_Tech_Mono'] text-[9px] text-[#4a5568] tracking-[2px]">RECORD CREATED</span>
+        </div>
+      </div>
+      <div class="px-6 py-5">
+        <h1 class="font-['Share_Tech_Mono'] text-[22px] text-[#c8d4e0] tracking-[2px] uppercase">
+          Usuario registrado
+        </h1>
+        <p class="font-['Share_Tech_Mono'] text-[11px] text-[#4a5568] tracking-[1px] mt-1">
+          Guarda la contraseña temporal antes de salir de esta pantalla
+        </p>
       </div>
     </div>
 
-    <!-- User Info -->
-    <div class="p-6">
+    <!-- PASSWORD WARNING -->
+    <div class="border border-[#f59e0b] border-t-0 bg-[#0d1117]">
+      <div class="flex items-center gap-3 px-6 py-3 border-b border-[#f59e0b20]">
+        <span class="font-['Share_Tech_Mono'] text-[10px] text-[#f59e0b] uppercase tracking-[3px]">
+          ⚠ CONTRASEÑA TEMPORAL — ACCESO ÚNICO
+        </span>
+      </div>
+      <div class="px-6 py-5 flex flex-col gap-4">
+        <div class="bg-[#0a0c0f] border border-[#1e2530] px-6 py-4 text-center">
+          <span class="font-['Share_Tech_Mono'] text-[28px] tracking-[8px] text-[#f59e0b] break-all">
+            {{ user.tempPassword }}
+          </span>
+        </div>
+        <div class="flex items-center gap-4">
+          <button
+            (click)="copyPassword()"
+            class="font-['Share_Tech_Mono'] text-[11px] uppercase tracking-[2px] px-5 py-2 border border-[#1e2530] text-[#c8d4e0] bg-transparent transition-all duration-150 hover:border-[#00e5a0] hover:text-[#00e5a0] hover:bg-[#00e5a008] cursor-pointer"
+          >
+            ↗ Copiar contraseña
+          </button>
+          <span *ngIf="copied" class="font-['Share_Tech_Mono'] text-[10px] text-[#00e5a0] tracking-[2px] uppercase">
+            ✓ Copiado
+          </span>
+        </div>
+      </div>
+    </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- USER DATA -->
+    <div class="border border-[#1e2530] border-t-0 bg-[#111418]">
+      <div class="flex items-center gap-3 px-6 py-3 border-b border-[#1e2530] bg-[#0f1318]">
+        <div class="w-[6px] h-[6px] bg-[#617089]"></div>
+        <span class="font-['Share_Tech_Mono'] text-[10px] text-[#617089] uppercase tracking-[3px]">
+          DATOS DEL OPERATIVO
+        </span>
+      </div>
 
-        <div class="border rounded-lg p-4">
-          <p class="text-sm text-gray-500">Name</p>
-          <p class="font-semibold">
-            {{ user.firstName }} {{ user.lastName }}
-          </p>
+      <div class="grid grid-cols-2 divide-x divide-y divide-[#1e2530]">
+
+        <div class="px-5 py-4">
+          <p class="font-['Share_Tech_Mono'] text-[9px] text-[#4a5568] uppercase tracking-[2px] mb-1">Nombre</p>
+          <p class="font-['Share_Tech_Mono'] text-[13px] text-[#c8d4e0]">{{ user.firstName }} {{ user.lastName }}</p>
         </div>
 
-        <div class="border rounded-lg p-4">
-          <p class="text-sm text-gray-500">Username</p>
-          <p class="font-semibold">{{ user.username }}</p>
+        <div class="px-5 py-4">
+          <p class="font-['Share_Tech_Mono'] text-[9px] text-[#4a5568] uppercase tracking-[2px] mb-1">Usuario</p>
+          <p class="font-['Share_Tech_Mono'] text-[13px] text-[#c8d4e0]">{{ user.username }}</p>
         </div>
 
-        <div class="border rounded-lg p-4">
-          <p class="text-sm text-gray-500">Email</p>
-          <p class="font-semibold">{{ user.email }}</p>
+        <div class="px-5 py-4">
+          <p class="font-['Share_Tech_Mono'] text-[9px] text-[#4a5568] uppercase tracking-[2px] mb-1">Email</p>
+          <p class="font-['Share_Tech_Mono'] text-[13px] text-[#c8d4e0]">{{ user.email }}</p>
         </div>
 
-        <div class="border rounded-lg p-4">
-          <p class="text-sm text-gray-500">Soldier Number</p>
-          <p class="font-semibold">{{ user.soldierNumber }}</p>
+        <div class="px-5 py-4">
+          <p class="font-['Share_Tech_Mono'] text-[9px] text-[#4a5568] uppercase tracking-[2px] mb-1">Nº Soldado</p>
+          <p class="font-['Share_Tech_Mono'] text-[13px] text-[#c8d4e0]">{{ user.soldierNumber }}</p>
         </div>
 
-        <div class="border rounded-lg p-4">
-          <p class="text-sm text-gray-500">DNI</p>
-          <p class="font-semibold">{{ user.dni }}</p>
+        <div class="px-5 py-4">
+          <p class="font-['Share_Tech_Mono'] text-[9px] text-[#4a5568] uppercase tracking-[2px] mb-1">DNI</p>
+          <p class="font-['Share_Tech_Mono'] text-[13px] text-[#c8d4e0]">{{ user.dni }}</p>
         </div>
 
-        <div class="border rounded-lg p-4">
-          <p class="text-sm text-gray-500">Phone</p>
-          <p class="font-semibold">{{ user.phoneNumber }}</p>
+        <div class="px-5 py-4">
+          <p class="font-['Share_Tech_Mono'] text-[9px] text-[#4a5568] uppercase tracking-[2px] mb-1">Teléfono</p>
+          <p class="font-['Share_Tech_Mono'] text-[13px] text-[#c8d4e0]">{{ user.phoneNumber }}</p>
         </div>
 
-        <div class="border rounded-lg p-4">
-          <p class="text-sm text-gray-500">Rank</p>
-          <p class="font-semibold">{{ user.rank }}</p>
+        <div class="px-5 py-4">
+          <p class="font-['Share_Tech_Mono'] text-[9px] text-[#4a5568] uppercase tracking-[2px] mb-1">Rango</p>
+          <p class="font-['Share_Tech_Mono'] text-[13px] text-[#c8d4e0]">{{ user.rank }}</p>
         </div>
 
-        <div class="border rounded-lg p-4">
-          <p class="text-sm text-gray-500">Role</p>
-          <p class="font-semibold">{{ user.role }}</p>
+        <div class="px-5 py-4">
+          <p class="font-['Share_Tech_Mono'] text-[9px] text-[#4a5568] uppercase tracking-[2px] mb-1">Rol</p>
+          <p class="font-['Share_Tech_Mono'] text-[13px] text-[#c8d4e0]">{{ user.role }}</p>
         </div>
 
-        <div class="border rounded-lg p-4">
-          <p class="text-sm text-gray-500">Status</p>
-
+        <div class="px-5 py-4">
+          <p class="font-['Share_Tech_Mono'] text-[9px] text-[#4a5568] uppercase tracking-[2px] mb-1">Estado</p>
           <span
-            class="inline-flex px-3 py-1 rounded-full text-sm font-medium"
-            [ngClass]="user.active
-              ? 'bg-green-100 text-green-700'
-              : 'bg-red-100 text-red-700'">
-
-            {{ user.active ? 'Active' : 'Inactive' }}
-
+            class="inline-flex items-center gap-2 font-['Share_Tech_Mono'] text-[11px] uppercase tracking-[1px]"
+            [class.text-[#00e5a0]]="user.active"
+            [class.text-[#ff3b3b]]="!user.active"
+          >
+            <span class="w-[5px] h-[5px] rounded-full"
+              [class.bg-[#00e5a0]]="user.active"
+              [class.bg-[#ff3b3b]]="!user.active"
+            ></span>
+            {{ user.active ? 'Activo' : 'Inactivo' }}
           </span>
         </div>
 
-        <div class="border rounded-lg p-4">
-          <p class="text-sm text-gray-500">Created At</p>
-          <p class="font-semibold">{{ user.createdAt }}</p>
+        <div class="px-5 py-4">
+          <p class="font-['Share_Tech_Mono'] text-[9px] text-[#4a5568] uppercase tracking-[2px] mb-1">Creado</p>
+          <p class="font-['Share_Tech_Mono'] text-[13px] text-[#c8d4e0]">{{ user.createdAt }}</p>
         </div>
 
       </div>
-
     </div>
 
   </div>

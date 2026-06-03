@@ -28,17 +28,19 @@ public class BarrelAttachmentController {
     @Autowired
     private BarrelAtachmentService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<BarrelAtachmentResponse> getAllBarrelAtachments(){
         return BarrelAtachmentMapper.responseFromModelListSimple(service.getAllBarrelAtachments());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public BarrelAtachmentModel getBarrelAtachmentByIdModel(@PathVariable String id){
         return service.getBarrelAtachmentById(id);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public BarrelAtachmentResponse createBarrelAtachment(@Valid @RequestBody BarrelAtachmentRequest barrelAtachment){
         BarrelAtachmentModel barrelAtachmentModel = service.saveBarrelAtachment(barrelAtachment);
@@ -52,6 +54,7 @@ public class BarrelAttachmentController {
         );
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public BarrelAtachmentResponse getBarrelAtachmentByReference(@PathVariable String reference){
         BarrelAtachmentModel model = service.getByReference(reference);
@@ -65,6 +68,7 @@ public class BarrelAttachmentController {
         );
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public BarrelAtachmentResponse getBarrelAtachmentById(@PathVariable String id){
         BarrelAtachmentModel model = service.getBarrelAtachmentById(id);
@@ -78,7 +82,7 @@ public class BarrelAttachmentController {
         );
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public BarrelAtachmentResponse updateBarrelAtachment(@PathVariable String id, @RequestBody BarrelAtachmentUpdateRequest barrelAtachment){
         BarrelAtachmentModel model = service.updateBarrelAtachment(barrelAtachment, id);
@@ -92,12 +96,13 @@ public class BarrelAttachmentController {
         );
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteBarrelAtachment(@PathVariable String id){
         service.deleteBarrelAtachment(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<BarrelAtachmentResponse> search(
             @RequestBody SearchRequest request,

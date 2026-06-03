@@ -31,21 +31,25 @@ public class WeaponStockController {
     @Autowired
     private WeaponStockQueryBuilder weaponStockQueryBuilder;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<WeaponStockResponse> getAllWeaponStocks(){
         return StockMapper.responseFromModelList(service.getAllWeaponStocks());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public WeaponStockModel getWeaponStockByIdModel(@PathVariable String id){
         return service.getWeaponStockById(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/compatible")
     public List<WeaponStockResponse> getCompatibleWeaponStocks(@RequestParam String platformId, @RequestParam StockAtachmentSystem stockAtachmentSystem){
         return StockMapper.responseFromModelList(service.getCompatibleWeaponStocks(platformId, stockAtachmentSystem));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public WeaponStockResponse getStockByReference(@PathVariable String reference){
         WeaponStockModel stock = service.getByReference(reference);
@@ -55,6 +59,7 @@ public class WeaponStockController {
         return StockMapper.responseFromModel(stock, platformResponses);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public WeaponStockResponse getStockById(@PathVariable String id){
         WeaponStockModel stock = service.getWeaponStockById(id);
@@ -64,7 +69,7 @@ public class WeaponStockController {
         return StockMapper.responseFromModel(stock, platformResponses);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public WeaponStockResponse createStock(@Valid @RequestBody StockRequest stock){
         List<PlatformResponse> platforms =
@@ -73,7 +78,7 @@ public class WeaponStockController {
         return StockMapper.responseFromModel(service.saveWeaponStock(stock), platforms);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public WeaponStockResponse updateStock(@RequestBody StockUpdateRequest stock, @PathVariable String id){
         List<PlatformResponse> platforms =
@@ -82,12 +87,13 @@ public class WeaponStockController {
         return StockMapper.responseFromModel(service.updateWeaponStock(stock, id), platforms);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteStock(@PathVariable String id){
         service.deleteWeaponStock(id);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<WeaponStockResponse> search(
             @RequestBody SearchRequest request,

@@ -6,6 +6,7 @@ import { UiButtonComponent } from "../../shared/components/form-button-component
 import { ItemHeader } from "../../shared/components/item-header/item-header";
 import { mapToUserDetail } from './user-detail.dto';
 import { UserService } from '../../core/services/user.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-my-user-detail',
@@ -29,6 +30,11 @@ export class MyUserComponent {
 
   openEdit() {
   this.router.navigate([`/myuser/edit`])
+  }
+
+  openPasswordChange(){
+    window.location.href =
+      `${environment.keycloak.url}/realms/${environment.keycloak.realm}/account`;
   }
 
   ngOnInit(): void {

@@ -22,31 +22,37 @@ public class LocationController {
     @Autowired
     private LocationService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/{id}")
     public LocationResponse getById(@PathVariable String id) {
         return LocationMapper.responseFromModel(service.getLocationById(id));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public LocationResponse getByReference(@PathVariable String reference) {
         return LocationMapper.responseFromModel(service.getByReference(reference));
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
     public List<LocationResponse> getAllLocations() {
         return LocationMapper.responseFromModelList(service.getAllLocation());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/ids")
     public List<LocationResponse> getAllById(@RequestBody List<String> ids){
         return LocationMapper.responseFromModelList(service.getAllByIds(ids));
     }
 
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public LocationResponse create(@Valid @RequestBody LocationRequest request) {
         return LocationMapper.responseFromModel(service.saveLocation(request));
     }
 
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public LocationResponse modify(
             @RequestBody LocationUpdateRequest request,
@@ -55,12 +61,13 @@ public class LocationController {
         return LocationMapper.responseFromModel(service.updateLocation(request, id));
     }
 
+    /*@PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id) {
         service.deleteLocation(id);
-    }
+    }*/
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<LocationResponse> search(
             @RequestBody SearchRequest request,

@@ -24,46 +24,47 @@ public class MiscItemController {
     @Autowired
     private MiscItemService service;
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping
-    public PageResponse<MiscItemResponse> getAllMiscItem(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    ){
-        return pageToResponse(service.getAllMiscItem(page, size));
+    public List<MiscItemResponse> getAllMiscItem(){
+        return MiscItemMapper.responseFromModelList(service.getAllMiscItem());
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/model/{id}")
     public MiscItemModel getMiscItemByIdModel(@PathVariable String id){
         return service.getMiscItemById(id);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PostMapping
     public MiscItemResponse createMiscItem(@Valid @RequestBody MiscItemRequest miscItem){
         MiscItemModel model = service.saveMiscItem(miscItem);
         return MiscItemMapper.responseFromModel(model);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/reference/{reference}")
     public MiscItemResponse getMiscItemByReference(@PathVariable String reference){
         MiscItemModel miscItem = service.getByReference(reference);
         return MiscItemMapper.responseFromModel(miscItem);
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @GetMapping("/id/{id}")
     public MiscItemResponse getMiscItemById(@PathVariable String id){
         MiscItemModel miscItem = service.getMiscItemById(id);
         return MiscItemMapper.responseFromModel(miscItem);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @PatchMapping("/{id}")
     public MiscItemResponse updateMiscItem(@PathVariable String id, @RequestBody MiscItemUpdateRequest MiscItem){
         MiscItemModel miscItem = service.updateMiscItem(MiscItem, id);
         return MiscItemMapper.responseFromModel(miscItem);
     }
 
-    @PreAuthorize("hasRole('system-admin')")
+    @PreAuthorize("hasRole(@roleProperties.admin)")
     @DeleteMapping("/{id}")
     public void deleteMiscItem(@PathVariable String id){
         service.deleteMiscItem(id);
@@ -83,6 +84,7 @@ public class MiscItemController {
                 .build();
     }
 
+    @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
     @PostMapping("/search")
     public PageResponse<MiscItemResponse> search(
             @RequestBody SearchRequest request,
