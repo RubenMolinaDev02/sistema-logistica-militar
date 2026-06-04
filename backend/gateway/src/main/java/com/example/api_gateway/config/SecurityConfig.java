@@ -14,15 +14,22 @@ public class SecurityConfig {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
 
+                .cors(cors -> {})
+
                 .authorizeExchange(exchanges -> exchanges
+
+                        .pathMatchers(org.springframework.http.HttpMethod.OPTIONS)
+                        .permitAll()
 
                         .pathMatchers(
                                 "/actuator/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
-                        ).permitAll()
+                        )
+                        .permitAll()
 
-                        .anyExchange().authenticated()
+                        .anyExchange()
+                        .authenticated()
                 )
 
                 .oauth2ResourceServer(
