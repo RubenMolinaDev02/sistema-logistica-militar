@@ -14,7 +14,7 @@ import java.util.Map;
 @Service
 public class KeycloakRepository {
 
-    private final WebClient webClient = WebClient.create("http://localhost:9090");
+    private final WebClient webClient = WebClient.create("https://keycloak-production-d501.up.railway.app");
 
     private static final String REALM = "armory-realm";
 
