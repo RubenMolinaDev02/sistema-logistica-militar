@@ -149,7 +149,7 @@ public class KeycloakRepository {
             body.add("password", password);
 
             webClient.post()
-                    .uri("http://localhost:9090/realms/armory-realm/protocol/openid-connect/token")
+                    .uri("https://keycloak-production-d501.up.railway.app/realms/armory-realm/protocol/openid-connect/token")
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                     .bodyValue(body)
                     .retrieve()
