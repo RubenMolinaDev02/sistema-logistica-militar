@@ -35,8 +35,7 @@ public class UserController {
     @GetMapping("/me/detail")
     public UserResponse getMyProfileDetail() {
         UserModel user = service.getMyProfile();
-        LocationResponse locationResponse = locationClient.getById(user.getLocationId());
-        return UserMapper.responseFromModelDetail(user, locationResponse, service.canDelete(user));
+        return UserMapper.responseFromModel(user);
     }
 
     @PreAuthorize("hasAnyRole(@roleProperties.admin, @roleProperties.manager, @roleProperties.publicAccess, @roleProperties.soldier)")
