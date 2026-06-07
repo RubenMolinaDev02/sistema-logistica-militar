@@ -78,8 +78,8 @@ public class UserService {
         if (getUserBySoldierNumber(request.getSoldierNumber()) != null) throw
                 new ResponseStatusException(HttpStatus.CONFLICT);
 
-        /*if (locationClient.getById(request.getLocationId()) == null) throw
-                new ResponseStatusException(HttpStatus.NOT_FOUND);*/
+        if (locationClient.getById(request.getLocationId()) == null) throw
+                new ResponseStatusException(HttpStatus.NOT_FOUND);
 
         String password = PasswordGenerator.generate(15);
         System.out.println(password);
